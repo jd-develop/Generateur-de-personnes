@@ -280,7 +280,7 @@ def result():
     result_window.geometry("450x200")
     result_window.minsize(450, 200)
     result_window.maxsize(450, 200)
-    result_window.iconbitmap('data/icon.ico')
+    result_window.iconbitmap('icon.ico')
     result_window.config(background='palegreen')
 
     result_label1 = Label(result_window, text=person_name + " a {} ans,".format(person.get_age()), font=("Tahoma", 12),
@@ -347,7 +347,7 @@ main_window = Tk()
 main_window.title("Générateur aléatoire de personnes")
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
-main_window.iconbitmap('data/icon.ico')
+main_window.iconbitmap('icon.ico')
 main_window.config(background='palegreen')
 
 # Création d'une frame
