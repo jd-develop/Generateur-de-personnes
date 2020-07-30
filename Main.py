@@ -3,20 +3,31 @@
 # Générateur aléatoire de personnes
 
 from tkinter import *  # Tkinter sert à faire des fenêtres
+from tkinter import messagebox  # Pour faire des boîtes de dialogues
+
 import webbrowser  # Sert à ouvrir le navigateur web
-import os
-import random
-from random import randint
+import os  # Pour pouvoir vérifier l'existance de fichiers
+import shutil  # Pour traficoter les fichiers
+
+import random  # Pour pouvoir faire du pseudo-aléatoire
+from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
+
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "1:1i20 InDev Development Version"
+__version__ = "1:2i20 InDev Development Version"
 
 
 class Person:
     """ Définit ce qu'est qu'une personne """
 
-    def __init__(self, age_range, size_range, weight_range, genre_in_class):
+    def __init__(self, age_range=None, size_range=None, weight_range=None, genre_in_class="male"):
         """ Initialisation de la personne"""
+        if weight_range is None:
+            weight_range = [83, 83]
+        if size_range is None:
+            size_range = [175, 175]
+        if age_range is None:
+            age_range = [20, 20]
         try:
             self.age = randint(int(age_range[0]), int(age_range[1]))  # âge en années
             if not -1 < self.age < 120:
@@ -115,6 +126,13 @@ class Person:
                     self.eyes_color += ["noirs"]
                 else:
                     self.eyes_color += ["chatains"]
+
+        if randint(0, 1) == 0:
+            self.skin_color = "blanche"
+        elif randint(0, 1) == 1:
+            self.skin_color = "noire"
+        else:
+            self.skin_color = "metis"
 
         # Nom de famille
         # Vérification de l'existance du fichier "LAST_NAMES.txt" et choix du nom
@@ -232,6 +250,10 @@ class Person:
         """ Renvoie la couleur des yeux de la personne sous forme de liste"""
         return self.eyes_color
 
+    def get_skin_color(self):
+        """ Renvoie la couleur de peau de la personne """
+        return self.skin_color
+
 
 def about():
     version_file = open("version.txt", "w")
@@ -242,7 +264,7 @@ def about():
     webbrowser.open_new(r"about.html")
 
 
-def new_created_identities(number):
+def add_new_created_identity(number):
     global number_of_created_identities
     file = open("data/number_of_created_identities.txt", "r+")
     number_of_created_identities = file.readlines()
@@ -254,9 +276,242 @@ def new_created_identities(number):
     file.close()
 
 
+def open_document_saved(name_of_element="Document"):
+    """ Ouvre le document à rappeler """
+    if os.path.exists("saves/{}.txt".format(name_of_element)):
+        with open("saves/{}.txt".format(name_of_element), "r") as file:
+            person_saved = file.readlines()
+            file.close()
+
+        person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
+        age = person_saved[3].replace("\n", '')
+        genre_in_function_open_document_saved = person_saved[4].replace("\n", '')
+        skin_color = person_saved[5].replace("\n", '')
+        eyes_color = person_saved[6].replace("\n", '').replace('[', '').replace(']', '') + ','
+        eyes_color = eyes_color.split(',')
+        del eyes_color[-1]
+        hairs_color = person_saved[7].replace("\n", '')
+        size_in_meters = person_saved[8].replace("\n", '')
+        weight = person_saved[9].replace("\n", '')
+        bmi = float(person_saved[10].replace("\n", ''))
+        bmi_interpretation = person_saved[11].replace("\n", '')
+
+        result_window = Tk()
+        result_window.title("Identité créée n°{}".format(person_saved[0]))
+        result_window.geometry("500x250")
+        result_window.minsize(500, 250)
+        result_window.maxsize(500, 250)
+        result_window.iconbitmap('icon.ico')
+        result_window.config(background='palegreen')
+
+        result_label1 = Label(result_window, text=person_name + " a {} ans,".format(age),
+                              font=("Tahoma", 12), bg="palegreen")
+        result_label1_bis = Label(result_window, text="a la peau {},".format(skin_color),
+                                  font=("Tahoma", 12), bg="palegreen")
+        if len(eyes_color) == 1:
+            result_label2 = Label(result_window, text="les yeux {}".format(eyes_color[0]),
+                                  font=("Tahoma", 12), bg="palegreen")
+        else:
+            result_label2 = Label(result_window, text="a les yeux verron {} et ".format(eyes_color[0])
+                                                      + person.get_eyes_color()[1], font=("Tahoma", 12), bg="palegreen")
+        if not hairs_color == "":
+            result_label3 = Label(result_window, text="et les cheveux {},".format(hairs_color),
+                                  font=("Tahoma", 12), bg="palegreen")
+        else:
+            result_label3 = Label(result_window, text="et aucun cheveu sur la tête,", font=("Tahoma", 12),
+                                  bg="palegreen")
+        result_label4 = Label(result_window, text="fait {} mètres, ".format(size_in_meters),
+                              font=("Tahoma", 12), bg="palegreen")
+        result_label5 = Label(result_window, text="pèse {} kilogrammes, ".format(weight),
+                              font=("Tahoma", 12), bg="palegreen")
+        result_label6 = Label(result_window, text="a une IMC d'environ {}.".format(int(bmi)),
+                              font=("Tahoma", 12), bg="palegreen")
+        if not bmi_interpretation == "":
+            if genre_in_function_open_document_saved == "male":
+                result_label7 = Label(result_window, text="Il est donc en {}.".format(bmi_interpretation),
+                                      font=("Tahoma", 12), bg="palegreen")
+            else:
+                result_label7 = Label(result_window,
+                                      text="Elle est donc en {}.".format(bmi_interpretation),
+                                      font=("Tahoma", 12), bg="palegreen")
+        else:
+            result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="palegreen")
+
+        result_label1.pack()
+        result_label1_bis.pack()
+        result_label2.pack()
+        result_label3.pack()
+        result_label4.pack()
+        result_label5.pack()
+        result_label6.pack()
+        result_label7.pack()
+        result_window.mainloop()
+    else:
+        messagebox.showerror("Erreur", "Cette sauvegarde n'existe pas, veuillez réessayer.")
+
+
+def ask_for_document_saved():
+    """ Demande le document à rappeler """
+
+    enter_document_name_window = Tk()
+    enter_document_name_window.title("Rappel")
+    enter_document_name_window.geometry("500x125")
+    enter_document_name_window.minsize(500, 125)
+    enter_document_name_window.maxsize(500, 125)
+    enter_document_name_window.iconbitmap('icon.ico')
+    enter_document_name_window.config(background='palegreen')
+
+    enter_document_name_label = Label(enter_document_name_window, text="Nom de la sauvegarde à rappeller :",
+                                      font=("Tahoma", 12), bg="palegreen")
+    enter_document_name_entry = Entry(enter_document_name_window, font=("Tahoma", 12), bg="lightgreen")
+    ok_button = Button(enter_document_name_window, text="OK", font=("Tahoma", 12), bg="lightgreen",
+                       activebackground='#B0F2B6', command=lambda: open_document_saved(enter_document_name_entry.get()))
+    cancel_button = Button(enter_document_name_window, text="Annuler", font=("Tahoma", 12), bg="lightgreen",
+                           activebackground='#B0F2B6', command=lambda: enter_document_name_window.destroy())
+
+    enter_document_name_label.pack()
+    enter_document_name_entry.pack()
+    ok_button.pack()
+    cancel_button.pack()
+
+    enter_document_name_window.mainloop()
+
+
+def save(name="Document"):
+    """ Sauvegarde """
+    global save_window, person
+
+    if os.path.exists("saves"):
+        if not os.path.exists("saves/{}.txt".format(name)):
+            file = open("saves/{}.txt".format(name), "w")
+            file.write(str(number_of_created_identities) + "\n")
+            file.write(str(person.get_first_name()) + "\n")
+            file.write(str(person.get_last_name()) + "\n")
+            file.write(str(person.get_age()) + "\n")
+            file.write(str(person.get_genre()) + "\n")
+            file.write(str(person.get_skin_color()) + "\n")
+            file.write(str(person.get_eyes_color()) + "\n")
+            file.write(str(person.get_hairs_color()) + "\n")
+            file.write(str(person.get_size_in_meters()) + "\n")
+            file.write(str(person.get_weight()) + "\n")
+            file.write(str(person.get_bmi()) + "\n")
+            file.write(str(person.get_bmi_interpretation()) + "\n")
+            file.close()
+        else:
+            overwrite = messagebox.askquestion("Écraser ?", "Une sauvegarde portant ce nom existe déjà.\n"
+                                                            "Voulez-vous l'écraser ?")
+            if overwrite == "yes":
+                file = open("saves/{}.txt".format(name), "w")
+                file.write(str(number_of_created_identities) + "\n")
+                file.write(str(person.get_first_name()) + "\n")
+                file.write(str(person.get_last_name()) + "\n")
+                file.write(str(person.get_age()) + "\n")
+                file.write(str(person.get_genre()) + "\n")
+                file.write(str(person.get_skin_color()) + "\n")
+                file.write(str(person.get_eyes_color()) + "\n")
+                file.write(str(person.get_hairs_color()) + "\n")
+                file.write(str(person.get_size_in_meters()) + "\n")
+                file.write(str(person.get_weight()) + "\n")
+                file.write(str(person.get_bmi()) + "\n")
+                file.write(str(person.get_bmi_interpretation()) + "\n")
+                file.close()
+            else:
+                messagebox.showinfo("Information", "Non sauvegardé.")
+                return "ExistantFileNotOverwrited"
+        messagebox.showinfo("Information", "Sauvegardé avec succès !")
+        save_window.destroy()
+    else:
+        os.mkdir("saves")
+        file = open("saves/{}.txt".format(name), "w")
+        file.write(str(person.get_first_name()) + "\n")
+        file.write(str(person.get_last_name()) + "\n")
+        file.write(str(person.get_genre()) + "\n")
+        file.write(str(person.get_skin_color()) + "\n")
+        file.write(str(person.get_eyes_color()) + "\n")
+        file.write(str(person.get_hairs_color()) + "\n")
+        file.write(str(person.get_size_in_meters()) + "\n")
+        file.write(str(person.get_weight()) + "\n")
+        file.write(str(person.get_bmi()) + "\n")
+        file.write(str(person.get_bmi_interpretation()) + "\n")
+        file.close()
+        messagebox.showinfo("Information", "Sauvegardé avec succès !")
+        save_window.destroy()
+
+
+def save_as():
+    """ Demande le nom de la sauvegarde. """
+    global save_window
+
+    # Création d'une fenêtre
+    save_window = Tk()
+    save_window.title("Sauvegarder sous...")
+    save_window.geometry("500x125")
+    save_window.minsize(500, 125)
+    save_window.maxsize(500, 125)
+    save_window.iconbitmap('icon.ico')
+    save_window.config(background='palegreen')
+
+    save_as_label = Label(save_window, text="Enregistrer sous : (entrez le nom de la sauvegarde)", font=("Tahoma", 12),
+                          bg="palegreen")
+    save_as_entry = Entry(save_window, font=("Tahoma", 12), bg="lightgreen")
+    save_button = Button(save_window, text="Sauvegarder", font=("Tahoma", 12), bg="lightgreen",
+                         activebackground='#B0F2B6', command=lambda: save(save_as_entry.get()))
+    cancel_button = Button(save_window, text="Annuler", font=("Tahoma", 12), bg="lightgreen",
+                           activebackground='#B0F2B6', command=lambda: save_window.destroy())
+
+    save_as_label.pack()
+    save_as_entry.pack()
+    save_button.pack()
+    cancel_button.pack()
+
+    save_window.mainloop()
+
+
+def reset_data():
+    """ Réinitialise les données """
+    global number_of_created_identities
+    are_you_sure = messagebox.askquestion("Confirmation", "Êtes-vous sûr(e) de vouloir réinitialiser les données ?\n"
+                                                          "Cette action est irréversible.")
+    if are_you_sure == "yes":
+        if os.path.exists("data/number_of_created_identities.txt"):
+            file = open("data/number_of_created_identities.txt", "w")
+            file.write("0")
+            file.close()
+            number_of_created_identities = 0
+            try:
+                shutil.rmtree("saves")
+            except FileNotFoundError:
+                os.mkdir("saves")
+            messagebox.showinfo("Information", "Données réinitialisées avec succès !")
+        else:
+            create_file = messagebox.askquestion("Erreur", "Un fichier est manquant.\n"
+                                                           "Voulez-vous le créer ?", icon='error')
+            if create_file == "yes":
+                file = open("data/number_of_created_identities.txt", "w")
+                file.write("0")
+                file.close()
+                try:
+                    shutil.rmtree("saves")
+                except FileNotFoundError:
+                    os.mkdir("saves")
+                messagebox.showinfo("Information", "Fichier manquant crée avec succès !")
+            else:
+                messagebox.showerror("Erreur", "Impossible de réinitialiser les données : un fichier est manquant.")
+    else:
+        messagebox.showinfo("Information", "Données non réinitialisées.")
+
+
 def result():
-    global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities
-    new_created_identities(1)
+    """ Renvoie la fenêtre où la personne est indiquée """
+    global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities, person
+    try:
+        add_new_created_identity(1)
+    except FileNotFoundError:
+        messagebox.showerror("FileNotFoundError", "Le programme ne peut pas continuer car le fichier 'number_of_creat"
+                                                  "ed_identities.txt' n'existe pas.\n\n Veuillez réinitialiser les"
+                                                  "données (menu 'Options'>'Réinitialiser les données') afin de le crée"
+                                                  "r et de corriger l'érreur.")
+        return "FileNotFoundError"
     if genre == "randomize":
         randomized = True
         pseudo_random_number = randint(0, 1)
@@ -277,16 +532,18 @@ def result():
 
     result_window = Tk()
     result_window.title("Identité créée n°{}".format(number_of_created_identities))
-    result_window.geometry("450x200")
-    result_window.minsize(450, 200)
-    result_window.maxsize(450, 200)
+    result_window.geometry("500x250")
+    result_window.minsize(500, 250)
+    result_window.maxsize(500, 250)
     result_window.iconbitmap('icon.ico')
     result_window.config(background='palegreen')
 
     result_label1 = Label(result_window, text=person_name + " a {} ans,".format(person.get_age()), font=("Tahoma", 12),
                           bg="palegreen")
+    result_label1_bis = Label(result_window, text="a la peau {},".format(person.get_skin_color()), font=("Tahoma", 12),
+                              bg="palegreen")
     if len(person.get_eyes_color()) == 1:
-        result_label2 = Label(result_window, text="a les yeux {}".format(person.get_eyes_color()[0]),
+        result_label2 = Label(result_window, text="les yeux {}".format(person.get_eyes_color()[0]),
                               font=("Tahoma", 12), bg="palegreen")
     else:
         result_label2 = Label(result_window, text="a les yeux verron {} et ".format(person.get_eyes_color()[0])
@@ -314,32 +571,43 @@ def result():
     if randomized:
         genre = "randomize"
 
+    save_button = Button(result_window, text="Sauvegarder...", font=("Tahoma", 12), bg="lightgreen",
+                         activebackground='#B0F2B6', command=lambda: save_as())
+
     result_label1.pack()
+    result_label1_bis.pack()
     result_label2.pack()
     result_label3.pack()
     result_label4.pack()
     result_label5.pack()
     result_label6.pack()
     result_label7.pack()
+    save_button.pack()
     result_window.mainloop()
 
 
 def change_to_male():
+    """ Mets genre à "male" """
     global genre
     genre = "male"
 
 
 def change_to_female():
+    """ Mets genre à "female" """
     global genre
     genre = "female"
 
 
 def randomize_genre():
+    """ Randomise le genre """
     global genre
     genre = "randomize"
 
 
+save_window = Tk()
 number_of_created_identities = 0
+person = Person()
+save_window.destroy()
 
 
 # Création de la fenêtre
@@ -390,10 +658,14 @@ OK_button = Button(frame1, text="Soumettre ce formulaire", font=("Tahoma", 10), 
 # Ajout d'un menu
 menu_bar = Menu(main_window)
 file_menu = Menu(menu_bar, tearoff=0)
-file_menu.add_command(label='Soumettre ce formulaire', command=lambda: result())  # Bouton OK
-file_menu.add_command(label='À propos', command=lambda: about())  # à propos du programme
-file_menu.add_command(label='Quitter', command=lambda: quit(0))
-menu_bar.add_cascade(label='Options', menu=file_menu)
+file_menu.add_command(label='Réinitialiser les données...', command=lambda: reset_data())
+file_menu.add_command(label='Rappel...', command=lambda: ask_for_document_saved())
+menu_bar.add_cascade(label='Fichier', menu=file_menu)
+options_menu = Menu(menu_bar, tearoff=0)
+options_menu.add_command(label='Soumettre ce formulaire', command=lambda: result())  # Bouton OK
+options_menu.add_command(label='À propos...', command=lambda: about())  # à propos du programme
+options_menu.add_command(label='Quitter', command=lambda: quit(0))
+menu_bar.add_cascade(label='Options', menu=options_menu)
 main_window.config(menu=menu_bar)
 
 # Empaquetage
