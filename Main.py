@@ -14,7 +14,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "1:2i20 InDev Development Version"
+__version__ = "Pre-release 1.0-pre1"
 
 
 class Person:
@@ -256,12 +256,17 @@ class Person:
 
 
 def about():
-    version_file = open("version.txt", "w")
-    version_file.write("Générateur de personnes, version\n")
-    version_file.write("{}\n".format(__version__))
-    version_file.write("Développé par {}.\n".format(__author__))
-    version_file.close()
-    webbrowser.open_new(r"about.html")
+    if not sys.platform == "darwin":  # Oui, c'est vraiement comme ça que se nomme MacOs. Darwin.
+        version_file = open("version.txt", "w")
+        version_file.write("Générateur de personnes, version\n")
+        version_file.write("{}\n".format(__version__))
+        version_file.write("Développé par {}.\n".format(__author__))
+        version_file.close()
+        webbrowser.open_new(r"about.html")
+    else:
+        messagebox.showinfo("À propos", "Générateur de personnes, version " + __version__ + ".\n"
+                            "Développé par " + __author__ + ".\n"
+                            "Merci à Wikipédia pour la liste de noms et prénoms les plus utilisés.")
 
 
 def add_new_created_identity(number):
@@ -415,6 +420,9 @@ def save(name="Document"):
                 file.write(str(person.get_bmi()) + "\n")
                 file.write(str(person.get_bmi_interpretation()) + "\n")
                 file.close()
+                file = open("saves/{}.txt".format(name), "r+")
+                print(len(file.readlines()))
+                file.close()
             else:
                 messagebox.showinfo("Information", "Non sauvegardé.")
                 return "ExistantFileNotOverwrited"
@@ -423,6 +431,7 @@ def save(name="Document"):
     else:
         os.mkdir("saves")
         file = open("saves/{}.txt".format(name), "w")
+        file.write(str(number_of_created_identities) + "\n")
         file.write(str(person.get_first_name()) + "\n")
         file.write(str(person.get_last_name()) + "\n")
         file.write(str(person.get_genre()) + "\n")
