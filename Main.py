@@ -420,9 +420,6 @@ def save(name="Document"):
                 file.write(str(person.get_bmi()) + "\n")
                 file.write(str(person.get_bmi_interpretation()) + "\n")
                 file.close()
-                file = open("saves/{}.txt".format(name), "r+")
-                print(len(file.readlines()))
-                file.close()
             else:
                 messagebox.showinfo("Information", "Non sauvegardé.")
                 return "ExistantFileNotOverwrited"
