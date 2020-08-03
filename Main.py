@@ -14,7 +14,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "Pre-release 1.0-pre1"
+__version__ = "Pre-release 1.0"
 
 
 class Person:
