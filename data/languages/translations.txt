@@ -1,0 +1,95 @@
+﻿ENGLISH
+Identity randomizer
+Genre :
+Male
+Female
+Randomize
+Age range
+Size range in centimeters
+Weight range in kilograms
+ (separate by a full stop) :
+Validate this form
+File
+Reinitalize data...
+Open...
+Options
+About...
+Quit
+Created identity number
+is
+years old
+have a skin colored in
+eyes colored in
+and hairs colored in
+have
+meters tall
+weigh
+kilograms
+have a BMI around
+So he is in
+So she is in
+Save...
+Save as...
+Save as : (enter the name of the save file)
+Save
+Cette traduction n'est jamais utilisée. Étonnant, non ?
+Cancel
+Information
+Saved successful !
+Error
+blue
+green
+chestnut brown
+grey
+white
+emerauld green
+bursted
+black
+chestnut brown
+white
+black
+white-black (mixted heritage)
+SMITH
+Oliver
+Olivia
+Cheyenne
+famine
+scrawniness
+normal build
+excess weight
+moderated obesity
+severe obesity
+morbid obesity
+About
+Identity randomiser, version
+Déveloped by
+Thanks to wikipedia for the list of most used French given names and lastnames.
+have one eye colored in
+and the other in
+and no hairs on head
+This save doesn't exist. Please retry.
+Open
+Name of the save to open :
+OK
+Erase ?
+A save with this name is already exists.
+Do you want erase it ?
+Not saved.
+Data reinitialized succesful !
+A file is missing.
+Do you want to create it ?
+Missing file created succesful, data reinitialized !
+It’s impossible to reinitialize data : a file is missing.
+Data not reinitialized.
+FileNotFoundError
+The program cannot continue because the file 'number_of_created_identities.txt' doesn't exists.
+You have to reinitialize data (menu 'File'>'Reinitialize data') to create the file and fix the problem.
+Confirmation
+Are you sure to reinitialize data ?
+This action is irreversible.
+Cooker
+is 
+student
+student
+This name is refuzed by the operating system. Characters \ / * : ? " < > and | aren't accepted by Windows.
+retired
