@@ -329,9 +329,9 @@ class Person:
 
         # Profession
         if profession is None:
-            if self.age > 63:
+            if self.age > 62:
                 self.profession = __translations_list__[95]
-            elif 18 > self.age > 22:
+            elif 21 < self.age < 63:
                 # Vérification de l'existance du fichier "PROFESSIONS.txt" et choix de la profession
                 if os.path.exists("data/languages/" + language + "/PROFESSIONS.txt"):
                     with open("data/languages/" + language + "/PROFESSIONS.txt", "r+") as professions_file:
@@ -340,10 +340,15 @@ class Person:
                         self.profession = random.choice(professions_list).replace("\n", "")
                 else:
                     self.profession = __translations_list__[90]
-            elif self.age > 18:
+            elif 17 < self.age < 22:
                 self.profession = __translations_list__[92]
-            else:
+            elif 5 < self.age:
                 self.profession = __translations_list__[93]
+            else:
+                if randint(0, 1) == 1 and 3 < self.age:
+                    self.profession = __translations_list__[93]
+                else:
+                    self.profession = None
         else:
             self.profession = profession
 
@@ -470,8 +475,9 @@ def open_document_saved(name_of_element="Document"):
         result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " + age + " "
                                                    + __translations_list__[20]) + ",",
                               font=("Tahoma", 12), bg="#00FF40")
-        result_label1_ter = Label(result_window, text=(__translations_list__[91] + profession + ","),
-                                  font=("Tahoma", 12), bg="#00FF40")
+        if not profession is None:
+            result_label1_ter = Label(result_window, text=(__translations_list__[91] + profession + ","),
+                                      font=("Tahoma", 12), bg="#00FF40")
         result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
                                   font=("Tahoma", 12), bg="#00FF40")
         if len(eyes_color) == 1:
@@ -727,8 +733,9 @@ def result():
                           font=("Tahoma", 12), bg="#00FF40")
     result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + str(person.get_skin_color()) +
                                                    ","), font=("Tahoma", 12), bg="#00FF40")
-    result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
-                              font=("Tahoma", 12), bg="#00FF40")
+    if not person.get_profession() is None:
+        result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
+                                  font=("Tahoma", 12), bg="#00FF40")
     if len(person.get_eyes_color()) == 1:
         result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[22] + " " +
                                                    person.get_eyes_color()[0]), font=("Tahoma", 12), bg="#00FF40")
@@ -764,7 +771,22 @@ def result():
 
     result_label1.pack()
     result_label1_bis.pack()
-    result_label1_ter.pack()
+    try:
+        try:
+            result_label1_ter.pack()
+        except UnboundLocalError:
+            pass
+        finally:
+            pass
+    except NameError:
+        try:
+            result_label1_ter.pack()
+        except NameError:
+            pass
+        finally:
+            pass
+    finally:
+        pass
     result_label2.pack()
     result_label3.pack()
     result_label4.pack()
