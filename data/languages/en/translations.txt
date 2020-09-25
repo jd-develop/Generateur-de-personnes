@@ -15,11 +15,11 @@ Open...
 Options
 About...
 Quit
-Created identity number
+Created identity number 
 is
 years old
 have a skin colored in
-eyes colored in
+have eyes colored in
 and hairs colored in
 have
 meters tall
