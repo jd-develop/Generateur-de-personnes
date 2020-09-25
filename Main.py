@@ -26,27 +26,27 @@ def ask_language():
     language_window.minsize(500, 250)
     language_window.maxsize(500, 250)
     language_window.iconbitmap('icon.ico')
-    language_window.config(background='#00FF40')
+    language_window.config(background='palegreen')
 
-    language_frame = Frame(language_window, bg="#00FF40")
+    language_frame = Frame(language_window, bg="palegreen")
     language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language :", font=("Tahoma",
                                                                                                               12),
-                           background="#00FF40")
+                           background="palegreen")
     
     language_options_list = ["Français", "English"]
     language_variable = StringVar(language_window)
     language_variable.set(language_options_list[0])
 
     language_opt = OptionMenu(language_frame, language_variable, *language_options_list)
-    language_opt.config(width=10, font=("Tahoma", 12), bg="#00FF40", activebackground='#00FF40')
+    language_opt.config(width=10, font=("Tahoma", 12), bg="lightgreen", activebackground='palegreen')
 
-    language_ok_button = Button(language_frame, text="OK", font=("Tahoma", 12), bg="#00FF40",
-                                activebackground='#CCEEFF', command=lambda: language_window.destroy())
-    language_cancel_button = Button(language_frame, text="Annuler", font=("Tahoma", 12), bg="#00FF40",
-                                    activebackground='#CCEEFF', command=lambda: quit(0))
+    language_ok_button = Button(language_frame, text="OK", font=("Tahoma", 12), bg="lightgreen",
+                                activebackground='palegreen', command=lambda: language_window.destroy())
+    language_cancel_button = Button(language_frame, text="Annuler", font=("Tahoma", 12), bg="lightgreen",
+                                    activebackground='palegreen', command=lambda: quit(0))
     language_default = IntVar()
     language_default_checkbutton = Checkbutton(language_frame, text="Définir par défaut / Set by default",
-                                               activebackground='#00FF40', variable=language_default, bg="#00FF40")
+                                               activebackground='palegreen', variable=language_default, bg="palegreen")
     
     language_label.pack()
     language_opt.pack()
@@ -470,49 +470,49 @@ def open_document_saved(name_of_element="Document"):
         result_window.minsize(500, 250)
         result_window.maxsize(500, 250)
         result_window.iconbitmap('icon.ico')
-        result_window.config(background='#00FF40')
+        result_window.config(background='palegreen')
 
         result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " + age + " "
                                                    + __translations_list__[20]) + ",",
-                              font=("Tahoma", 12), bg="#00FF40")
+                              font=("Tahoma", 12), bg="palegreen")
         if not profession is None:
             result_label1_ter = Label(result_window, text=(__translations_list__[91] + profession + ","),
-                                      font=("Tahoma", 12), bg="#00FF40")
+                                      font=("Tahoma", 12), bg="palegreen")
         result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
-                                  font=("Tahoma", 12), bg="#00FF40")
+                                  font=("Tahoma", 12), bg="palegreen")
         if len(eyes_color) == 1:
             result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[22] + " "
                                                        + eyes_color[0].replace("'", "") + ","), font=("Tahoma", 12),
-                                  bg="#00FF40")
+                                  bg="palegreen")
         else:
             result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[67] + " "
                                                        + eyes_color[0].replace("'", "") + " " +
                                                        __translations_list__[68] + " " + eyes_color[1].replace("'", "")
-                                                       + ","), font=("Tahoma", 12), bg="#00FF40")
+                                                       + ","), font=("Tahoma", 12), bg="palegreen")
         if not hairs_color == "":
             result_label3 = Label(result_window, text=__translations_list__[23] + " " + hairs_color + ",",
-                                  font=("Tahoma", 12), bg="#00FF40")
+                                  font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label3 = Label(result_window, text=__translations_list__[69] + ",", font=("Tahoma", 12),
-                                  bg="#00FF40")
+            result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12),
+                                  bg="palegreen")
         result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(size_in_meters) + " "
                                                    + __translations_list__[25] + ","),
-                              font=("Tahoma", 12), bg="#00FF40")
+                              font=("Tahoma", 12), bg="palegreen")
         result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(weight) + " " +
                                                    __translations_list__[27] + ","),
-                              font=("Tahoma", 12), bg="#00FF40")
+                              font=("Tahoma", 12), bg="palegreen")
         result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(bmi) + " " +
                                                    __translations_list__[25] + ","),
-                              font=("Tahoma", 12), bg="#00FF40")
+                              font=("Tahoma", 12), bg="palegreen")
         if not bmi_interpretation == "":
             if genre_in_function_open_document_saved == "male":
                 result_label7 = Label(result_window, text=(__translations_list__[29] + " " + bmi_interpretation),
-                                      font=("Tahoma", 12), bg="#00FF40")
+                                      font=("Tahoma", 12), bg="palegreen")
             else:
                 result_label7 = Label(result_window, text=(__translations_list__[30] + " " + bmi_interpretation),
-                                      font=("Tahoma", 12), bg="#00FF40")
+                                      font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="#00FF40")
+            result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="palegreen")
 
         result_label1.pack()
         result_label1_bis.pack()
@@ -537,16 +537,16 @@ def ask_for_document_saved():
     enter_document_name_window.minsize(500, 125)
     enter_document_name_window.maxsize(500, 125)
     enter_document_name_window.iconbitmap('icon.ico')
-    enter_document_name_window.config(background='#00FF40')
+    enter_document_name_window.config(background='palegreen')
 
     enter_document_name_label = Label(enter_document_name_window, text=__translations_list__[72],
-                                      font=("Tahoma", 12), bg="#00FF40")
-    enter_document_name_entry = Entry(enter_document_name_window, font=("Tahoma", 12), bg="#01DF01")
+                                      font=("Tahoma", 12), bg="palegreen")
+    enter_document_name_entry = Entry(enter_document_name_window, font=("Tahoma", 12), bg="lightgreen")
     ok_button = Button(enter_document_name_window, text=__translations_list__[73], font=("Tahoma", 12),
-                       bg="#01DF01", activebackground='#CCEEFF',
+                       bg="lightgreen", activebackground='#CCEEFF',
                        command=lambda: open_document_saved(enter_document_name_entry.get()))
     cancel_button = Button(enter_document_name_window, text=__translations_list__[36], font=("Tahoma", 12),
-                           bg="#01DF01", activebackground='#CCEEFF',
+                           bg="lightgreen", activebackground='#CCEEFF',
                            command=lambda: enter_document_name_window.destroy())
 
     enter_document_name_label.pack()
@@ -638,15 +638,15 @@ def save_as():
     save_window.minsize(500, 125)
     save_window.maxsize(500, 125)
     save_window.iconbitmap('icon.ico')
-    save_window.config(background='#00FF40')
+    save_window.config(background='palegreen')
 
     save_as_label = Label(save_window, text=__translations_list__[33], font=("Tahoma", 12),
-                          bg="#00FF40")
-    save_as_entry = Entry(save_window, font=("Tahoma", 12), bg="#01DF01")
-    save_button = Button(save_window, text=__translations_list__[34], font=("Tahoma", 12), bg="#01DF01",
-                         activebackground='#CCEEFF', command=lambda: save(save_as_entry.get()))
-    cancel_button = Button(save_window, text=__translations_list__[36], font=("Tahoma", 12), bg="#01DF01",
-                           activebackground='#CCEEFF', command=lambda: save_window.destroy())
+                          bg="palegreen")
+    save_as_entry = Entry(save_window, font=("Tahoma", 12), bg="lightgreen")
+    save_button = Button(save_window, text=__translations_list__[34], font=("Tahoma", 12), bg="lightgreen",
+                         activebackground='palegreen', command=lambda: save(save_as_entry.get()))
+    cancel_button = Button(save_window, text=__translations_list__[36], font=("Tahoma", 12), bg="lightgreen",
+                           activebackground='palegreen', command=lambda: save_window.destroy())
 
     save_as_label.pack()
     save_as_entry.pack()
@@ -726,52 +726,66 @@ def result():
     result_window.minsize(500, 250)
     result_window.maxsize(500, 250)
     result_window.iconbitmap('icon.ico')
-    result_window.config(background='#00FF40')
+    result_window.config(background='palegreen')
 
     result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " +
                                                str(person.get_age()) + " " + __translations_list__[20] + ","),
-                          font=("Tahoma", 12), bg="#00FF40")
+                          font=("Tahoma", 12), bg="palegreen")
+    
     result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + str(person.get_skin_color()) +
-                                                   ","), font=("Tahoma", 12), bg="#00FF40")
+                                                   ","), font=("Tahoma", 12), bg="palegreen")
+    
     if not person.get_profession() is None:
         result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
-                                  font=("Tahoma", 12), bg="#00FF40")
+                                  font=("Tahoma", 12), bg="palegreen")
+    
     if len(person.get_eyes_color()) == 1:
-        result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[22] + " " +
-                                                   person.get_eyes_color()[0]), font=("Tahoma", 12), bg="#00FF40")
+        result_label2 = Label(result_window, text=(__translations_list__[22] + " " +
+                                                   person.get_eyes_color()[0]), font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[67] + " " +
+        result_label2 = Label(result_window, text=(__translations_list__[67] + " " +
                                                    person.get_eyes_color()[0] + " " + __translations_list__[68] + " " +
-                                                   person.get_eyes_color()[1]), font=("Tahoma", 12), bg="#00FF40")
+                                                   person.get_eyes_color()[1]), font=("Tahoma", 12), bg="palegreen")
+    
     if not person.get_hairs_color() == "":
-        result_label3 = Label(result_window, text="et les cheveux {},".format(person.get_hairs_color()),
-                              font=("Tahoma", 12), bg="#00FF40")
+        result_label3 = Label(result_window, text=(__translations_list__[23] + " " + person.get_hairs_color() + ","),
+                              font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label3 = Label(result_window, text="et aucun cheveu sur la tête,", font=("Tahoma", 12), bg="#00FF40")
-    result_label4 = Label(result_window, text="fait {} mètres, ".format(person.get_size_in_meters()),
-                          font=("Tahoma", 12), bg="#00FF40")
-    result_label5 = Label(result_window, text="pèse {} kilogrammes, ".format(person.get_weight()), font=("Tahoma", 12),
-                          bg="#00FF40")
-    result_label6 = Label(result_window, text="a une IMC d'environ {}.".format(int(person.get_bmi())),
-                          font=("Tahoma", 12), bg="#00FF40")
+        result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
+    
+    result_label4 = Label(result_window, text=(__translations_list__[26] + " " + strint(person.get_size_in_meters()) + " " +
+                                               __translations_list__[25]),
+                          font=("Tahoma", 12), bg="palegreen")
+    
+    result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
+                                               __translations_list__[27]), font=("Tahoma", 12),
+                          bg="palegreen")
+    
+    result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(person.get_bmi()) + "."),
+                          font=("Tahoma", 12), bg="palegreen")
+    
     if not person.get_bmi_interpretation() == "":
         if genre == "male":
-            result_label7 = Label(result_window, text="Il est donc en {}.".format(person.get_bmi_interpretation()),
-                                  font=("Tahoma", 12), bg="#00FF40")
+            result_label7 = Label(result_window, text=(__translations_list__[29] + " " + person.get_bmi_interpretation() +
+                                                       "."),
+                                  font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label7 = Label(result_window, text="Elle est donc en {}.".format(person.get_bmi_interpretation()),
-                                  font=("Tahoma", 12), bg="#00FF40")
+            result_label7 = Label(result_window, text=(__translations_list__[30] + " " + person.get_bmi_interpretation() +
+                                                       "."),
+                                  font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="#00FF40")
+        result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="palegreen")
     if randomized:
         genre = "randomize"
 
-    save_button = Button(result_window, text="Sauvegarder...", font=("Tahoma", 12), bg="#01DF01",
+    save_button = Button(result_window, text=__translations_list__[31], font=("Tahoma", 12), bg="lightgreen",
                          activebackground='#CCEEFF', command=lambda: save_as())
 
     result_label1.pack()
     result_label1_bis.pack()
+    
     try:
+        """ Compliqué d'être à jour avec les noms d'érreurs dans les différentes versions de Python :P """
         try:
             result_label1_ter.pack()
         except UnboundLocalError:
@@ -787,6 +801,7 @@ def result():
             pass
     finally:
         pass
+    
     result_label2.pack()
     result_label3.pack()
     result_label4.pack()
@@ -827,44 +842,44 @@ main_window.title(__translations_list__[2])
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
-main_window.config(background='#00FF40')
+main_window.config(background='palegreen')
 
 # Création d'une frame
-frame1 = Frame(main_window, bg='#00FF40')
+frame1 = Frame(main_window, bg='palegreen')
 
 # Création du titre et de texte
-title_label = Label(frame1, text=__translations_list__[2], font=('Tahoma', 40), bg='#00FF40')
-label1 = Label(frame1, text=" ", font=('Tahoma', 15), bg='#00FF40')
+title_label = Label(frame1, text=__translations_list__[2], font=('Tahoma', 40), bg='palegreen')
+label1 = Label(frame1, text=" ", font=('Tahoma', 15), bg='palegreen')
 
 # Sexe
-genre_label = Label(frame1, text=__translations_list__[3], font=('Tahoma', 15), bg='#00FF40')
+genre_label = Label(frame1, text=__translations_list__[3], font=('Tahoma', 15), bg='palegreen')
 genre = "female"
 genre_radiobuttons = IntVar()
-genre_female_radio = Radiobutton(frame1, text=__translations_list__[5], variable=genre_radiobuttons, bg='#00FF40',
-                                 activebackground='#00FF40', value=0, command=lambda: change_to_female())
-genre_male_radio = Radiobutton(frame1, text=__translations_list__[4], variable=genre_radiobuttons, bg='#00FF40',
-                               activebackground='#00FF40', value=1, command=lambda: change_to_male())
-genre_randomize_radio = Radiobutton(frame1, text=__translations_list__[6], variable=genre_radiobuttons, bg='#00FF40',
-                                    activebackground='#00FF40', value=2, command=lambda: randomize_genre())
+genre_female_radio = Radiobutton(frame1, text=__translations_list__[5], variable=genre_radiobuttons, bg='palegreen',
+                                 activebackground='palegreen', value=0, command=lambda: change_to_female())
+genre_male_radio = Radiobutton(frame1, text=__translations_list__[4], variable=genre_radiobuttons, bg='palegreen',
+                               activebackground='palegreen', value=1, command=lambda: change_to_male())
+genre_randomize_radio = Radiobutton(frame1, text=__translations_list__[6], variable=genre_radiobuttons, bg='palegreen',
+                                    activebackground='palegreen', value=2, command=lambda: randomize_genre())
 
 # Tranche d'âge
 age_label = Label(frame1, text=__translations_list__[7] + __translations_list__[10],
-                  font=('Tahoma', 15), bg='#00FF40')
-age_range_entry = Entry(frame1, bg='#01DF01')
+                  font=('Tahoma', 15), bg='palegreen')
+age_range_entry = Entry(frame1, bg='lightgreen')
 
 # Tranche de taille
 size_label = Label(frame1, text=__translations_list__[8] + __translations_list__[10], font=('Tahoma', 15),
-                   bg='#00FF40')
-size_range_entry = Entry(frame1, bg='#01DF01')
+                   bg='palegreen')
+size_range_entry = Entry(frame1, bg='lightgreen')
 
 # Tranche de poids
 weight_label = Label(frame1, text=__translations_list__[9] + __translations_list__[10], font=('Tahoma', 15),
-                     bg='#00FF40')
-weight_range_entry = Entry(frame1, bg='#01DF01')
+                     bg='palegreen')
+weight_range_entry = Entry(frame1, bg='lightgreen')
 
 # Bouton OK
-label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg='#00FF40')
-OK_button = Button(frame1, text=__translations_list__[11], font=("Tahoma", 10), bg='#01DF01',
+label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg='palegreen')
+OK_button = Button(frame1, text=__translations_list__[11], font=("Tahoma", 10), bg='lightgreen',
                    activebackground='#CCEEFF', command=lambda: result())
 
 # Ajout d'un menu
