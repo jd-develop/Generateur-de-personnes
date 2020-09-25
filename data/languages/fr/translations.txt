@@ -19,7 +19,7 @@ Identité créée n°
 a
 ans
 a la peau
-les yeux
+a les yeux
 et les cheveux
 fait
 mètres
@@ -66,7 +66,7 @@ Développé par
 Merci à Wikipédia pour la liste de noms et prénoms les plus utilisés.
 a les yeux verron
 et
-et aucun cheuveu sur la tête
+et aucun cheuveu sur la tête,
 Cette sauvegarde n'existe pas, veuillez réessayer.
 Rappel
 Nom de la sauvegarde à rappeller :
