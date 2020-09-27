@@ -753,7 +753,7 @@ def result():
     else:
         result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
     
-    result_label4 = Label(result_window, text=(__translations_list__[26] + " " + strint(person.get_size_in_meters()) + " " +
+    result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(person.get_size_in_meters()) + " " +
                                                __translations_list__[25]),
                           font=("Tahoma", 12), bg="palegreen")
     
