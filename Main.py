@@ -15,7 +15,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "20w40a"
+__version__ = "2.0 pre-1"
 
 
 def ask_language():
