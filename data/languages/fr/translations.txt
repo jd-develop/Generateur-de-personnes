@@ -93,3 +93,4 @@ est
 écolier.e
 Ce nom n'est pas accepté par le système d'exploitation. Les caractères \ / * : ? " < > et | ne sont pas acceptés par Windows.
 à la retraite
+tailleur.euse de radis
