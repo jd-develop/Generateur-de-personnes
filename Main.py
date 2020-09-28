@@ -329,26 +329,29 @@ class Person:
 
         # Profession
         if profession is None:
-            if self.age > 62:
-                self.profession = __translations_list__[95]
-            elif 21 < self.age < 63:
-                # Vérification de l'existance du fichier "PROFESSIONS.txt" et choix de la profession
-                if os.path.exists("data/languages/" + language + "/PROFESSIONS.txt"):
-                    with open("data/languages/" + language + "/PROFESSIONS.txt", "r+") as professions_file:
-                        professions_list = professions_file.readlines()
-                        professions_file.close()
-                        self.profession = random.choice(professions_list).replace("\n", "")
-                else:
-                    self.profession = __translations_list__[90]
-            elif 17 < self.age < 22:
-                self.profession = __translations_list__[92]
-            elif 5 < self.age:
-                self.profession = __translations_list__[93]
-            else:
-                if randint(0, 1) == 1 and 3 < self.age:
+            if not randint(1, 10000) == 1:
+                if self.age > 62:
+                    self.profession = __translations_list__[95]
+                elif 21 < self.age < 63:
+                    # Vérification de l'existance du fichier "PROFESSIONS.txt" et choix de la profession
+                    if os.path.exists("data/languages/" + language + "/PROFESSIONS.txt"):
+                        with open("data/languages/" + language + "/PROFESSIONS.txt", "r+") as professions_file:
+                            professions_list = professions_file.readlines()
+                            professions_file.close()
+                            self.profession = random.choice(professions_list).replace("\n", "")
+                    else:
+                        self.profession = __translations_list__[90]
+                elif 17 < self.age < 22:
+                    self.profession = __translations_list__[92]
+                elif 5 < self.age:
                     self.profession = __translations_list__[93]
                 else:
-                    self.profession = None
+                    if randint(0, 1) == 1 and 3 < self.age:
+                        self.profession = __translations_list__[93]
+                    else:
+                        self.profession = None
+            else:
+                self.profession = __translations_list__[96]
         else:
             self.profession = profession
 
@@ -580,9 +583,10 @@ def save(name="Document"):
                 file.write(str(person.get_profession()) + "\n")
                 file.close()
             else:
+                # Demander à l'utilisateur s'il souhaite écraser la sauvegarde existante
                 overwrite = messagebox.askquestion(__translations_list__[74],
-                                                   __translations_list__[75] + "\n" + __translations_list__[76]
-                                                   )
+                                                   __translations_list__[75] + "\n" + __translations_list__[76],
+                                                   default='yes')
                 if overwrite == "yes":
                     file = open("saves/{}.txt".format(name), "w")
                     file.write(str(number_of_created_identities) + "\n")
@@ -659,37 +663,21 @@ def save_as():
 def reset_data():
     """ Réinitialise les données """
     global number_of_created_identities
+    # demander à l'utilisateur s'il est sûr de réinitialiser les données
     are_you_sure = messagebox.askquestion(__translations_list__[87], __translations_list__[88] + "\n" +
-                                          __translations_list__[89])
+                                          __translations_list__[89], default='yes')
     if are_you_sure == "yes":
-        if os.path.exists("data/number_of_created_identities.txt"):
-            file = open("data/number_of_created_identities.txt", "w")
-            file.write("0")
-            file.close()
-            number_of_created_identities = 0
-            try:
-                shutil.rmtree("saves")
-            except FileNotFoundError:
-                os.mkdir("saves")
-            messagebox.showinfo(__translations_list__[37], __translations_list__[78])
-            with open('data/language.txt', 'w') as default___language:
-                default___language.write("NotSet")
-        else:
-            create_file = messagebox.askquestion(__translations_list__[39], __translations_list__[79] + "\n" +
-                                                 __translations_list__[80], icon='error')
-            if create_file == "yes":
-                file = open("data/number_of_created_identities.txt", "w")
-                file.write("0")
-                file.close()
-                try:
-                    shutil.rmtree("saves")
-                except FileNotFoundError:
-                    os.mkdir("saves")
-                messagebox.showinfo(__translations_list__[37], __translations_list__[81])
-            else:
-                messagebox.showerror(__translations_list__[39], __translations_list__[82])
-            with open('data/language.txt', 'w') as default__language:
-                default__language.write("NotSet")
+        file = open("data/number_of_created_identities.txt", "w")
+        file.write("0")
+        file.close()
+        number_of_created_identities = 0
+        try:
+            shutil.rmtree("saves")
+        except FileNotFoundError:
+            os.mkdir("saves")
+        messagebox.showinfo(__translations_list__[37], __translations_list__[78])
+        with open('data/language.txt', 'w') as default___language:
+            default___language.write("NotSet")
     else:
         messagebox.showinfo(__translations_list__[37], __translations_list__[83])
 
@@ -700,6 +688,7 @@ def result():
     try:
         add_new_created_identity(1)
     except FileNotFoundError:
+        # Fichier manquant : terminer la fonction en affichant une erreur
         messagebox.showerror(__translations_list__[84], __translations_list__[85] + "\n\n" + __translations_list__[86])
         return "FileNotFoundError"
     if genre == "randomize":
@@ -891,7 +880,7 @@ menu_bar.add_cascade(label=__translations_list__[12], menu=file_menu)
 options_menu = Menu(menu_bar, tearoff=0)
 options_menu.add_command(label=__translations_list__[11], command=lambda: result())  # Bouton OK
 options_menu.add_command(label=__translations_list__[16], command=lambda: about())  # à propos du programme
-options_menu.add_command(label=__translations_list__[17], command=lambda: quit(0))
+options_menu.add_command(label=__translations_list__[17], command=lambda: quit(0))  # quitter le programme
 menu_bar.add_cascade(label=__translations_list__[15], menu=options_menu)
 main_window.config(menu=menu_bar)
 
