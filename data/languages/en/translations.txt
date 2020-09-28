@@ -93,3 +93,4 @@ student
 student
 This name is refuzed by the operating system. Characters \ / * : ? " < > and | aren't accepted by Windows.
 retired
+tailleur.euse de radis
