@@ -87,10 +87,10 @@ You have to reinitialize data (menu 'File'>'Reinitialize data') to create the fi
 Confirmation
 Are you sure to reinitialize data ?
 This action is irreversible.
-Cooker
+baker
 is 
 student
 student
 This name is refuzed by the operating system. Characters \ / * : ? " < > and | aren't accepted by Windows.
 retired
-tailleur.euse de radis
+cutter of radishes

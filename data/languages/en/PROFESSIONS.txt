@@ -1,0 +1,40 @@
+developer
+teacher
+joiner
+webmaster
+artist
+writer
+repairman
+garage mechanic
+economist
+baker
+engineer
+architect
+publisher
+cook
+fishmonger
+deli owner
+CEO
+piano teacher
+violin teacher
+music teacher
+clarinet teacher
+mangaka
+poet
+flute teacher
+mathematics teacher
+english teacher
+french teacher
+latin and green teacher
+garbage collector
+biology teacher
+economic and social sciences teacher
+accountant
+manual worker
+cashier
+network admin
+air steward
+german teacher
+spanish teacher
+arts teacher
+cabinetmaker

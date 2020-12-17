@@ -37,7 +37,7 @@ ouvrier.e
 technicien.ne de surface
 hote.sse de caisse
 administrateur.trice reseau
-hotesse de l'air/stewart
+hotesse de l'air/steward
 professeur.e d'allemand
 professeur.e d'espagnol
 professeur.e de dessin
