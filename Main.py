@@ -15,7 +15,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "2.0 pre-1"
+__version__ = "20w51a"
 
 
 def ask_language():
@@ -484,7 +484,7 @@ def open_document_saved(name_of_element="Document"):
         result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
                                   font=("Tahoma", 12), bg="palegreen")
         if len(eyes_color) == 1:
-            result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[22] + " "
+            result_label2 = Label(result_window, text=(__translations_list__[22] + " "
                                                        + eyes_color[0].replace("'", "") + ","), font=("Tahoma", 12),
                                   bg="palegreen")
         else:

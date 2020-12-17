@@ -32,7 +32,7 @@ Save...
 Save as...
 Save as : (enter the name of the save file)
 Save
-Cette traduction n'est jamais utilisée. Étonnant, non ?
+This translation is never used. Amazing, isn't ?
 Cancel
 Information
 Saved successful !
