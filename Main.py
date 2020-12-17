@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding:utf-8
 # Développé par Jean Dubois
 # Générateur aléatoire de personnes
 
@@ -15,7 +16,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "20w51a"
+__version__ = "20w51b"
 
 
 def ask_language():
