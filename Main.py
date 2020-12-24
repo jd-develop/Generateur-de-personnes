@@ -7,7 +7,7 @@ from tkinter import *  # Tkinter sert à faire des fenêtres
 from tkinter import messagebox  # Pour faire des boîtes de dialogues
 
 import webbrowser  # Sert à ouvrir le navigateur web
-import os  # Pour pouvoir vérifier l'existance de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
+import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
 import shutil  # Pour traficoter les fichiers
 
@@ -16,7 +16,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "20w51b"
+__version__ = "20w52a"
 
 
 def ask_language():
@@ -121,7 +121,7 @@ class Person:
     def __init__(self, age_range=None, size_range=None, weight_range=None, genre_in_class="male", profession=None):
         """ Initialisation de la personne"""
         if weight_range is None:
-            weight_range = [83, 83]
+            weight_range = [70, 75]
         if size_range is None:
             size_range = [175, 175]
         if age_range is None:
@@ -148,7 +148,7 @@ class Person:
         try:
             self.weight = randint(int(weight_range[0]), int(weight_range[1]))  # taille en centimètres
             if not -1 < self.weight < 300:
-                self.size = 83
+                self.weight = 83
         except ValueError:
             self.weight = 83
         except IndexError:
@@ -479,9 +479,11 @@ def open_document_saved(name_of_element="Document"):
         result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " + age + " "
                                                    + __translations_list__[20]) + ",",
                               font=("Tahoma", 12), bg="palegreen")
-        if not profession is None:
+        if profession is not None:
             result_label1_ter = Label(result_window, text=(__translations_list__[91] + profession + ","),
                                       font=("Tahoma", 12), bg="palegreen")
+        else:
+            result_label1_ter = Label(result_window, text='', font=("Tahoma", 12), bg="palegreen")
         result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
                                   font=("Tahoma", 12), bg="palegreen")
         if len(eyes_color) == 1:
@@ -728,6 +730,8 @@ def result():
     if not person.get_profession() is None:
         result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
                                   font=("Tahoma", 12), bg="palegreen")
+    else:
+        result_label1_ter = Label(result_window, text='', font=("Tahoma", 12), bg="palegreen")
     
     if len(person.get_eyes_color()) == 1:
         result_label2 = Label(result_window, text=(__translations_list__[22] + " " +
@@ -743,8 +747,8 @@ def result():
     else:
         result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
     
-    result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(person.get_size_in_meters()) + " " +
-                                               __translations_list__[25]),
+    result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(person.get_size_in_meters())
+                                               + " " + __translations_list__[25]),
                           font=("Tahoma", 12), bg="palegreen")
     
     result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
@@ -756,12 +760,12 @@ def result():
     
     if not person.get_bmi_interpretation() == "":
         if genre == "male":
-            result_label7 = Label(result_window, text=(__translations_list__[29] + " " + person.get_bmi_interpretation() +
-                                                       "."),
+            result_label7 = Label(result_window, text=(__translations_list__[29] + " " + person.get_bmi_interpretation()
+                                                       + "."),
                                   font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label7 = Label(result_window, text=(__translations_list__[30] + " " + person.get_bmi_interpretation() +
-                                                       "."),
+            result_label7 = Label(result_window, text=(__translations_list__[30] + " " + person.get_bmi_interpretation()
+                                                       + "."),
                                   font=("Tahoma", 12), bg="palegreen")
     else:
         result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="palegreen")
@@ -775,7 +779,7 @@ def result():
     result_label1_bis.pack()
     
     try:
-        """ Compliqué d'être à jour avec les noms d'érreurs dans les différentes versions de Python :P """
+        """ Compliqué d'être à jour avec les noms d'erreurs dans les différentes versions de Python :P """
         try:
             result_label1_ter.pack()
         except UnboundLocalError:
