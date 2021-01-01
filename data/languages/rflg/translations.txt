@@ -1,5 +1,5 @@
 ﻿FRENCH - FRANÇAIS
-Générateur aléatoire de personnes -- Bonne année
+Générateur aléatoire de personnes
 Sexe :
 Masculin
 Féminin
@@ -8,7 +8,7 @@ Tranche d'âge
 Tranche de taille en centimètres
 Tranche de poids en kilogrammes
  (séparer par un point) :
-Soumettre ce formulaire
+All your base are belong to us
 Fichier
 Réinitialiser les données...
 Rappel...
@@ -24,7 +24,7 @@ et les cheveux
 fait
 mètres
 pèse
-kilogrammes
+Easter egg !
 a une IMC d'environ
 Il est donc en
 Elle est donc en
@@ -52,11 +52,11 @@ métis
 DUPOND
 Pierre
 Marie
-Dominique
+OK... Vous avez trouvé l'easter egg...
 famine
 maigreur
 corpulence normale
-surpoids
+Mais c'en est un parmi tous ceux des logiciels de Jean Dubois !!
 obésité modérée
 obésité sévère
 obésité morbide
@@ -71,7 +71,7 @@ Cette sauvegarde n'existe pas, veuillez réessayer.
 Rappel
 Nom de la sauvegarde à rappeller :
 OK
-Écraser ?
+J'aime les patates
 Une sauvegarde portant ce nom existe déjà.
 Voulez-vous l'écraser ?
 Non sauvegardé.

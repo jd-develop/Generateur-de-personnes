@@ -16,7 +16,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "20w52a"
+__version__ = "21w01a"
 
 
 def ask_language():
@@ -68,10 +68,14 @@ def ask_language():
         return "en"
 
 
-def decode_text_document(str_doc):
+def decode_text_document(str_doc, antislash_n=False):
     """ Décode les documents texte UTF-8 """
-    return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
-        .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à")
+    if not antislash_n:
+        return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
+            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à")
+    else:
+        return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
+            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("\n", "")
 
 
 # Définir la langue si celle-ci n'est pas définie
@@ -109,9 +113,9 @@ elif os.path.exists("data/languages/en/translations.txt"):
 else:
     # Pas de traductions
     __translations_list__ = ["There is nothing here :)"]
-    messagebox.showerror("Errorno", "The program can't continue because there is no translations files.\n"
-                                    "Le programme ne peut pas continer car il n'y a pas de fichier de traductions.\n"
-                                    "Lo programme pot pas continuar perqué i a pas de fichiè de traductions.")
+    messagebox.showerror("Errorno", "The program can't continue because there is no translation files.\n"
+                                    "Le programme ne peut pas continer car il n'y a pas de fichiers de traduction.\n"
+                                    "Lo programme pòt pas continuar perqué i a pas de fichièrs de revirada.")
     quit(0)
 
 
@@ -452,8 +456,28 @@ def open_document_saved(name_of_element="Document"):
     if os.path.exists("saves/{}.txt".format(name_of_element)):
         with open("saves/{}.txt".format(name_of_element), "r") as file:
             person_saved = file.readlines()
+            print(person_saved)
             file.close()
-
+            if name_of_element == "save":
+                with open("data/languages/rflg/translations.txt", "r") as translation_file2:
+                    translation_list2 = decode_text_document(open("data/languages/rflg/translations.txt").read(),
+                                                             True).split('\n')\
+                                            .insert(0, "This is the translation list")
+                    print(translation_list2[11])
+                    if str(person_saved[0]) == str(translation_list2[11]):
+                        result_window = Tk()
+                        result_window.title(translation_list2[27])
+                        result_window.geometry("500x250")
+                        result_window.minsize(500, 250)
+                        result_window.maxsize(500, 250)
+                        result_window.iconbitmap('icon.ico')
+                        result_window.config(background='palegreen')
+                        result_label1 = Label(result_window, text=translation_list2[55], font=("Tahoma", 12), bg="palegreen")
+                        result_label2 = Label(result_window, text=translation_list2[59], font=("Tahoma", 12), bg="palegreen")
+                        result_label1.pack()
+                        result_label2.pack()
+                        return translation_list2[74]
+        
         person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
         age = person_saved[3].replace("\n", '')
         genre_in_function_open_document_saved = person_saved[4].replace("\n", '')
@@ -530,8 +554,10 @@ def open_document_saved(name_of_element="Document"):
         result_label6.pack()
         result_label7.pack()
         result_window.mainloop()
+        return ""
     else:
         messagebox.showerror(__translations_list__[39], __translations_list__[70])
+        return ""
 
 
 def ask_for_document_saved():
@@ -550,7 +576,7 @@ def ask_for_document_saved():
     enter_document_name_entry = Entry(enter_document_name_window, font=("Tahoma", 12), bg="lightgreen")
     ok_button = Button(enter_document_name_window, text=__translations_list__[73], font=("Tahoma", 12),
                        bg="lightgreen", activebackground='#CCEEFF',
-                       command=lambda: open_document_saved(enter_document_name_entry.get()))
+                       command=lambda: print(open_document_saved(enter_document_name_entry.get())))
     cancel_button = Button(enter_document_name_window, text=__translations_list__[36], font=("Tahoma", 12),
                            bg="lightgreen", activebackground='#CCEEFF',
                            command=lambda: enter_document_name_window.destroy())
