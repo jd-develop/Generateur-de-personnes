@@ -439,7 +439,7 @@ def about():
 
 
 def add_new_created_identity(number):
-    """ Ajoute 1 au nombre d'identitées créees """
+    """ Ajoute 1 au nombre d'identités créées """
     global number_of_created_identities
     file = open("data/number_of_created_identities.txt", "r+")
     number_of_created_identities = file.readlines()
