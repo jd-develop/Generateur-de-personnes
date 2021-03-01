@@ -256,6 +256,16 @@ class Person:
         else:
             self.last_name = __translations_list__[52]
 
+        # caractère
+        # Vérification de l'existance du fichier "liste de caracteres.txt" et choix du caractère
+        if os.path.exists("data/languages/" + language + "/liste de caracteres.txt"):
+            with open("data/languages/" + language + "/liste de caracteres.txt", "r+") as characters_file:
+                characters_list = characters_file.readlines()
+                characters_file.close()
+                self.character = random.choice(characters_list)
+        else:
+            self.character = __translations_list__[97]
+
         # Prénom
         if genre_in_class == "male":
             # Vérification de l'existance du fichier "MALES_FIRST_NAMES_LIST.txt" et choix du prénom
@@ -417,6 +427,10 @@ class Person:
         """ Renvoie la profession """
         return self.profession
 
+    def get_character(self):
+        """ Renvoie le caractère """
+        return self.character
+
 
 def strint(number):
     """ Renvoie le str() d'un int(). Sert en gros à convertir un float() en str() """
@@ -458,25 +472,6 @@ def open_document_saved(name_of_element="Document"):
             person_saved = file.readlines()
             print(person_saved)
             file.close()
-            if name_of_element == "save":
-                with open("data/languages/rflg/translations.txt", "r") as translation_file2:
-                    translation_list2 = decode_text_document(open("data/languages/rflg/translations.txt").read(),
-                                                             True).split('\n')\
-                                            .insert(0, "This is the translation list")
-                    print(translation_list2[11])
-                    if str(person_saved[0]) == str(translation_list2[11]):
-                        result_window = Tk()
-                        result_window.title(translation_list2[27])
-                        result_window.geometry("500x250")
-                        result_window.minsize(500, 250)
-                        result_window.maxsize(500, 250)
-                        result_window.iconbitmap('icon.ico')
-                        result_window.config(background='palegreen')
-                        result_label1 = Label(result_window, text=translation_list2[55], font=("Tahoma", 12), bg="palegreen")
-                        result_label2 = Label(result_window, text=translation_list2[59], font=("Tahoma", 12), bg="palegreen")
-                        result_label1.pack()
-                        result_label2.pack()
-                        return translation_list2[74]
         
         person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
         age = person_saved[3].replace("\n", '')
@@ -737,6 +732,7 @@ def result():
     weight_range_in_function = weight_range_entered.split('.')
     person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, genre)
     person_name = person.get_first_name() + " " + person.get_last_name()
+    character = person.get_character()
 
     result_window = Tk()
     result_window.title(__translations_list__[18] + str(number_of_created_identities))
