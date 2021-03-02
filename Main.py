@@ -16,7 +16,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "21w01a"
+__version__ = "21w09a"
 
 
 def ask_language():
@@ -25,7 +25,7 @@ def ask_language():
     language_window.title("Choix de la langue / Choose language")
     language_window.geometry("500x250")
     language_window.minsize(500, 250)
-    language_window.maxsize(500, 250)
+    language_window.resizable(False, False)
     language_window.iconbitmap('icon.ico')
     language_window.config(background='palegreen')
 
@@ -69,13 +69,14 @@ def ask_language():
 
 
 def decode_text_document(str_doc, antislash_n=False):
-    """ Décode les documents texte UTF-8 """
+    """ Décode les documents texte non-UTF-8 """
     if not antislash_n:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
-            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à")
+            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")
     else:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
-            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("\n", "")
+            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
+            .replace("\n", "")
 
 
 # Définir la langue si celle-ci n'est pas définie
@@ -240,29 +241,26 @@ class Person:
         # Nom de famille
         # Vérification de l'existance du fichier "LAST_NAMES.txt" et choix du nom
         if os.path.exists("data/languages/" + language + "/LAST_NAMES.txt"):
-            with open("data/languages/" + language + "/LAST_NAMES.txt", "r+") as last_names_file:
-                last_names_list = last_names_file.readlines()
-                last_names_file.close()
-                if randint(1, 10) == 1:
-                    first_last_name = random.choice(last_names_list).replace("\n", "")
-                    second_last_name = random.choice(last_names_list).replace("\n", "")
-                    if not first_last_name == second_last_name:
-                        self.last_name = first_last_name + "--" + second_last_name
-                    else:
-                        self.last_name = first_last_name
+            last_names_list = decode_text_document(open("data/languages/" + language + "/LAST_NAMES.txt", "r+")
+                                                   .read()).split("\n")
+            if randint(1, 10) == 1:
+                first_last_name = random.choice(last_names_list).replace("\n", "")
+                second_last_name = random.choice(last_names_list).replace("\n", "")
+                if not first_last_name == second_last_name:
+                    self.last_name = first_last_name + "--" + second_last_name
                 else:
-                    self.last_name = random.choice(last_names_list).replace("\n", "")
-
+                    self.last_name = first_last_name
+            else:
+                self.last_name = random.choice(last_names_list).replace("\n", "")
         else:
             self.last_name = __translations_list__[52]
 
         # caractère
         # Vérification de l'existance du fichier "liste de caracteres.txt" et choix du caractère
-        if os.path.exists("data/languages/" + language + "/liste de caracteres.txt"):
-            with open("data/languages/" + language + "/liste de caracteres.txt", "r+") as characters_file:
-                characters_list = characters_file.readlines()
-                characters_file.close()
-                self.character = random.choice(characters_list)
+        if os.path.exists("data/languages/" + language + "/CHARACTERS_LIST.txt"):
+            characters_list = decode_text_document(open("data/languages/" + language + "/CHARACTERS_LIST.txt", "r+")
+                                                   .read()).split("\n")
+            self.character = random.choice(characters_list)
         else:
             self.character = __translations_list__[97]
 
@@ -270,19 +268,16 @@ class Person:
         if genre_in_class == "male":
             # Vérification de l'existance du fichier "MALES_FIRST_NAMES_LIST.txt" et choix du prénom
             if os.path.exists("data/languages/" + language + "/MALES_FIRST_NAMES_LIST.txt"):
-                with open("data/languages/" + language + "/MALES_FIRST_NAMES_LIST.txt", "r+") as first_names_file:
-                    first_names_list = first_names_file.readlines()
-                    self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
-                    first_names_file.close()
+                first_names_list = decode_text_document(open("data/languages/" + language + "/MALES_FIRST_NAMES_LIST.txt", "r+").read().split('\n'))
+                self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
             else:
                 self.first_name = __translations_list__[53]
         elif genre_in_class == "female":
             # Vérification de l'existance du fichier "FEMALES_FIRST_NAMES_LIST.txt" et choix du prénom
             if os.path.exists("data/languages/" + language + "/FEMALES_FIRST_NAMES_LIST.txt"):
-                with open("data/languages/" + language + "/FEMALES_FIRST_NAMES_LIST.txt", "r+") as first_names_file:
-                    first_names_list = first_names_file.readlines()
-                    self.first_name = random.choice(first_names_list).replace("\n", "")
-                    first_names_file.close()
+                first_names_list = decode_text_document(open("data/languages/" + language + "/FEMALES_FIRST_NAMES_LIST.txt", "r+").read().split('\n'))
+                self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
+            else:
             else:
                 self.first_name = __translations_list__[54]
         else:
@@ -486,25 +481,27 @@ def open_document_saved(name_of_element="Document"):
         bmi = float(person_saved[10].replace("\n", ''))
         bmi_interpretation = person_saved[11].replace("\n", '')
         profession = person_saved[12].replace("\n", '')
+        character = person_saved[13].replace("\n", '')
 
         result_window = Tk()
         result_window.title(__translations_list__[18] + person_saved[0])
         result_window.geometry("500x250")
         result_window.minsize(500, 250)
-        result_window.maxsize(500, 250)
+        result_window.resizable(False, False)
         result_window.iconbitmap('icon.ico')
         result_window.config(background='palegreen')
 
         result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " + age + " "
                                                    + __translations_list__[20]) + ",",
                               font=("Tahoma", 12), bg="palegreen")
+        result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
+                                  font=("Tahoma", 12), bg="palegreen")
+        result_label1_bis2 = Label(result_window, text=(character), font=("Tahoma", 12), bg="palegreen")
         if profession is not None:
             result_label1_ter = Label(result_window, text=(__translations_list__[91] + profession + ","),
                                       font=("Tahoma", 12), bg="palegreen")
         else:
             result_label1_ter = Label(result_window, text='', font=("Tahoma", 12), bg="palegreen")
-        result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
-                                  font=("Tahoma", 12), bg="palegreen")
         if len(eyes_color) == 1:
             result_label2 = Label(result_window, text=(__translations_list__[22] + " "
                                                        + eyes_color[0].replace("'", "") + ","), font=("Tahoma", 12),
@@ -541,6 +538,7 @@ def open_document_saved(name_of_element="Document"):
 
         result_label1.pack()
         result_label1_bis.pack()
+        result_label1_bis2.pack()
         result_label1_ter.pack()
         result_label2.pack()
         result_label3.pack()
@@ -562,7 +560,7 @@ def ask_for_document_saved():
     enter_document_name_window.title(__translations_list__[71])
     enter_document_name_window.geometry("500x125")
     enter_document_name_window.minsize(500, 125)
-    enter_document_name_window.maxsize(500, 125)
+    enter_document_name_window.resizable(False, False)
     enter_document_name_window.iconbitmap('icon.ico')
     enter_document_name_window.config(background='palegreen')
 
@@ -605,6 +603,7 @@ def save(name="Document"):
                 file.write(str(person.get_bmi()) + "\n")
                 file.write(str(person.get_bmi_interpretation()) + "\n")
                 file.write(str(person.get_profession()) + "\n")
+                file.write(str(person.get_character()) + "\n")
                 file.close()
             else:
                 # Demander à l'utilisateur s'il souhaite écraser la sauvegarde existante
@@ -626,6 +625,7 @@ def save(name="Document"):
                     file.write(str(person.get_bmi()) + "\n")
                     file.write(str(person.get_bmi_interpretation()) + "\n")
                     file.write(str(person.get_profession()) + "\n")
+                    file.write(str(person.get_character()) + "\n")
                     file.close()
                 else:
                     messagebox.showinfo(__translations_list__[37], __translations_list__[77])
@@ -648,6 +648,7 @@ def save(name="Document"):
             file.write(str(person.get_bmi()) + "\n")
             file.write(str(person.get_bmi_interpretation()) + "\n")
             file.write(str(person.get_profession()) + "\n")
+            file.write(str(person.get_character()) + "\n")
             file.close()
             messagebox.showinfo(__translations_list__[37], __translations_list__[38])
             save_window.destroy()
@@ -664,7 +665,7 @@ def save_as():
     save_window.title(__translations_list__[32])
     save_window.geometry("500x125")
     save_window.minsize(500, 125)
-    save_window.maxsize(500, 125)
+    save_window.resizable(False, False)
     save_window.iconbitmap('icon.ico')
     save_window.config(background='palegreen')
 
@@ -730,24 +731,28 @@ def result():
     size_range_in_function = size_range_entered.split('.')
     weight_range_entered = weight_range_entry.get()
     weight_range_in_function = weight_range_entered.split('.')
+    
     person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, genre)
     person_name = person.get_first_name() + " " + person.get_last_name()
-    character = person.get_character()
+    person_age = person.get_age()
+    person_character = person.get_character()
+    skin_color = person.get_skin_color()
 
     result_window = Tk()
     result_window.title(__translations_list__[18] + str(number_of_created_identities))
-    result_window.geometry("500x250")
-    result_window.minsize(500, 250)
-    result_window.maxsize(500, 250)
+    result_window.geometry("500x300")
+    result_window.minsize(500, 300)
+    result_window.resizable(False, False)
     result_window.iconbitmap('icon.ico')
     result_window.config(background='palegreen')
 
     result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " +
-                                               str(person.get_age()) + " " + __translations_list__[20] + ","),
+                                               str(person_age) + " " + __translations_list__[20] + ","),
                           font=("Tahoma", 12), bg="palegreen")
     
-    result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + str(person.get_skin_color()) +
+    result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + str(skin_color) +
                                                    ","), font=("Tahoma", 12), bg="palegreen")
+    result_label1_bis2 = Label(result_window, text=str(person_character), font=("Tahoma", 12), bg="palegreen")
     
     if not person.get_profession() is None:
         result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
@@ -799,9 +804,10 @@ def result():
 
     result_label1.pack()
     result_label1_bis.pack()
+    result_label1_bis2.pack()
     
     try:
-        """ Compliqué d'être à jour avec les noms d'erreurs dans les différentes versions de Python :P """
+        # Compliqué d'être à jour avec les noms d'erreurs dans les différentes versions de Python :P
         try:
             result_label1_ter.pack()
         except UnboundLocalError:
@@ -855,6 +861,7 @@ save_window.destroy()
 # Création de la fenêtre
 main_window = Tk()
 main_window.title(__translations_list__[2])
+print(__translations_list__[2])
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
@@ -927,6 +934,7 @@ weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
 frame1.pack(expand=YES)
+
 main_window.mainloop()
 quit(0)
 

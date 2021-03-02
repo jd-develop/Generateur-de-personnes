@@ -1,0 +1,4 @@
+est gentil.le,
+est grincheux.se,
+est studieux.se,
+est sérieux.se,

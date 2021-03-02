@@ -1,5 +1,5 @@
 ﻿FRENCH - FRANÇAIS
-Générateur aléatoire de personnes -- Bonne année
+Générateur aléatoire de personnes
 Sexe :
 Masculin
 Féminin
