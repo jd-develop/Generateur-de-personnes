@@ -72,12 +72,12 @@ def decode_text_document(str_doc, antislash_n=False):
     """ Décode les documents texte non-UTF-8 """
     if not antislash_n:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
-            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")
+            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
+            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")
     else:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
             .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
-            .replace("\n", "")
-
+            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("\n", "").replace("Ã‹", "Ë")
 
 # Définir la langue si celle-ci n'est pas définie
 try:
