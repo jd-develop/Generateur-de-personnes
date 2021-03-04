@@ -89,7 +89,6 @@ try:
         language = "en"
     else:
         language = "en"
-    print(open("data/language.txt").read().replace("\n", ""))
 except FileNotFoundError:
     with open('data/language.txt', 'w') as defaultLanguage:
         defaultLanguage.write("NotSet")
@@ -461,17 +460,16 @@ def add_new_created_identity(number):
     file.close()
 
 
-def open_document_saved(name_of_element="Document"):
+def open_saved_document(name_of_element="Document"):
     """ Ouvre le document à rappeler """
     if os.path.exists("saves/{}.txt".format(name_of_element)):
         with open("saves/{}.txt".format(name_of_element), "r") as file:
-            person_saved = file.readlines()
-            print(person_saved)
+            person_saved = decode_text_document(file.read()).split("\n")
             file.close()
         
         person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
         age = person_saved[3].replace("\n", '')
-        genre_in_function_open_document_saved = person_saved[4].replace("\n", '')
+        genre_in_function_open_saved_document = person_saved[4].replace("\n", '')
         skin_color = person_saved[5].replace("\n", '')
         eyes_color = person_saved[6].replace("\n", '').replace('[', '').replace(']', '') + ','
         eyes_color = eyes_color.split(',')
@@ -528,7 +526,7 @@ def open_document_saved(name_of_element="Document"):
                                                    __translations_list__[25] + ","),
                               font=("Tahoma", 12), bg="palegreen")
         if not bmi_interpretation == "":
-            if genre_in_function_open_document_saved == "male":
+            if genre_in_function_open_saved_document == "male":
                 result_label7 = Label(result_window, text=(__translations_list__[29] + " " + bmi_interpretation),
                                       font=("Tahoma", 12), bg="palegreen")
             else:
@@ -570,7 +568,7 @@ def ask_for_document_saved():
     enter_document_name_entry = Entry(enter_document_name_window, font=("Tahoma", 12), bg="lightgreen")
     ok_button = Button(enter_document_name_window, text=__translations_list__[73], font=("Tahoma", 12),
                        bg="lightgreen", activebackground='#CCEEFF',
-                       command=lambda: print(open_document_saved(enter_document_name_entry.get())))
+                       command=lambda: print(open_saved_document(enter_document_name_entry.get())))
     cancel_button = Button(enter_document_name_window, text=__translations_list__[36], font=("Tahoma", 12),
                            bg="lightgreen", activebackground='#CCEEFF',
                            command=lambda: enter_document_name_window.destroy())
@@ -862,7 +860,7 @@ save_window.destroy()
 # Création de la fenêtre
 main_window = Tk()
 main_window.title(__translations_list__[2])
-print(__translations_list__[2])
+# print(__translations_list__[2])  # j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
@@ -877,14 +875,14 @@ label1 = Label(frame1, text=" ", font=('Tahoma', 15), bg='palegreen')
 
 # Sexe
 genre_label = Label(frame1, text=__translations_list__[3], font=('Tahoma', 15), bg='palegreen')
-genre = "female"
+genre = "randomize"
 genre_radiobuttons = IntVar()
-genre_female_radio = Radiobutton(frame1, text=__translations_list__[5], variable=genre_radiobuttons, bg='palegreen',
-                                 activebackground='palegreen', value=0, command=lambda: change_to_female())
-genre_male_radio = Radiobutton(frame1, text=__translations_list__[4], variable=genre_radiobuttons, bg='palegreen',
-                               activebackground='palegreen', value=1, command=lambda: change_to_male())
 genre_randomize_radio = Radiobutton(frame1, text=__translations_list__[6], variable=genre_radiobuttons, bg='palegreen',
-                                    activebackground='palegreen', value=2, command=lambda: randomize_genre())
+                                    activebackground='palegreen', value=0, command=lambda: randomize_genre())
+genre_female_radio = Radiobutton(frame1, text=__translations_list__[5], variable=genre_radiobuttons, bg='palegreen',
+                                 activebackground='palegreen', value=1, command=lambda: change_to_female())
+genre_male_radio = Radiobutton(frame1, text=__translations_list__[4], variable=genre_radiobuttons, bg='palegreen',
+                               activebackground='palegreen', value=2, command=lambda: change_to_male())
 
 # Tranche d'âge
 age_label = Label(frame1, text=__translations_list__[7] + __translations_list__[10],
@@ -923,9 +921,9 @@ main_window.config(menu=menu_bar)
 title_label.pack()
 label1.pack()
 genre_label.pack()
+genre_randomize_radio.pack()
 genre_female_radio.pack()
 genre_male_radio.pack()
-genre_randomize_radio.pack()
 age_label.pack()
 age_range_entry.pack()
 size_label.pack()
