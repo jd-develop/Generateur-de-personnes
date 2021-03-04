@@ -268,16 +268,17 @@ class Person:
         if genre_in_class == "male":
             # Vérification de l'existance du fichier "MALES_FIRST_NAMES_LIST.txt" et choix du prénom
             if os.path.exists("data/languages/" + language + "/MALES_FIRST_NAMES_LIST.txt"):
-                first_names_list = decode_text_document(open("data/languages/" + language + "/MALES_FIRST_NAMES_LIST.txt", "r+").read().split('\n'))
+                first_names_list = decode_text_document(open("data/languages/" + language +
+                                                             "/MALES_FIRST_NAMES_LIST.txt", "r+").read()).split('\n')
                 self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
             else:
                 self.first_name = __translations_list__[53]
         elif genre_in_class == "female":
             # Vérification de l'existance du fichier "FEMALES_FIRST_NAMES_LIST.txt" et choix du prénom
             if os.path.exists("data/languages/" + language + "/FEMALES_FIRST_NAMES_LIST.txt"):
-                first_names_list = decode_text_document(open("data/languages/" + language + "/FEMALES_FIRST_NAMES_LIST.txt", "r+").read().split('\n'))
+                first_names_list = decode_text_document(open("data/languages/" + language +
+                                                             "/FEMALES_FIRST_NAMES_LIST.txt", "r+").read()).split('\n')
                 self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
-            else:
             else:
                 self.first_name = __translations_list__[54]
         else:
