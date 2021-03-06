@@ -33,7 +33,7 @@ def ask_language():
     language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language :", font=("Tahoma",
                                                                                                               12),
                            background="palegreen")
-    
+
     language_options_list = ["Français", "English"]
     language_variable = StringVar(language_window)
     language_variable.set(language_options_list[0])
@@ -48,7 +48,7 @@ def ask_language():
     language_default = IntVar()
     language_default_checkbutton = Checkbutton(language_frame, text="Définir par défaut / Set by default",
                                                activebackground='palegreen', variable=language_default, bg="palegreen")
-    
+
     language_label.pack()
     language_opt.pack()
     language_default_checkbutton.pack()
@@ -77,7 +77,8 @@ def decode_text_document(str_doc, antislash_n=False):
     else:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
             .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
-            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("\n", "").replace("Ã‹", "Ë")
+            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")\
+            .replace("\n", "")
 
 # Définir la langue si celle-ci n'est pas définie
 try:
@@ -466,7 +467,7 @@ def open_saved_document(name_of_element="Document"):
         with open("saves/{}.txt".format(name_of_element), "r") as file:
             person_saved = decode_text_document(file.read()).split("\n")
             file.close()
-        
+
         person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
         age = person_saved[3].replace("\n", '')
         genre_in_function_open_saved_document = person_saved[4].replace("\n", '')
@@ -730,7 +731,7 @@ def result():
     size_range_in_function = size_range_entered.split('.')
     weight_range_entered = weight_range_entry.get()
     weight_range_in_function = weight_range_entered.split('.')
-    
+
     person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, genre)
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
@@ -748,17 +749,17 @@ def result():
     result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " +
                                                str(person_age) + " " + __translations_list__[20] + ","),
                           font=("Tahoma", 12), bg="palegreen")
-    
+
     result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + str(skin_color) +
                                                    ","), font=("Tahoma", 12), bg="palegreen")
     result_label1_bis2 = Label(result_window, text=str(person_character), font=("Tahoma", 12), bg="palegreen")
-    
+
     if not person.get_profession() is None:
         result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
                                   font=("Tahoma", 12), bg="palegreen")
     else:
         result_label1_ter = Label(result_window, text='', font=("Tahoma", 12), bg="palegreen")
-    
+
     if len(person.get_eyes_color()) == 1:
         result_label2 = Label(result_window, text=(__translations_list__[22] + " " +
                                                    person.get_eyes_color()[0]), font=("Tahoma", 12), bg="palegreen")
@@ -766,24 +767,24 @@ def result():
         result_label2 = Label(result_window, text=(__translations_list__[67] + " " +
                                                    person.get_eyes_color()[0] + " " + __translations_list__[68] + " " +
                                                    person.get_eyes_color()[1]), font=("Tahoma", 12), bg="palegreen")
-    
+
     if not person.get_hairs_color() == "":
         result_label3 = Label(result_window, text=(__translations_list__[23] + " " + person.get_hairs_color() + ","),
                               font=("Tahoma", 12), bg="palegreen")
     else:
         result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
-    
+
     result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(person.get_size_in_meters())
                                                + " " + __translations_list__[25]),
                           font=("Tahoma", 12), bg="palegreen")
-    
+
     result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
                                                __translations_list__[27]), font=("Tahoma", 12),
                           bg="palegreen")
-    
+
     result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(person.get_bmi()) + "."),
                           font=("Tahoma", 12), bg="palegreen")
-    
+
     if not person.get_bmi_interpretation() == "":
         if genre == "male":
             result_label7 = Label(result_window, text=(__translations_list__[29] + " " + person.get_bmi_interpretation()
@@ -804,7 +805,7 @@ def result():
     result_label1.pack()
     result_label1_bis.pack()
     result_label1_bis2.pack()
-    
+
     try:
         # Compliqué d'être à jour avec les noms d'erreurs dans les différentes versions de Python :P
         try:
@@ -822,7 +823,7 @@ def result():
             pass
     finally:
         pass
-    
+
     result_label2.pack()
     result_label3.pack()
     result_label4.pack()
