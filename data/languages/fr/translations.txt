@@ -11,7 +11,7 @@ Tranche de poids en kilogrammes
 Soumettre ce formulaire
 Fichier
 Réinitialiser les données...
-Rappel...
+Ouvrir...
 Options
 À propos...
 Quitter
@@ -68,8 +68,8 @@ a les yeux verron
 et
 et aucun cheuveu sur la tête,
 Cette sauvegarde n'existe pas, veuillez réessayer.
-Rappel
-Nom de la sauvegarde à rappeller :
+Ouvrir
+Nom de la sauvegarde à ouvrir :
 OK
 Écraser ?
 Une sauvegarde portant ce nom existe déjà.
@@ -95,3 +95,4 @@ Ce nom n'est pas accepté par le système d'exploitation. Les caractères \ / * 
 à la retraite
 tailleur.euse de radis
 est introuvable,
+Accueil

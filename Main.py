@@ -4,6 +4,7 @@
 # Générateur aléatoire de personnes
 
 from tkinter import *  # Tkinter sert à faire des fenêtres
+from tkinter import ttk
 from tkinter import messagebox  # Pour faire des boîtes de dialogues
 
 import webbrowser  # Sert à ouvrir le navigateur web
@@ -738,68 +739,69 @@ def result():
     person_character = person.get_character()
     skin_color = person.get_skin_color()
 
-    result_window = Tk()
-    result_window.title(__translations_list__[18] + str(number_of_created_identities))
-    result_window.geometry("500x300")
-    result_window.minsize(500, 300)
-    result_window.resizable(False, False)
-    result_window.iconbitmap('icon.ico')
-    result_window.config(background='palegreen')
+    # result_window = Tk()
+    # result_window.title(__translations_list__[18] + str(number_of_created_identities))
+    # result_window.geometry("500x300")
+    # result_window.minsize(500, 300)
+    # result_window.resizable(False, False)
+    # result_window.iconbitmap('icon.ico')
+    # result_window.config(background='palegreen')
+    result_frame = Frame(tabs, bg='palegreen')
 
-    result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " +
+    result_label1 = Label(result_frame, text=(person_name + " " + __translations_list__[19] + " " +
                                                str(person_age) + " " + __translations_list__[20] + ","),
                           font=("Tahoma", 12), bg="palegreen")
     
-    result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + str(skin_color) +
-                                                   ","), font=("Tahoma", 12), bg="palegreen")
-    result_label1_bis2 = Label(result_window, text=str(person_character), font=("Tahoma", 12), bg="palegreen")
+    result_label1_bis = Label(result_frame, text=(__translations_list__[21] + " " + str(skin_color) +
+                                                  ","), font=("Tahoma", 12), bg="palegreen")
+    result_label1_bis2 = Label(result_frame, text=str(person_character), font=("Tahoma", 12), bg="palegreen")
     
     if not person.get_profession() is None:
-        result_label1_ter = Label(result_window, text=(__translations_list__[91] + str(person.get_profession() + ",")),
+        result_label1_ter = Label(result_frame, text=(__translations_list__[91] + str(person.get_profession() + ",")),
                                   font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label1_ter = Label(result_window, text='', font=("Tahoma", 12), bg="palegreen")
+        result_label1_ter = Label(result_frame, text='', font=("Tahoma", 12), bg="palegreen")
     
     if len(person.get_eyes_color()) == 1:
-        result_label2 = Label(result_window, text=(__translations_list__[22] + " " +
-                                                   person.get_eyes_color()[0]), font=("Tahoma", 12), bg="palegreen")
+        result_label2 = Label(result_frame, text=(__translations_list__[22] + " " +
+                                                  person.get_eyes_color()[0]), font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label2 = Label(result_window, text=(__translations_list__[67] + " " +
-                                                   person.get_eyes_color()[0] + " " + __translations_list__[68] + " " +
-                                                   person.get_eyes_color()[1]), font=("Tahoma", 12), bg="palegreen")
+        result_label2 = Label(result_frame, text=(__translations_list__[67] + " " +
+                                                  person.get_eyes_color()[0] + " " + __translations_list__[68] + " " +
+                                                  person.get_eyes_color()[1]), font=("Tahoma", 12), bg="palegreen")
     
     if not person.get_hairs_color() == "":
-        result_label3 = Label(result_window, text=(__translations_list__[23] + " " + person.get_hairs_color() + ","),
+        result_label3 = Label(result_frame, text=(__translations_list__[23] + " " + person.get_hairs_color() + ","),
                               font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
+        result_label3 = Label(result_frame, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
     
-    result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(person.get_size_in_meters())
-                                               + " " + __translations_list__[25]),
+    result_label4 = Label(result_frame, text=(__translations_list__[24] + " " + str(person.get_size_in_meters())
+                                              + " " + __translations_list__[25]),
                           font=("Tahoma", 12), bg="palegreen")
     
-    result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
-                                               __translations_list__[27]), font=("Tahoma", 12),
+    result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
+                                              __translations_list__[27]), font=("Tahoma", 12),
                           bg="palegreen")
     
-    result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(person.get_bmi()) + "."),
+    result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(person.get_bmi()) + "."),
                           font=("Tahoma", 12), bg="palegreen")
     
     if not person.get_bmi_interpretation() == "":
         if genre == "male":
-            result_label7 = Label(result_window, text=(__translations_list__[29] + " " + person.get_bmi_interpretation()
-                                                       + "."),
+            result_label7 = Label(result_frame, text=(__translations_list__[29] + " " + person.get_bmi_interpretation()
+                                                      + "."),
                                   font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label7 = Label(result_window, text=(__translations_list__[30] + " " + person.get_bmi_interpretation()
-                                                       + "."),
+            result_label7 = Label(result_frame, text=(__translations_list__[30] + " " + person.get_bmi_interpretation()
+                                                      + "."),
                                   font=("Tahoma", 12), bg="palegreen")
     else:
-        result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="palegreen")
+        result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg="palegreen")
     if randomized:
         genre = "randomize"
 
-    save_button = Button(result_window, text=__translations_list__[31], font=("Tahoma", 12), bg="lightgreen",
+    save_button = Button(result_frame, text=__translations_list__[31], font=("Tahoma", 12), bg="lightgreen",
                          activebackground='#CCEEFF', command=lambda: save_as())
 
     result_label1.pack()
@@ -831,7 +833,7 @@ def result():
     result_label6.pack()
     result_label7.pack()
     save_button.pack()
-    result_window.mainloop()
+    # result_window.mainloop()
 
 
 def change_to_male():
@@ -867,8 +869,13 @@ main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
 main_window.config(background='palegreen')
 
+tabs = ttk.Notebook(main_window)
+
 # Création d'une frame
-frame1 = Frame(main_window, bg='palegreen')
+frame1 = Frame(tabs, bg='palegreen')
+
+tabs.add(frame1, text=__translations_list__[98])
+tabs.pack(expand=1, fill="both")
 
 # Création du titre et de texte
 title_label = Label(frame1, text=__translations_list__[2], font=('Tahoma', 40), bg='palegreen')
@@ -933,7 +940,7 @@ weight_label.pack()
 weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
-frame1.pack(expand=YES)
+# frame1.pack(expand=YES)
 
 main_window.mainloop()
 quit(0)
