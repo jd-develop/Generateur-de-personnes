@@ -19,7 +19,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "21w12a"
+__version__ = "3.0-pre1"
 
 
 def ask_language():
@@ -791,7 +791,7 @@ save_window.destroy()
 # Création de la fenêtre
 main_window = Tk()
 main_window.title(__translations_list__[2])
-print(__translations_list__[2])  # j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
+#  print(__translations_list__[2])  # j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
