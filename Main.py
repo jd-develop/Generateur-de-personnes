@@ -6,11 +6,13 @@
 from tkinter import *  # Tkinter sert à faire des fenêtres
 from tkinter import ttk
 from tkinter import messagebox  # Pour faire des boîtes de dialogues
+from tkinter import filedialog
 
 import webbrowser  # Sert à ouvrir le navigateur web
 import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
 import shutil  # Pour traficoter les fichiers
+import sys
 
 import random  # Pour pouvoir faire du pseudo-aléatoire
 from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
@@ -128,7 +130,7 @@ class Person:
     def __init__(self, age_range=None, size_range=None, weight_range=None, genre_in_class="male", profession=None):
         """ Initialisation de la personne"""
         if weight_range is None:
-            weight_range = [70, 75]
+            weight_range = [60, 65]
         if size_range is None:
             size_range = [175, 175]
         if age_range is None:
@@ -155,17 +157,17 @@ class Person:
         try:
             self.weight = randint(int(weight_range[0]), int(weight_range[1]))  # taille en centimètres
             if not -1 < self.weight < 300:
-                self.weight = 83
+                self.weight = 60
         except ValueError:
-            self.weight = 83
+            self.weight = 60
         except IndexError:
-            self.weight = 83
+            self.weight = 60
 
         self.bmi = self.weight / (self.size_in_meters * self.size_in_meters)  # IMC (BMI = Body Mass Index)
         self.genre_in_class = genre_in_class
 
         # Couleur de cheveux
-        if 2 < self.age < 60:
+        if 2 < self.age < random.randint(49, 55):
             if randint(1, 50) == 50:
                 self.hairs_color = __translations_list__[40]
             elif randint(1, 50) == 49:
@@ -445,6 +447,7 @@ def about():
         version_file.close()
         webbrowser.open_new(r"about.html")
     else:
+        # MacOS
         # Afficher une boîte de dialogue
         messagebox.showinfo(__translations_list__[63], __translations_list__[64] + " {}.\n".format(__version__) +
                             __translations_list__[65] + " {}.\n".format(__author__) + __translations_list__[66])
@@ -453,11 +456,14 @@ def about():
 def add_new_created_identity(number):
     """ Ajoute 1 au nombre d'identités créées """
     global number_of_created_identities
+
     file = open("data/number_of_created_identities.txt", "r+")
     number_of_created_identities = file.readlines()
     file.close()
+
     number_of_created_identities = number_of_created_identities[0]
     number_of_created_identities = int(number_of_created_identities) + number
+
     file = open("data/number_of_created_identities.txt", "w")
     file.write(str(number_of_created_identities))
     file.close()
@@ -683,6 +689,12 @@ def reset_data():
         except FileNotFoundError:
             pass
         os.mkdir("saves")
+
+        # refonte du .gitignore pour éviter les bugs de git
+        git_ignore = open("saves/.gitignore", "w")
+        git_ignore.write("*.person\n")
+        git_ignore.close()
+
         messagebox.showinfo(__translations_list__[37], __translations_list__[78])
         with open('data/language.txt', 'w') as default___language:
             default___language.write("NotSet")
@@ -691,7 +703,7 @@ def reset_data():
 
 
 def result():
-    """ Renvoie la fenêtre où la personne est indiquée """
+    """ Créé l'onglet où la personne est indiquée """
     global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities, person
     try:
         add_new_created_identity(1)
@@ -721,13 +733,6 @@ def result():
     person_character = person.get_character()
     skin_color = person.get_skin_color()
 
-    # result_window = Tk()
-    # result_window.title(__translations_list__[18] + str(number_of_created_identities))
-    # result_window.geometry("500x300")
-    # result_window.minsize(500, 300)
-    # result_window.resizable(False, False)
-    # result_window.iconbitmap('icon.ico')
-    # result_window.config(background='palegreen')
     result_frame = Frame(tabs, bg='palegreen')
 
     result_label1 = Label(result_frame, text=(person_name + " " + __translations_list__[19] + " " +
