@@ -445,7 +445,7 @@ def about():
         version_file.write("{}\n".format(__version__))
         version_file.write(__translations_list__[65] + " {}.\n".format(__author__))
         version_file.close()
-        webbrowser.open_new(r"about.html")
+        webbrowser.open_new("about.html")
     else:
         # MacOS
         # Afficher une boîte de dialogue
@@ -491,57 +491,59 @@ def open_saved_document(name_of_element="Document"):
         profession = person_saved[12].replace("\n", '')
         character = person_saved[13].replace("\n", '')
 
-        result_window = Tk()
-        result_window.title(__translations_list__[18] + person_saved[0])
-        result_window.geometry("500x250")
-        result_window.minsize(500, 250)
-        result_window.resizable(False, False)
-        result_window.iconbitmap('icon.ico')
-        result_window.config(background='palegreen')
+        result_frame = Frame(tabs, bg='palegreen')
 
-        result_label1 = Label(result_window, text=(person_name + " " + __translations_list__[19] + " " + age + " "
-                                                   + __translations_list__[20]) + ",",
+        result_label1 = Label(result_frame, text=(person_name + " " + __translations_list__[19] + " " + age + " "
+                                                  + __translations_list__[20]) + ",",
                               font=("Tahoma", 12), bg="palegreen")
-        result_label1_bis = Label(result_window, text=(__translations_list__[21] + " " + skin_color + ","),
+        result_label1_bis = Label(result_frame, text=(__translations_list__[21] + " " + skin_color + ","),
                                   font=("Tahoma", 12), bg="palegreen")
-        result_label1_bis2 = Label(result_window, text=(character), font=("Tahoma", 12), bg="palegreen")
+        result_label1_bis2 = Label(result_frame, text=(character), font=("Tahoma", 12), bg="palegreen")
+
         if profession is not None:
-            result_label1_ter = Label(result_window, text=(__translations_list__[91] + profession + ","),
+            result_label1_ter = Label(result_frame, text=(__translations_list__[91] + profession + ","),
                                       font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label1_ter = Label(result_window, text='', font=("Tahoma", 12), bg="palegreen")
+            result_label1_ter = Label(result_frame, text='', font=("Tahoma", 12), bg="palegreen")
+        
         if len(eyes_color) == 1:
-            result_label2 = Label(result_window, text=(__translations_list__[22] + " "
-                                                       + eyes_color[0].replace("'", "") + ","), font=("Tahoma", 12),
+            result_label2 = Label(result_frame, text=(__translations_list__[22] + " "
+                                                      + eyes_color[0].replace("'", "") + ","), font=("Tahoma", 12),
                                   bg="palegreen")
         else:
-            result_label2 = Label(result_window, text=(__translations_list__[19] + " " + __translations_list__[67] + " "
-                                                       + eyes_color[0].replace("'", "") + " " +
-                                                       __translations_list__[68] + " " + eyes_color[1].replace("'", "")
-                                                       + ","), font=("Tahoma", 12), bg="palegreen")
+            result_label2 = Label(result_frame, text=(__translations_list__[19] + " " + __translations_list__[67] + " "
+                                                      + eyes_color[0].replace("'", "") + " " +
+                                                      __translations_list__[68] + " " + eyes_color[1].replace("'", "")
+                                                      + ","), font=("Tahoma", 12), bg="palegreen")
+        
         if not hairs_color == "":
-            result_label3 = Label(result_window, text=__translations_list__[23] + " " + hairs_color + ",",
+            result_label3 = Label(result_frame, text=__translations_list__[23] + " " + hairs_color + ",",
                                   font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label3 = Label(result_window, text=__translations_list__[69], font=("Tahoma", 12),
+            result_label3 = Label(result_frame, text=__translations_list__[69], font=("Tahoma", 12),
                                   bg="palegreen")
-        result_label4 = Label(result_window, text=(__translations_list__[24] + " " + str(size_in_meters) + " "
-                                                   + __translations_list__[25] + ","),
+        
+        result_label4 = Label(result_frame, text=(__translations_list__[24] + " " + str(size_in_meters) + " "
+                                                  + __translations_list__[25] + ","),
                               font=("Tahoma", 12), bg="palegreen")
-        result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(weight) + " " +
-                                                   __translations_list__[27] + ","),
+        result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(weight) + " " +
+                                                  __translations_list__[27] + ","),
                               font=("Tahoma", 12), bg="palegreen")
-        result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(bmi) + ","),
+        result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(bmi) + ","),
                               font=("Tahoma", 12), bg="palegreen")
+
         if not bmi_interpretation == "":
             if genre_in_function_open_saved_document == "male":
-                result_label7 = Label(result_window, text=(__translations_list__[29] + " " + bmi_interpretation),
+                result_label7 = Label(result_frame, text=(__translations_list__[29] + " " + bmi_interpretation),
                                       font=("Tahoma", 12), bg="palegreen")
             else:
-                result_label7 = Label(result_window, text=(__translations_list__[30] + " " + bmi_interpretation),
+                result_label7 = Label(result_frame, text=(__translations_list__[30] + " " + bmi_interpretation),
                                       font=("Tahoma", 12), bg="palegreen")
         else:
-            result_label7 = Label(result_window, text="", font=("Tahoma", 12), bg="palegreen")
+            result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg="palegreen")
+        
+        close_button = Button(result_frame, text=__translations_list__[99], font=("Tahoma", 12), bg="lightgreen",
+                              activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
 
         result_label1.pack()
         result_label1_bis.pack()
@@ -553,7 +555,9 @@ def open_saved_document(name_of_element="Document"):
         result_label5.pack()
         result_label6.pack()
         result_label7.pack()
-        result_window.mainloop()
+        close_button.pack()
+        tabs.add(result_frame, text=__translations_list__[18] + person_saved[0].replace("\n", ''))
+        tabs.select(result_frame)
         return ""
     else:
         messagebox.showerror(__translations_list__[39], __translations_list__[70])
@@ -563,114 +567,48 @@ def open_saved_document(name_of_element="Document"):
 def ask_for_document_saved():
     """ Demande le document à ouvrir """
 
-    filename = filedialog.askopenfilename(initialdir = "Saves/", title = "Sélectionnez une personne",
+    filename = filedialog.askopenfilename(initialdir = "saves/", title = "Sélectionnez une personne",
                                           filetypes = (("Fichiers de personnes", "*.person*"),
                                                        ("Tous les fichiers", "*.*")))
     if not filename == "":
         open_saved_document(filename)
 
 
-def save(name="Document"):
+def save(person, name="Document"):
     """ Sauvegarde """
-    global save_window, person
-
     try:
-        if os.path.exists("saves"):
-            if not os.path.exists("saves/{}.person".format(name)):
-                file = open("saves/{}.person".format(name), "w")
-                file.write(str(number_of_created_identities) + "\n")
-                file.write(str(person.get_first_name()) + "\n")
-                file.write(str(person.get_last_name()) + "\n")
-                file.write(str(person.get_age()) + "\n")
-                file.write(str(person.get_genre()) + "\n")
-                file.write(str(person.get_skin_color()) + "\n")
-                file.write(str(person.get_eyes_color()) + "\n")
-                file.write(str(person.get_hairs_color()) + "\n")
-                file.write(str(person.get_size_in_meters()) + "\n")
-                file.write(str(person.get_weight()) + "\n")
-                file.write(str(person.get_bmi()) + "\n")
-                file.write(str(person.get_bmi_interpretation()) + "\n")
-                file.write(str(person.get_profession()) + "\n")
-                file.write(str(person.get_character()) + "\n")
-                file.close()
-            else:
-                # Demander à l'utilisateur s'il souhaite écraser la sauvegarde existante
-                overwrite = messagebox.askquestion(__translations_list__[74],
-                                                   __translations_list__[75] + "\n" + __translations_list__[76],
-                                                   default='yes')
-                if overwrite == "yes":
-                    file = open("saves/{}.txt".format(name), "w")
-                    file.write(str(number_of_created_identities) + "\n")
-                    file.write(str(person.get_first_name()) + "\n")
-                    file.write(str(person.get_last_name()) + "\n")
-                    file.write(str(person.get_age()) + "\n")
-                    file.write(str(person.get_genre()) + "\n")
-                    file.write(str(person.get_skin_color()) + "\n")
-                    file.write(str(person.get_eyes_color()) + "\n")
-                    file.write(str(person.get_hairs_color()) + "\n")
-                    file.write(str(person.get_size_in_meters()) + "\n")
-                    file.write(str(person.get_weight()) + "\n")
-                    file.write(str(person.get_bmi()) + "\n")
-                    file.write(str(person.get_bmi_interpretation()) + "\n")
-                    file.write(str(person.get_profession()) + "\n")
-                    file.write(str(person.get_character()) + "\n")
-                    file.close()
-                else:
-                    messagebox.showinfo(__translations_list__[37], __translations_list__[77])
-                    return "ExistingFileNotOverwritten"
-            messagebox.showinfo(__translations_list__[37], __translations_list__[38])
-            save_window.destroy()
+        if name.endswith(".person"):
+            file = open(name, "w")
         else:
-            os.mkdir("saves")
-            file = open("saves/{}.txt".format(name), "w")
-            file.write(str(number_of_created_identities) + "\n")
-            file.write(str(person.get_first_name()) + "\n")
-            file.write(str(person.get_last_name()) + "\n")
-            file.write(str(person.get_age()) + "\n")
-            file.write(str(person.get_genre()) + "\n")
-            file.write(str(person.get_skin_color()) + "\n")
-            file.write(str(person.get_eyes_color()) + "\n")
-            file.write(str(person.get_hairs_color()) + "\n")
-            file.write(str(person.get_size_in_meters()) + "\n")
-            file.write(str(person.get_weight()) + "\n")
-            file.write(str(person.get_bmi()) + "\n")
-            file.write(str(person.get_bmi_interpretation()) + "\n")
-            file.write(str(person.get_profession()) + "\n")
-            file.write(str(person.get_character()) + "\n")
-            file.close()
-            messagebox.showinfo(__translations_list__[37], __translations_list__[38])
-            save_window.destroy()
+            file = open(name + ".person", "w")
+        file.write(str(number_of_created_identities) + "\n")
+        file.write(str(person.get_first_name()) + "\n")
+        file.write(str(person.get_last_name()) + "\n")
+        file.write(str(person.get_age()) + "\n")
+        file.write(str(person.get_genre()) + "\n")
+        file.write(str(person.get_skin_color()) + "\n")
+        file.write(str(person.get_eyes_color()) + "\n")
+        file.write(str(person.get_hairs_color()) + "\n")
+        file.write(str(person.get_size_in_meters()) + "\n")
+        file.write(str(person.get_weight()) + "\n")
+        file.write(str(person.get_bmi()) + "\n")
+        file.write(str(person.get_bmi_interpretation()) + "\n")
+        file.write(str(person.get_profession()) + "\n")
+        file.write(str(person.get_character()) + "\n")
+        file.close()
+        messagebox.showinfo(__translations_list__[37], __translations_list__[38])
     except OSError:
         messagebox.showerror("Erreur / Error", __translations_list__[94])
 
 
-def save_as():
+def save_as(person):
     """ Demande le nom de la sauvegarde. """
-    global save_window
-
-    # Création d'une fenêtre
-    save_window = Tk()
-    save_window.title(__translations_list__[32])
-    save_window.geometry("500x125")
-    save_window.minsize(500, 125)
-    save_window.resizable(False, False)
-    save_window.iconbitmap('icon.ico')
-    save_window.config(background='palegreen')
-
-    save_as_label = Label(save_window, text=__translations_list__[33], font=("Tahoma", 12),
-                          bg="palegreen")
-    save_as_entry = Entry(save_window, font=("Tahoma", 12), bg="lightgreen")
-    save_button = Button(save_window, text=__translations_list__[34], font=("Tahoma", 12), bg="lightgreen",
-                         activebackground='palegreen', command=lambda: save(save_as_entry.get()))
-    cancel_button = Button(save_window, text=__translations_list__[36], font=("Tahoma", 12), bg="lightgreen",
-                           activebackground='palegreen', command=lambda: save_window.destroy())
-
-    save_as_label.pack()
-    save_as_entry.pack()
-    save_button.pack()
-    cancel_button.pack()
-
-    save_window.mainloop()
+    filename = filedialog.asksaveasfilename(initialdir = "saves/", title = "Enregistrez la personne",
+                                            filetypes = (("Fichiers de personnes", "*.person"),
+                                                         ("Tous les fichiers (créé un .person de toute façon)", "*.*"))
+                                            )
+    if not filename == "":
+        save(person, filename)
 
 
 def reset_data():
@@ -704,7 +642,7 @@ def reset_data():
 
 def result():
     """ Créé l'onglet où la personne est indiquée """
-    global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities, person
+    global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities
     try:
         add_new_created_identity(1)
     except FileNotFoundError:
@@ -768,7 +706,7 @@ def result():
                           font=("Tahoma", 12), bg="palegreen")
     
     result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
-                                              __translations_list__[27]), font=("Tahoma", 12),
+                                              __translations_list__[27] + ","), font=("Tahoma", 12),
                           bg="palegreen")
     
     result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(person.get_bmi()) + "."),
@@ -789,7 +727,7 @@ def result():
         genre = "randomize"
 
     save_button = Button(result_frame, text=__translations_list__[31], font=("Tahoma", 12), bg="lightgreen",
-                         activebackground='#CCEEFF', command=lambda: save_as())
+                         activebackground='#CCEEFF', command=lambda: save_as(person))
     close_button = Button(result_frame, text=__translations_list__[99], font=("Tahoma", 12), bg="lightgreen",
                           activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
 
@@ -825,7 +763,6 @@ def result():
     close_button.pack()
     tabs.add(result_frame, text=__translations_list__[18] + str(number_of_created_identities))
     tabs.select(result_frame)
-    # result_window.mainloop()
 
 
 def change_to_male():
@@ -848,7 +785,6 @@ def randomize_genre():
 
 save_window = Tk()
 number_of_created_identities = 0
-person = Person()
 save_window.destroy()
 
 
@@ -932,8 +868,7 @@ weight_label.pack()
 weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
-age_range_entry.focus()
-# frame1.pack(expand=YES)
+OK_button.focus()
 
 main_window.mainloop()
 quit(0)
