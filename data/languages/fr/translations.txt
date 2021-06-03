@@ -96,3 +96,4 @@ Ce nom n'est pas accepté par le système d'exploitation. Les caractères \ / * 
 tailleur.euse de radis
 est introuvable,
 Accueil
+Fermer

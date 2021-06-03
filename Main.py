@@ -79,7 +79,8 @@ def decode_text_document(str_doc, antislash_n=False):
     else:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
             .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
-            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‹", "Ë").replace("Ãˆ", "È").replace("\n", "")
+            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")\
+            .replace("Ãˆ", "È").replace("\n", "")
 
 # Définir la langue si celle-ci n'est pas définie
 try:
@@ -464,8 +465,8 @@ def add_new_created_identity(number):
 
 def open_saved_document(name_of_element="Document"):
     """ Ouvre le document à rappeler """
-    if os.path.exists("saves/{}.txt".format(name_of_element)):
-        with open("saves/{}.txt".format(name_of_element), "r") as file:
+    if os.path.exists(name_of_element):
+        with open(name_of_element, "r") as file:
             person_saved = decode_text_document(file.read()).split("\n")
             file.close()
         
@@ -524,8 +525,7 @@ def open_saved_document(name_of_element="Document"):
         result_label5 = Label(result_window, text=(__translations_list__[26] + " " + str(weight) + " " +
                                                    __translations_list__[27] + ","),
                               font=("Tahoma", 12), bg="palegreen")
-        result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(bmi) + " " +
-                                                   __translations_list__[25] + ","),
+        result_label6 = Label(result_window, text=(__translations_list__[28] + " " + strint(bmi) + ","),
                               font=("Tahoma", 12), bg="palegreen")
         if not bmi_interpretation == "":
             if genre_in_function_open_saved_document == "male":
@@ -555,32 +555,13 @@ def open_saved_document(name_of_element="Document"):
 
 
 def ask_for_document_saved():
-    """ Demande le document à rappeler """
+    """ Demande le document à ouvrir """
 
-    enter_document_name_window = Tk()
-    enter_document_name_window.title(__translations_list__[71])
-    enter_document_name_window.geometry("500x125")
-    enter_document_name_window.minsize(500, 125)
-    enter_document_name_window.resizable(False, False)
-    enter_document_name_window.iconbitmap('icon.ico')
-    enter_document_name_window.config(background='palegreen')
-
-    enter_document_name_label = Label(enter_document_name_window, text=__translations_list__[72],
-                                      font=("Tahoma", 12), bg="palegreen")
-    enter_document_name_entry = Entry(enter_document_name_window, font=("Tahoma", 12), bg="lightgreen")
-    ok_button = Button(enter_document_name_window, text=__translations_list__[73], font=("Tahoma", 12),
-                       bg="lightgreen", activebackground='#CCEEFF',
-                       command=lambda: print(open_saved_document(enter_document_name_entry.get())))
-    cancel_button = Button(enter_document_name_window, text=__translations_list__[36], font=("Tahoma", 12),
-                           bg="lightgreen", activebackground='#CCEEFF',
-                           command=lambda: enter_document_name_window.destroy())
-
-    enter_document_name_label.pack()
-    enter_document_name_entry.pack()
-    ok_button.pack()
-    cancel_button.pack()
-
-    enter_document_name_window.mainloop()
+    filename = filedialog.askopenfilename(initialdir = "Saves/", title = "Sélectionnez une personne",
+                                          filetypes = (("Fichiers de personnes", "*.person*"),
+                                                       ("Tous les fichiers", "*.*")))
+    if not filename == "":
+        open_saved_document(filename)
 
 
 def save(name="Document"):
@@ -589,8 +570,8 @@ def save(name="Document"):
 
     try:
         if os.path.exists("saves"):
-            if not os.path.exists("saves/{}.txt".format(name)):
-                file = open("saves/{}.txt".format(name), "w")
+            if not os.path.exists("saves/{}.person".format(name)):
+                file = open("saves/{}.person".format(name), "w")
                 file.write(str(number_of_created_identities) + "\n")
                 file.write(str(person.get_first_name()) + "\n")
                 file.write(str(person.get_last_name()) + "\n")
@@ -700,7 +681,8 @@ def reset_data():
         try:
             shutil.rmtree("saves")
         except FileNotFoundError:
-            os.mkdir("saves")
+            pass
+        os.mkdir("saves")
         messagebox.showinfo(__translations_list__[37], __translations_list__[78])
         with open('data/language.txt', 'w') as default___language:
             default___language.write("NotSet")
@@ -803,6 +785,8 @@ def result():
 
     save_button = Button(result_frame, text=__translations_list__[31], font=("Tahoma", 12), bg="lightgreen",
                          activebackground='#CCEEFF', command=lambda: save_as())
+    close_button = Button(result_frame, text=__translations_list__[99], font=("Tahoma", 12), bg="lightgreen",
+                          activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
 
     result_label1.pack()
     result_label1_bis.pack()
@@ -833,6 +817,9 @@ def result():
     result_label6.pack()
     result_label7.pack()
     save_button.pack()
+    close_button.pack()
+    tabs.add(result_frame, text=__translations_list__[18] + str(number_of_created_identities))
+    tabs.select(result_frame)
     # result_window.mainloop()
 
 
@@ -940,6 +927,7 @@ weight_label.pack()
 weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
+age_range_entry.focus()
 # frame1.pack(expand=YES)
 
 main_window.mainloop()
