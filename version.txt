@@ -1,3 +1,0 @@
-Générateur aléatoire de personnes, version
-21w12a
-Développé par Jean Dubois <jd-dev@laposte.net>.
