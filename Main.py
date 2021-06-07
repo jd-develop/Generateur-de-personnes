@@ -19,7 +19,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "3.0-pre1"
+__version__ = "3.0-rc2"
 
 
 def ask_language():
@@ -58,6 +58,7 @@ def ask_language():
     language_ok_button.pack(side=LEFT)
     language_cancel_button.pack(side=RIGHT)
     language_frame.pack(expand=YES)
+    language_ok_button.focus()
     language_window.mainloop()
     language_selected = language_variable.get()
     if int(language_default.get()) == 1:
@@ -77,12 +78,12 @@ def decode_text_document(str_doc, antislash_n=False):
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
             .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
             .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")\
-            .replace("Ãˆ", "È")
+            .replace("Ãˆ", "È").replace("Ã´", "ô")
     else:
         return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
             .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
             .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")\
-            .replace("Ãˆ", "È").replace("\n", "")
+            .replace("Ãˆ", "È").replace("Ã´", "ô").replace("\n", "")
 
 # Définir la langue si celle-ci n'est pas définie
 try:
@@ -438,19 +439,9 @@ def strint(number):
 
 
 def about():
-    if not sys.platform == "darwin":
-        # Darwin = MacOS : un bug dans webbrowser empêche ce module de fonctionner sous MacOS.
-        version_file = open("version.txt", "w")
-        version_file.write(__translations_list__[64] + "\n")
-        version_file.write("{}\n".format(__version__))
-        version_file.write(__translations_list__[65] + " {}.\n".format(__author__))
-        version_file.close()
-        webbrowser.open_new("about.html")
-    else:
-        # MacOS
-        # Afficher une boîte de dialogue
-        messagebox.showinfo(__translations_list__[63], __translations_list__[64] + " {}.\n".format(__version__) +
-                            __translations_list__[65] + " {}.\n".format(__author__) + __translations_list__[66])
+    messagebox.showinfo(__translations_list__[63], __translations_list__[64] + " {}.\n".format(__version__) +
+                        __translations_list__[65] + " {}.\n".format(__author__) + __translations_list__[66] + '\n' +
+                        __translations_list__[100])
 
 
 def add_new_created_identity(number):
@@ -567,9 +558,9 @@ def open_saved_document(name_of_element="Document"):
 def ask_for_document_saved():
     """ Demande le document à ouvrir """
 
-    filename = filedialog.askopenfilename(initialdir = "saves/", title = "Sélectionnez une personne",
-                                          filetypes = (("Fichiers de personnes", "*.person*"),
-                                                       ("Tous les fichiers", "*.*")))
+    filename = filedialog.askopenfilename(initialdir = "saves/", title =__translations_list__[101],
+                                          filetypes = ((__translations_list__[103], "*.person*"),
+                                                       (__translations_list__[104], "*.*")))
     if not filename == "":
         open_saved_document(filename)
 
@@ -603,9 +594,9 @@ def save(person, name="Document"):
 
 def save_as(person):
     """ Demande le nom de la sauvegarde. """
-    filename = filedialog.asksaveasfilename(initialdir = "saves/", title = "Enregistrez la personne",
-                                            filetypes = (("Fichiers de personnes", "*.person"),
-                                                         ("Tous les fichiers (créé un .person de toute façon)", "*.*"))
+    filename = filedialog.asksaveasfilename(initialdir = "saves/", title =__translations_list__[102],
+                                            filetypes = ((__translations_list__[103], "*.person"),
+                                                         (__translations_list__[105], "*.*"))
                                             )
     if not filename == "":
         save(person, filename)
@@ -791,7 +782,7 @@ save_window.destroy()
 # Création de la fenêtre
 main_window = Tk()
 main_window.title(__translations_list__[2])
-#  print(__translations_list__[2])  # j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
+# print(__translations_list__[2])  # j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
