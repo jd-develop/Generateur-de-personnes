@@ -461,11 +461,10 @@ def add_new_created_identity(number):
 def open_saved_document(name_of_element="Document"):
     """ Ouvre le document à rappeler """
     if os.path.exists(name_of_element):
-        with open(name_of_element, "r") as file:
-            person_saved = decode_text_document(file.read()).split("\n")
-            file.close()
-
         try:
+            with open(name_of_element, "r") as file:
+                person_saved = decode_text_document(file.read()).split("\n")
+                file.close()
             person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
             age = person_saved[3].replace("\n", '')
             genre_in_function_open_saved_document = person_saved[4].replace("\n", '')
@@ -481,7 +480,16 @@ def open_saved_document(name_of_element="Document"):
             profession = person_saved[12].replace("\n", '')
             character = person_saved[13].replace("\n", '')
         except IndexError:
-            messagebox.showerror("Erreur / Error", __translations_list__[110])
+            messagebox.showerror("Erreur / Error", __translations_list__[110] + "\nCode d'erreur : / Error code : "
+                                 "python.IndexError")
+            return "invalidFileError"
+        except UnicodeDecodeError:
+            messagebox.showerror("Erreur / Error", __translations_list__[110] + "\nCode d'erreur : / Error code : "
+                                 "python.UnicodeDecodeError")
+            return "invalidFileError"
+        except ValueError:
+            messagebox.showerror("Erreur / Error", __translations_list__[110] + "\nCode d'erreur : / Error code : "
+                                 "python.ValueError")
             return "invalidFileError"
 
         result_frame = Frame(tabs, bg='palegreen')

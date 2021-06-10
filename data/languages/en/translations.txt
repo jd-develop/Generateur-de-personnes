@@ -107,4 +107,4 @@ Question
 The file you want to save haven't .person extension.
 Do you want to use the extension?
 Close all tabs
-Impossible d'ouvrir ce fichier, car il n'est pas un fichier de personne ou il est corrompu.
+Couldn't open the file, because it's not a person file or it's corrupted.
