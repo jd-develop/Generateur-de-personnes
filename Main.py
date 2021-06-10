@@ -17,7 +17,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "3.0 rc3"
+__version__ = "3.0"
 
 
 def ask_language():
@@ -776,6 +776,10 @@ def result():
     close_button.pack()
     tabs.add(result_frame, text=__translations_list__[18] + str(number_of_created_identities))
     tabs.select(result_frame)
+    
+    all_tabs = list(tabs.tabs())[1:]
+    if len(all_tabs) > 200:
+        messagebox.showerror("Ban", "You was banned from PersonCraft for reason : autoclick")
 
 
 def change_to_male():
