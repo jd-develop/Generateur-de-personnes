@@ -32,10 +32,10 @@ Save...
 Save as...
 Save as : (enter the name of the save file)
 Save
-This translation is never used. Amazing, isn't ?
+This translation is never used. Amazing, isn't?
 Cancel
 Information
-Saved successful !
+Saved successful! Saved under this name :
 Error
 blue
 green
@@ -71,14 +71,14 @@ This save doesn't exist. Please retry.
 Open
 Name of the save to open :
 OK
-Erase ?
+Erase?
 A save with this name is already exists.
 Do you want erase it ?
 Not saved.
-Data reinitialized succesful !
+Data reinitialized succesful!
 A file is missing.
-Do you want to create it ?
-Missing file created succesful, data reinitialized !
+Do you want to create it?
+Missing file created succesful, data reinitialized!
 It’s impossible to reinitialize data : a file is missing.
 Data not reinitialized.
 FileNotFoundError
@@ -103,3 +103,7 @@ Save the person
 Persons files
 All files
 All files (any way this is creating a .person file)
+Question
+The file you want to save haven't .person extension.
+Do you want to use the extension?
+Close all tabs

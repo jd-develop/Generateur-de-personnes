@@ -545,9 +545,9 @@ def open_saved_document(name_of_element="Document"):
         result_label6.pack()
         result_label7.pack()
         close_button.pack()
-        # filename = name_of_element.split("/")
-        # filename = filename[len(filename - 1)]
-        tabs.add(result_frame, text=__translations_list__[18] + person_saved[0].replace("\n", ''))  # + " - " + filename)
+        filename = name_of_element.split("/")
+        filename = filename[len(filename) - 1].replace(".person", '')
+        tabs.add(result_frame, text=(__translations_list__[18] + person_saved[0].replace("\n", '') + " - " + filename))
         tabs.select(result_frame)
         return ""
     else:
@@ -569,13 +569,17 @@ def save(person, name="Document"):
     """ Sauvegarde """
     try:
         if name.endswith(".person"):
-            file = open(name, "w")
+            filename = name
         else:
             if not "." in name:
-                file = open(name + ".person", "w")
+                filename = name + ".person"
             else:
-                # à faire : confirmation pas de .person
-                file = open(name, "w")
+                if messagebox.askyesno(__translations_list__[106], __translations_list__[107] + "\n" +
+                                       __translations_list__[108]):
+                    filename = name + ".person"
+                else:
+                    filename = name
+        file = open(filename, "w")
         file.write(str(number_of_created_identities) + "\n")
         file.write(str(person.get_first_name()) + "\n")
         file.write(str(person.get_last_name()) + "\n")
@@ -591,7 +595,9 @@ def save(person, name="Document"):
         file.write(str(person.get_profession()) + "\n")
         file.write(str(person.get_character()) + "\n")
         file.close()
-        messagebox.showinfo(__translations_list__[37], __translations_list__[38])
+        messagebox.showinfo(__translations_list__[37], (__translations_list__[38] + "\n" +
+                                                        filename.split("/")[len(filename.split('/')) - 1])
+                            )
     except OSError:
         messagebox.showerror("Erreur / Error", __translations_list__[94])
 
@@ -777,6 +783,14 @@ def randomize_genre():
     global genre
     genre = "randomize"
 
+def close_all_tabs():
+    """ Ferme tous les onglets """
+    global tabs
+    all_tabs = list(tabs.tabs())[1:]  # on enlève l'accueil
+    
+    for tab in all_tabs:
+        tabs.forget(tab)
+
 
 save_window = Tk()
 number_of_created_identities = 0
@@ -786,7 +800,8 @@ save_window.destroy()
 # Création de la fenêtre
 main_window = Tk()
 main_window.title(__translations_list__[2])
-# print(__translations_list__[2])  # j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
+# ligne suivante : j'utilise cette trad pour vérifier que les caractères sont correctement décodés. Dé-commenter en cas de besoin.
+# print(__translations_list__[2])
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
 main_window.iconbitmap('icon.ico')
@@ -840,6 +855,7 @@ menu_bar = Menu(main_window)
 file_menu = Menu(menu_bar, tearoff=0)
 file_menu.add_command(label=__translations_list__[13], command=lambda: reset_data())
 file_menu.add_command(label=__translations_list__[14], command=lambda: ask_for_document_saved())
+file_menu.add_command(label=__translations_list__[109], command=lambda: close_all_tabs())
 menu_bar.add_cascade(label=__translations_list__[12], menu=file_menu)
 options_menu = Menu(menu_bar, tearoff=0)
 options_menu.add_command(label=__translations_list__[11], command=lambda: result())  # Bouton OK

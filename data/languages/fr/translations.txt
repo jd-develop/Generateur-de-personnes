@@ -35,7 +35,7 @@ Sauvegarder
 Cette traduction n'est jamais utilisée. Étonnant, non ?
 Annuler
 Information
-Sauvegardé avec succès !
+Sauvegardé avec succès ! Sauvegardé sous le nom de :
 Erreur
 bleus
 verts
@@ -103,3 +103,7 @@ Enregistrez la personne
 Fichiers de personnes
 Tous les fichiers
 Tous les fichiers (créé un .person de toute façon)
+Question
+Le ficher que vous souhaitez enregistrer n'a pas l'extension .person.
+Souhaitez-vous utiliser l'extension ?
+Fermer tous les onglets
