@@ -4,22 +4,20 @@
 # Générateur aléatoire de personnes
 
 from tkinter import *  # Tkinter sert à faire des fenêtres
-from tkinter import ttk
+from tkinter import ttk  # Pour faire les onglets
 from tkinter import messagebox  # Pour faire des boîtes de dialogues
-from tkinter import filedialog
+from tkinter import filedialog  # dialogue "enregistrer" et "ouvrir"
 
-import webbrowser  # Sert à ouvrir le navigateur web
 import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
 import shutil  # Pour traficoter les fichiers
-import sys
 
 import random  # Pour pouvoir faire du pseudo-aléatoire
 from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "3.0-rc2"
+__version__ = "3.0 rc3"
 
 
 def ask_language():
@@ -520,15 +518,15 @@ def open_saved_document(name_of_element="Document"):
         result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(weight) + " " +
                                                   __translations_list__[27] + ","),
                               font=("Tahoma", 12), bg="palegreen")
-        result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(bmi) + ","),
+        result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(bmi) + "."),
                               font=("Tahoma", 12), bg="palegreen")
 
         if not bmi_interpretation == "":
             if genre_in_function_open_saved_document == "male":
-                result_label7 = Label(result_frame, text=(__translations_list__[29] + " " + bmi_interpretation),
+                result_label7 = Label(result_frame, text=(__translations_list__[29] + " " + bmi_interpretation + "."),
                                       font=("Tahoma", 12), bg="palegreen")
             else:
-                result_label7 = Label(result_frame, text=(__translations_list__[30] + " " + bmi_interpretation),
+                result_label7 = Label(result_frame, text=(__translations_list__[30] + " " + bmi_interpretation + "."),
                                       font=("Tahoma", 12), bg="palegreen")
         else:
             result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg="palegreen")
@@ -547,7 +545,9 @@ def open_saved_document(name_of_element="Document"):
         result_label6.pack()
         result_label7.pack()
         close_button.pack()
-        tabs.add(result_frame, text=__translations_list__[18] + person_saved[0].replace("\n", ''))
+        # filename = name_of_element.split("/")
+        # filename = filename[len(filename - 1)]
+        tabs.add(result_frame, text=__translations_list__[18] + person_saved[0].replace("\n", ''))  # + " - " + filename)
         tabs.select(result_frame)
         return ""
     else:
@@ -571,7 +571,11 @@ def save(person, name="Document"):
         if name.endswith(".person"):
             file = open(name, "w")
         else:
-            file = open(name + ".person", "w")
+            if not "." in name:
+                file = open(name + ".person", "w")
+            else:
+                # à faire : confirmation pas de .person
+                file = open(name, "w")
         file.write(str(number_of_created_identities) + "\n")
         file.write(str(person.get_first_name()) + "\n")
         file.write(str(person.get_last_name()) + "\n")
@@ -680,11 +684,11 @@ def result():
     
     if len(person.get_eyes_color()) == 1:
         result_label2 = Label(result_frame, text=(__translations_list__[22] + " " +
-                                                  person.get_eyes_color()[0]), font=("Tahoma", 12), bg="palegreen")
+                                                  person.get_eyes_color()[0] + ","), font=("Tahoma", 12), bg="palegreen")
     else:
         result_label2 = Label(result_frame, text=(__translations_list__[67] + " " +
                                                   person.get_eyes_color()[0] + " " + __translations_list__[68] + " " +
-                                                  person.get_eyes_color()[1]), font=("Tahoma", 12), bg="palegreen")
+                                                  person.get_eyes_color()[1] + ","), font=("Tahoma", 12), bg="palegreen")
     
     if not person.get_hairs_color() == "":
         result_label3 = Label(result_frame, text=(__translations_list__[23] + " " + person.get_hairs_color() + ","),
@@ -693,7 +697,7 @@ def result():
         result_label3 = Label(result_frame, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
     
     result_label4 = Label(result_frame, text=(__translations_list__[24] + " " + str(person.get_size_in_meters())
-                                              + " " + __translations_list__[25]),
+                                              + " " + __translations_list__[25] + ","),
                           font=("Tahoma", 12), bg="palegreen")
     
     result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
