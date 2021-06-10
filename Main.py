@@ -464,21 +464,25 @@ def open_saved_document(name_of_element="Document"):
         with open(name_of_element, "r") as file:
             person_saved = decode_text_document(file.read()).split("\n")
             file.close()
-        
-        person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
-        age = person_saved[3].replace("\n", '')
-        genre_in_function_open_saved_document = person_saved[4].replace("\n", '')
-        skin_color = person_saved[5].replace("\n", '')
-        eyes_color = person_saved[6].replace("\n", '').replace('[', '').replace(']', '') + ','
-        eyes_color = eyes_color.split(',')
-        del eyes_color[-1]
-        hairs_color = person_saved[7].replace("\n", '')
-        size_in_meters = person_saved[8].replace("\n", '')
-        weight = person_saved[9].replace("\n", '')
-        bmi = float(person_saved[10].replace("\n", ''))
-        bmi_interpretation = person_saved[11].replace("\n", '')
-        profession = person_saved[12].replace("\n", '')
-        character = person_saved[13].replace("\n", '')
+
+        try:
+            person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
+            age = person_saved[3].replace("\n", '')
+            genre_in_function_open_saved_document = person_saved[4].replace("\n", '')
+            skin_color = person_saved[5].replace("\n", '')
+            eyes_color = person_saved[6].replace("\n", '').replace('[', '').replace(']', '') + ','
+            eyes_color = eyes_color.split(',')
+            del eyes_color[-1]
+            hairs_color = person_saved[7].replace("\n", '')
+            size_in_meters = person_saved[8].replace("\n", '')
+            weight = person_saved[9].replace("\n", '')
+            bmi = float(person_saved[10].replace("\n", ''))
+            bmi_interpretation = person_saved[11].replace("\n", '')
+            profession = person_saved[12].replace("\n", '')
+            character = person_saved[13].replace("\n", '')
+        except IndexError:
+            messagebox.showerror("Erreur / Error", __translations_list__[110])
+            return "invalidFileError"
 
         result_frame = Frame(tabs, bg='palegreen')
 
