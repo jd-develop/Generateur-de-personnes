@@ -108,3 +108,4 @@ The file you want to save haven't .person extension.
 Do you want to use the extension?
 Close all tabs
 Couldn't open the file, because it's not a person file or it's corrupted.
+Enter

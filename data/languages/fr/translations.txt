@@ -108,3 +108,4 @@ Le ficher que vous souhaitez enregistrer n'a pas l'extension .person.
 Souhaitez-vous utiliser l'extension ?
 Fermer tous les onglets
 Impossible d'ouvrir ce fichier, car il n'est pas un fichier de personne ou il est corrompu.
+Entrée

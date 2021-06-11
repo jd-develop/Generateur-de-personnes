@@ -567,7 +567,7 @@ def open_saved_document(name_of_element="Document"):
         return ""
 
 
-def ask_for_document_saved():
+def ask_for_document_saved(event=None):
     """ Demande le document à ouvrir """
 
     filename = filedialog.askopenfilename(initialdir = "saves/", title =__translations_list__[101],
@@ -624,7 +624,7 @@ def save_as(person):
         save(person, filename)
 
 
-def reset_data():
+def reset_data(event=None):
     """ Réinitialise les données """
     global number_of_created_identities
     # demander à l'utilisateur s'il est sûr de réinitialiser les données
@@ -653,7 +653,7 @@ def reset_data():
         messagebox.showinfo(__translations_list__[37], __translations_list__[83])
 
 
-def result():
+def result(event=None):
     """ Créé l'onglet où la personne est indiquée """
     global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities
     try:
@@ -799,7 +799,7 @@ def randomize_genre():
     global genre
     genre = "randomize"
 
-def close_all_tabs():
+def close_all_tabs(event=None):
     """ Ferme tous les onglets """
     global tabs
     all_tabs = list(tabs.tabs())[1:]  # on enlève l'accueil
@@ -869,14 +869,14 @@ OK_button = Button(frame1, text=__translations_list__[11], font=("Tahoma", 10), 
 # Ajout d'un menu
 menu_bar = Menu(main_window)
 file_menu = Menu(menu_bar, tearoff=0)
-file_menu.add_command(label=__translations_list__[13], command=lambda: reset_data())
-file_menu.add_command(label=__translations_list__[14], command=lambda: ask_for_document_saved())
-file_menu.add_command(label=__translations_list__[109], command=lambda: close_all_tabs())
+file_menu.add_command(label=__translations_list__[13], command=lambda: reset_data(), accelerator="Ctrl+R")  # réinitialiser données
+file_menu.add_command(label=__translations_list__[14], command=lambda: ask_for_document_saved(), accelerator="Ctrl+O")  # ouvrir...
+file_menu.add_command(label=__translations_list__[109], command=lambda: close_all_tabs(), accelerator="Ctrl+F1")  # fermer tous les onglets
 menu_bar.add_cascade(label=__translations_list__[12], menu=file_menu)
 options_menu = Menu(menu_bar, tearoff=0)
-options_menu.add_command(label=__translations_list__[11], command=lambda: result())  # Bouton OK
+options_menu.add_command(label=__translations_list__[11], command=lambda: result(), accelerator=__translations_list__[111])  # Bouton OK
 options_menu.add_command(label=__translations_list__[16], command=lambda: about())  # à propos du programme
-options_menu.add_command(label=__translations_list__[17], command=lambda: quit(0))  # quitter le programme
+options_menu.add_command(label=__translations_list__[17], command=lambda: quit(0), accelerator="Ctrl+Q")  # quitter le programme
 menu_bar.add_cascade(label=__translations_list__[15], menu=options_menu)
 main_window.config(menu=menu_bar)
 
@@ -895,8 +895,12 @@ weight_label.pack()
 weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
-OK_button.focus()
 
+main_window.bind('<Control-q>', exit)
+main_window.bind('<Control-r>', reset_data)
+main_window.bind('<Control-o>', ask_for_document_saved)
+main_window.bind('<Control-F1>', close_all_tabs)
+main_window.bind('<Return>', result)
 main_window.mainloop()
 quit(0)
 
