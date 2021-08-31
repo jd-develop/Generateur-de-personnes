@@ -17,7 +17,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "3.0"
+__version__ = "3.0.1"
 
 
 def ask_language():
@@ -27,7 +27,10 @@ def ask_language():
     language_window.geometry("500x250")
     language_window.minsize(500, 250)
     language_window.resizable(False, False)
-    language_window.iconbitmap('icon.ico')
+    try:
+        language_window.iconbitmap('icon.ico')
+    except TclError:
+        pass
     language_window.config(background='palegreen')
 
     language_frame = Frame(language_window, bg="palegreen")
@@ -820,7 +823,10 @@ main_window.title(__translations_list__[2])
 # print(__translations_list__[2])
 main_window.geometry("900x500")
 main_window.minsize(900, 500)
-main_window.iconbitmap('icon.ico')
+try:
+    main_window.iconbitmap('icon.ico')
+except TclError:
+    pass
 main_window.config(background='palegreen')
 
 tabs = ttk.Notebook(main_window)
