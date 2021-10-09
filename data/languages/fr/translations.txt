@@ -39,13 +39,13 @@ Sauvegardé avec succès ! Sauvegardé sous le nom de :
 Erreur
 bleus
 verts
-chatains
+châtains
 gris
 blancs
 verts émeraude
 crevés
 noirs
-chatains
+châtains
 blanche
 noire
 métis
@@ -64,9 +64,9 @@ obésité morbide
 Générateur aléatoire de personnes, version
 Développé par
 Merci à Wikipédia pour la liste de noms et prénoms les plus utilisés.
-a les yeux verron
+a les yeux vairons
 et
-et aucun cheuveu sur la tête,
+et aucun cheveu sur la tête,
 Cette sauvegarde n'existe pas, veuillez réessayer.
 Ouvrir
 Nom de la sauvegarde à ouvrir :
@@ -78,12 +78,12 @@ Non sauvegardé.
 Données réinitialisées avec succès !
 Un fichier est manquant.
 Voulez-vous le créer ?
-Fichier manquant crée avec succès, données réinitalisées !
+Fichier manquant créé avec succès, données réinitialisées !
 Impossible de réinitialiser les données : un fichier est manquant.
 Données non réinitialisées.
 FileNotFoundError
-Le programme ne peut pas continuer car le fichier 'number_of_created_identities.txt' n'existe pas.
-Veuillez réinitialiser les données (menu 'Fichier'>'Réinitialiser les données') afin de le créer et de corriger l'érreur.
+Le programme ne peut pas continuer, car le fichier 'number_of_created_identities.txt' n'existe pas.
+Veuillez réinitialiser les données (menu 'Fichier'>'Réinitialiser les données') afin de le créer et de corriger l'erreur.
 Confirmation
 Êtes-vous sûr(e) de vouloir réinitialiser les données ?
 Cette action est irréversible.

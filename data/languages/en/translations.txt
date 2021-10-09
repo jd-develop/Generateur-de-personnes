@@ -10,7 +10,7 @@ Weight range in kilograms
  (separate by a full stop) :
 Validate this form
 File
-Reinitalize data...
+Reinitialize data...
 Open...
 Options
 About...
@@ -42,30 +42,30 @@ green
 chestnut brown
 grey
 white
-emerauld green
-bursted
+emerald green
+burst
 black
 chestnut brown
 white
 black
-white-black (mixted heritage)
+white-black (mixed heritage)
 SMITH
 Oliver
 Olivia
 Cheyenne
-famine
-scrawniness
-normal build
-excess weight
-moderated obesity
-severe obesity
-morbid obesity
+underweight
+underweight
+normal weight
+overweight
+obese
+severe obese
+morbid obese
 About
-Identity randomiser, version
-Déveloped by
+Identity randomizer, version
+Developed by
 Thanks to wikipedia for the list of most used French given names and lastnames.
-have one eye colored in
-and the other in
+have minnow eyes
+and
 and no hairs on head
 This save doesn't exist. Please retry.
 Open
@@ -73,12 +73,12 @@ Name of the save to open :
 OK
 Erase?
 A save with this name is already exists.
-Do you want erase it ?
+Do you want to erase it ?
 Not saved.
-Data reinitialized succesful!
+Data reinitialized successful!
 A file is missing.
 Do you want to create it?
-Missing file created succesful, data reinitialized!
+Missing file created successful, data reinitialized!
 It’s impossible to reinitialize data : a file is missing.
 Data not reinitialized.
 FileNotFoundError
@@ -91,9 +91,9 @@ baker
 is 
 student
 student
-This name is refuzed by the operating system. Characters \ / * : ? " < > and | aren't accepted by Windows.
+This name is refused by the operating system. Characters \ / * : ? " < > and | aren't accepted by Windows.
 retired
-cutter of radishes
+radishes cutter
 is not findable,
 Home
 Close
@@ -107,5 +107,5 @@ Question
 The file you want to save haven't .person extension.
 Do you want to use the extension?
 Close all tabs
-Couldn't open the file, because it's not a person file or it's corrupted.
+Couldn't open the file, because it's not a person file, or it's corrupted.
 Enter

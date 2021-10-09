@@ -1,19 +1,19 @@
-developpeur.euse
-professeur.e des ecoles
+développeur.euse
+professeur.e des écoles
 professeur.e
-menuisuer.e
+menuisier.e
 webmaster
 dessinateur.trice
-ecrivain
+écrivain
 depanneur.euse
 garagiste
-economiste
+économiste
 boulanger.e
-ingenieur.e
+ingénieur.e
 architecte
-editeur.trice
+éditeur.trice
 cuisinier.e
-poissonier.e
+poissonnier.e
 charcutier.e
 primeur.euse
 president.e directeur.trice general.e
@@ -22,23 +22,23 @@ professeur.e de violon
 professeur.e de solfege
 professeur.e de clarinette
 mangaka
-poete
-professeur.e de flute traversiere
+poète
+professeur.e de flute traversière
 professeur.e de musique
-professeur.e de mathematiques
+professeur.e de mathématiques
 professeur.e d'anglais
 professeur.e de Francais
 professeur.e de latin et de grec
-eboueur.euse
+éboueur.euse
 professeur.e de SVT
 professeur.e de SES
 comptable
 ouvrier.e
 technicien.ne de surface
-hote.sse de caisse
-administrateur.trice reseau
-hotesse de l'air/steward
+hôte.sse de caisse
+administrateur.trice réseau
+hôtesse de l'air/steward
 professeur.e d'allemand
 professeur.e d'espagnol
 professeur.e de dessin
-ebeniste
+ébéniste

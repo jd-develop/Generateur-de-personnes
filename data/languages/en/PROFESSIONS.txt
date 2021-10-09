@@ -23,12 +23,12 @@ mangaka
 poet
 flute teacher
 mathematics teacher
-english teacher
-french teacher
+English teacher
+French teacher
 latin and green teacher
 garbage collector
 biology teacher
-economic and social sciences teacher
+economic teacher
 accountant
 manual worker
 cashier
