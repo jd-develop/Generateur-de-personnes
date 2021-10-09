@@ -7,5 +7,5 @@ Work with **Python 3.10**. (available on https://python.org/downloads)
 
 # Instructions
 * Launch main.py
-* Fill the box
+* Fill the boxes
 * Generate the person
