@@ -1,11 +1,11 @@
-# Générateur de personnes
-Programme qui génère aléatoirement des gens.
+# Identity randomizer
+[French README](README_french.md)
 
-Nécessite Python 3.10. (disponible sur https://python.org/downloads)
+Program who randomly generate persons.
+
+Work with **Python 3.10**. (available on https://python.org/downloads)
 
 # Instructions
-1/ Lancer main.py,
-
-2/ remplir les cases,
-
-3/ générer la personne.
+* Launch main.py
+* Fill the box
+* Generate the person
