@@ -131,7 +131,7 @@ class Person:
 
         try:
             self.size = randint(int(size_range[0]), int(size_range[1]))  # taille en centimètres
-            if not -1 < self.size < 250:
+            if not 0 < self.size < 250:
                 self.size = 175
         except ValueError:
             self.size = 175
@@ -141,7 +141,7 @@ class Person:
 
         try:
             self.weight = randint(int(weight_range[0]), int(weight_range[1]))  # taille en centimètres
-            if not -1 < self.weight < 300:
+            if not 0 < self.weight < 300:
                 self.weight = 60
         except ValueError:
             self.weight = 60
