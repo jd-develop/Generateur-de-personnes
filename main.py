@@ -11,6 +11,7 @@ from tkinter import filedialog  # dialogue "enregistrer" et "ouvrir"
 import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
 import shutil  # Pour traficoter les fichiers
+import json  # pour lire les trads
 
 import random  # Pour pouvoir faire du pseudo-aléatoire
 from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
@@ -18,6 +19,8 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
 __version__ = "3.0.1"
+LG = "lightgreen"
+PG = "palegreen"
 
 
 def ask_language():
@@ -31,27 +34,27 @@ def ask_language():
         language_window.iconbitmap('icon.ico')
     except TclError:
         pass
-    language_window.config(background='palegreen')
+    language_window.config(background=PG)
 
-    language_frame = Frame(language_window, bg="palegreen")
+    language_frame = Frame(language_window, bg=PG)
     language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language :", font=("Tahoma",
                                                                                                               12),
-                           background="palegreen")
+                           background=PG)
     
     language_options_list = ["Français", "English"]
     language_variable = StringVar(language_window)
     language_variable.set(language_options_list[0])
 
     language_opt = OptionMenu(language_frame, language_variable, *language_options_list)
-    language_opt.config(width=10, font=("Tahoma", 12), bg="lightgreen", activebackground='palegreen')
+    language_opt.config(width=10, font=("Tahoma", 12), bg=LG, activebackground=PG)
 
-    language_ok_button = Button(language_frame, text="OK", font=("Tahoma", 12), bg="lightgreen",
-                                activebackground='palegreen', command=lambda: language_window.destroy())
-    language_cancel_button = Button(language_frame, text="Annuler", font=("Tahoma", 12), bg="lightgreen",
-                                    activebackground='palegreen', command=lambda: quit(0))
+    language_ok_button = Button(language_frame, text="OK", font=("Tahoma", 12), bg=LG,
+                                activebackground=PG, command=lambda: language_window.destroy())
+    language_cancel_button = Button(language_frame, text="Annuler", font=("Tahoma", 12), bg=LG,
+                                    activebackground=PG, command=lambda: quit(0))
     language_default = IntVar()
     language_default_checkbutton = Checkbutton(language_frame, text="Définir par défaut / Set by default",
-                                               activebackground='palegreen', variable=language_default, bg="palegreen")
+                                               activebackground=PG, variable=language_default, bg=PG)
     
     language_label.pack()
     language_opt.pack()
@@ -63,7 +66,7 @@ def ask_language():
     language_window.mainloop()
     language_selected = language_variable.get()
     if int(language_default.get()) == 1:
-        with open('data/language.txt', 'w') as default_language:
+        with open('data/language.txt', 'w', encoding="UTF-8") as default_language:
             default_language.write(language_selected)
     match language_selected:
         case "Français":
@@ -74,23 +77,9 @@ def ask_language():
             return "en"
 
 
-def decode_text_document(str_doc, antislash_n=False):
-    """ Décode les documents texte non-UTF-8 """
-    if not antislash_n:
-        return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
-            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
-            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")\
-            .replace("Ãˆ", "È").replace("Ã´", "ô")
-    else:
-        return str_doc.replace("Ã©", "é").replace("Ã¢", "â").replace("Ã¨", "è").replace("Ã‰", "É").replace("Â°", "°")\
-            .replace("Ã€", "À").replace("ÃŠ", "Ê").replace("Ã»", "û").replace("Ã ", "à").replace("Ã¯", "ï")\
-            .replace("Ã«", "ë").replace("Ãœ", "Ü").replace("Ã‡", "Ç").replace("Ã§", "ç").replace("Ã‹", "Ë")\
-            .replace("Ãˆ", "È").replace("Ã´", "ô").replace("\n", "")
-
-
 # Définir la langue si celle-ci n'est pas définie
 try:
-    match open("data/language.txt").read().replace("\n", ""):
+    match open("data/language.txt", encoding="UTF-8").read().replace("\n", ""):
         case "NotSet":
             language = ask_language()
         case "Français":
@@ -100,39 +89,31 @@ try:
         case _:
             language = "en"
 except FileNotFoundError:
-    with open('data/language.txt', 'w') as defaultLanguage:
+    with open('data/language.txt', 'w', encoding="UTF-8") as defaultLanguage:
         defaultLanguage.write("NotSet")
     language = ask_language()
 
-if os.path.exists("data/languages/{}/translations.txt".format(language)):
+if os.path.exists(f"data/languages/{language}/translations.json"):
     # Si la langue existe
-    __translations_list__ = decode_text_document(open("data/languages/{}/translations.txt".format(language)).read())\
-        .split('\n')
-
-    __translations_list__.insert(0, "This is the translation list")
-
-    # Pour récupérer un élément depuis la liste de traductions, il suffit de faire '__translations_list__[numéro de la
-    # ligne dans le fichier]'.
-
+    __translations_dict__ = json.load(open(f"data/languages/{language}/translations.json", encoding="UTF-8"))
 elif os.path.exists("data/languages/en/translations.txt"):
     # Langue par défaut = Anglais
-    __translations_list__ = decode_text_document(open("data/languages/en/translations.txt").read()).split('\n')
-
-    __translations_list__.insert(0, "This is the translation list")
-
+    __translations_dict__ = json.load(open("data/languages/en/translations.json", encoding="UTF-8"))
 else:
     # Pas de traductions
-    __translations_list__ = ["There is nothing here :)"]
+    __translations_dict__ = {
+        "": "There is nothing here :)"
+    }
     messagebox.showerror("Errorno", "The program can't continue because there is no translation files.\n"
                                     "Le programme ne peut pas continuer car il n'y a pas de fichiers de traduction.\n"
                                     "Lo programme pòt pas continuar perçò qu'i a pas de fichièrs de revirada.")
-    quit(0)
+    quit(-1)
 
 
 class Person:
     """ Définit ce qu'est une personne """
 
-    def __init__(self, age_range=None, size_range=None, weight_range=None, genre_in_class="male", profession=None):
+    def __init__(self, age_range=None, size_range=None, weight_range=None, gender_in_class="male", profession=None):
         """ Initialisation de la personne"""
         if weight_range is None:
             weight_range = [60, 65]
@@ -169,89 +150,89 @@ class Person:
             self.weight = 60
 
         self.bmi = self.weight / (self.size_in_meters * self.size_in_meters)  # IMC (BMI = Body Mass Index)
-        self.genre_in_class = genre_in_class
+        self.gender_in_class = gender_in_class
 
         # Couleur de cheveux
         if 2 < self.age < random.randint(49, 55):
             if randint(1, 50) == 50:
-                self.hairs_color = __translations_list__[40]
+                self.hairs_color = __translations_dict__.get("blue")
             elif randint(1, 50) == 49:
-                self.hairs_color = __translations_list__[41]
+                self.hairs_color = __translations_dict__.get("green")
             elif randint(1, 50) == 48:
                 self.hairs_color = ""
             else:
-                if os.path.exists("data/languages/" + language + "/HAIRS_COLORS.txt"):
-                    with open("data/languages/" + language + "/HAIRS_COLORS.txt", "r+") as hairs_colors_file:
-                        hairs_colors_list = hairs_colors_file.readlines()
+                if os.path.exists(f"data/languages/{language}/HAIRS_COLORS.txt"):
+                    with open(f"data/languages/{language}/HAIRS_COLORS.txt", "r+", encoding="UTF-8") as hairs_colors_f:
+                        hairs_colors_list = hairs_colors_f.readlines()
                         self.hairs_color = random.choice(hairs_colors_list).replace("\n", "")
-                        hairs_colors_file.close()
+                        hairs_colors_f.close()
                 else:
-                    self.last_name = __translations_list__[42]
+                    self.hairs_color = __translations_dict__.get("chestnut_brown")
         elif 2 < self.age:
             if randint(1, 25) == 1:
-                self.hairs_color = __translations_list__[43]
+                self.hairs_color = __translations_dict__.get("grey")
             else:
-                self.hairs_color = __translations_list__[44]
+                self.hairs_color = __translations_dict__.get("white")
         else:
             self.hairs_color = ""
 
         # Couleurs des yeux
         if randint(1, 100) == 1:
-            self.eyes = "verrons"
+            self.eyes = "vairons"
         else:
             self.eyes = "normaux"
 
         if self.eyes == "normaux":
             if randint(1, 10) == 1:
-                self.eyes_color = [__translations_list__[40]]
+                self.eyes_color = [__translations_dict__.get("blue")]
             elif randint(1, 50) == 2:
-                self.eyes_color = [__translations_list__[41]]
+                self.eyes_color = [__translations_dict__.get("green")]
             elif randint(1, 100) == 3:
-                self.eyes_color = [__translations_list__[45]]
+                self.eyes_color = [__translations_dict__.get("emerald_green")]
             elif randint(1, 10000) == 1:
-                self.eyes_color = [__translations_list__[46]]
+                self.eyes_color = [__translations_dict__.get("burst")]
             elif randint(1, 2) == 1:
-                self.eyes_color = [__translations_list__[47]]
+                self.eyes_color = [__translations_dict__.get("black")]
             else:
-                self.eyes_color = [__translations_list__[48]]
+                self.eyes_color = [__translations_dict__.get("chestnut_brown")]
         else:
             self.eyes_color = ["", ""]
             while self.eyes_color[0] == self.eyes_color[1]:
                 if randint(1, 10) == 1:
-                    self.eyes_color = [__translations_list__[40]]
+                    self.eyes_color[0] = __translations_dict__.get("blue")
                 elif randint(1, 50) == 2:
-                    self.eyes_color = [__translations_list__[41]]
+                    self.eyes_color[0] = __translations_dict__.get("green")
                 elif randint(1, 100) == 3:
-                    self.eyes_color = [__translations_list__[45]]
+                    self.eyes_color[0] = __translations_dict__.get("emerald_green")
                 elif randint(1, 2) == 1:
-                    self.eyes_color = [__translations_list__[47]]
+                    self.eyes_color[0] = __translations_dict__.get("black")
                 else:
-                    self.eyes_color = [__translations_list__[48]]
+                    self.eyes_color[0] = __translations_dict__.get("chestnut_brown")
 
                 if randint(1, 10) == 1:
-                    self.eyes_color += [__translations_list__[40]]
+                    self.eyes_color[1] = __translations_dict__.get("blue")
                 elif randint(1, 50) == 2:
-                    self.eyes_color += [__translations_list__[41]]
+                    self.eyes_color[1] = __translations_dict__.get("green")
                 elif randint(1, 100) == 3:
-                    self.eyes_color += [__translations_list__[45]]
+                    self.eyes_color[1] = __translations_dict__.get("emerald_green")
                 elif randint(1, 2) == 1:
-                    self.eyes_color += [__translations_list__[47]]
+                    self.eyes_color[1] = __translations_dict__.get("black")
                 else:
-                    self.eyes_color += [__translations_list__[48]]
+                    self.eyes_color[1] = __translations_dict__.get("chestnut_brown")
 
         # couleur de peau
         if randint(0, 1) == 0:
-            self.skin_color = __translations_list__[49]
+            self.skin_color = __translations_dict__.get("white_feminine")
         elif randint(0, 1) == 1:
-            self.skin_color = __translations_list__[50]
+            self.skin_color = __translations_dict__.get("black_feminine")
         else:
-            self.skin_color = __translations_list__[51]
+            self.skin_color = __translations_dict__.get("mestizo")
 
         # Nom de famille
         # Vérification de l'existence du fichier "LAST_NAMES.txt" et choix du nom
-        if os.path.exists("data/languages/" + language + "/LAST_NAMES.txt"):
-            last_names_list = decode_text_document(open("data/languages/" + language + "/LAST_NAMES.txt", "r+")
-                                                   .read()).split("\n")
+        if os.path.exists(f"data/languages/{language}/LAST_NAMES.txt"):
+            last_names_list = open(f"data/languages/{language}/LAST_NAMES.txt", "r+", encoding="UTF-8").read()\
+                .split("\n")
             if randint(1, 10) == 1:
                 first_last_name = random.choice(last_names_list).replace("\n", "")
                 second_last_name = random.choice(last_names_list).replace("\n", "")
@@ -262,44 +243,42 @@ class Person:
             else:
                 self.last_name = random.choice(last_names_list).replace("\n", "")
         else:
-            self.last_name = __translations_list__[52]
+            self.last_name = __translations_dict__.get("SMITH")
 
         # caractère
         # Vérification de l'existence du fichier "CHARACTERS_LIST.txt" et choix du caractère
-        if os.path.exists("data/languages/" + language + "/CHARACTERS_LIST.txt"):
-            characters_list = decode_text_document(open("data/languages/" + language + "/CHARACTERS_LIST.txt", "r+")
-                                                   .read()).split("\n")
+        if os.path.exists(f"data/languages/{language}/CHARACTERS_LIST.txt"):
+            characters_list = open(f"data/languages/{language}/CHARACTERS_LIST.txt", "r+", encoding="UTF-8").read()\
+                .split("\n")
             self.character = random.choice(characters_list)
         else:
-            self.character = __translations_list__[97]
+            self.character = __translations_dict__.get("is_not_found")
 
         # Prénom
-        match genre_in_class:
+        match gender_in_class:
             case "male":
                 # Vérification de l'existence du fichier "MALES_FIRST_NAMES_LIST.txt" et choix du prénom
-                if os.path.exists("data/languages/" + language + "/MALES_FIRST_NAMES_LIST.txt"):
-                    first_names_list = decode_text_document(open("data/languages/" + language +
-                                                                 "/MALES_FIRST_NAMES_LIST.txt", "r+").read()
-                                                            ).split('\n')
-                    self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
+                if os.path.exists(f"data/languages/{language}/MALES_FIRST_NAMES_LIST.txt"):
+                    first_names_list = open(f"data/languages/{language}/MALES_FIRST_NAMES_LIST.txt", "r+",
+                                            encoding="UTF-8").read().split('\n')
+                    self.first_name = random.choice(first_names_list).replace("\n", "")
                 else:
-                    self.first_name = __translations_list__[53]
+                    self.first_name = __translations_dict__.get("John")
             case "female":
                 # Vérification de l'existence du fichier "FEMALES_FIRST_NAMES_LIST.txt" et choix du prénom
-                if os.path.exists("data/languages/" + language + "/FEMALES_FIRST_NAMES_LIST.txt"):
-                    first_names_list = decode_text_document(open("data/languages/" + language +
-                                                                 "/FEMALES_FIRST_NAMES_LIST.txt", "r+").read()
-                                                            ).split('\n')
-                    self.first_name = random.choice(first_names_list).replace("\n", "")  # "\n", c'est le retour ligne
+                if os.path.exists(f"data/languages/{language}/FEMALES_FIRST_NAMES_LIST.txt"):
+                    first_names_list = open(f"data/languages/{language}/FEMALES_FIRST_NAMES_LIST.txt", "r+",
+                                            encoding="UTF-8").read().split('\n')
+                    self.first_name = random.choice(first_names_list).replace("\n", "")
                 else:
-                    self.first_name = __translations_list__[54]
+                    self.first_name = __translations_dict__.get("Olivia")
             case _:
-                self.first_name = __translations_list__[55]
+                self.first_name = __translations_dict__.get("Cheyenne")
 
         while self.last_name == self.first_name.upper():  # Si le prénom est le même que le nom
             # Vérification de l'existence du fichier "LAST_NAMES.txt" et choix du nom
-            if os.path.exists("data/languages/" + language + "/LAST_NAMES.txt"):
-                with open("data/languages/" + language + "/LAST_NAMES.txt", "r+") as last_names_file:
+            if os.path.exists(f"data/languages/{language}/LAST_NAMES.txt"):
+                with open(f"data/languages/{language}/LAST_NAMES.txt", "r+", encoding="UTF-8") as last_names_file:
                     last_names_list = last_names_file.readlines()
                     last_names_file.close()
                     if randint(1, 10) == 1:
@@ -312,13 +291,13 @@ class Person:
                     else:
                         self.last_name = random.choice(last_names_list).replace("\n", "")
             else:
-                self.last_name = __translations_list__[52]
+                self.last_name = __translations_dict__.get("SMITH")
         self.last_name_list = self.last_name.split("--")
 
         while self.first_name.upper() in self.last_name_list:
             # Vérification de l'existence du fichier "LAST_NAMES.txt" et choix du nom
-            if os.path.exists("data/languages/" + language + "/LAST_NAMES.txt"):
-                with open("data/languages/" + language + "/LAST_NAMES.txt", "r+") as last_names_file:
+            if os.path.exists(f"data/languages/{language}/LAST_NAMES.txt"):
+                with open(f"data/languages/{language}/LAST_NAMES.txt", "r+", encoding="UTF-8") as last_names_file:
                     last_names_list = last_names_file.readlines()
                     last_names_file.close()
                     if randint(1, 10) == 1:
@@ -331,50 +310,50 @@ class Person:
                     else:
                         self.last_name = random.choice(last_names_list).replace("\n", "")
             else:
-                self.last_name = __translations_list__[52]
+                self.last_name = __translations_dict__.get("SMITH")
             self.last_name_list = self.last_name.split("--")
 
         # Interprétation de l'IMC.
         if 16.5 > self.bmi:
-            self.bmi_interpretation = __translations_list__[56]
+            self.bmi_interpretation = __translations_dict__.get("underweight_famine")
         elif 16.5 < self.bmi < 18.5:
-            self.bmi_interpretation = __translations_list__[57]
+            self.bmi_interpretation = __translations_dict__.get("underweight")
         elif 18.5 < self.bmi < 25:
-            self.bmi_interpretation = __translations_list__[58]
+            self.bmi_interpretation = __translations_dict__.get("normal_weight")
         elif 25 < self.bmi < 30:
-            self.bmi_interpretation = __translations_list__[59]
+            self.bmi_interpretation = __translations_dict__.get("overweight")
         elif 30 < self.bmi < 35:
-            self.bmi_interpretation = __translations_list__[60]
+            self.bmi_interpretation = __translations_dict__.get("obese")
         elif 35 < self.bmi < 40:
-            self.bmi_interpretation = __translations_list__[61]
+            self.bmi_interpretation = __translations_dict__.get("severe_obese")
         else:
-            self.bmi_interpretation = __translations_list__[62]
+            self.bmi_interpretation = __translations_dict__.get("morbid_obese")
 
         # Profession
         if profession is None:
             if not randint(1, 10000) == 1:
                 if self.age > 62:
-                    self.profession = __translations_list__[95]
+                    self.profession = __translations_dict__.get("retired")
                 elif 21 < self.age < 63:
                     # Vérification de l'existence du fichier "PROFESSIONS.txt" et choix de la profession
-                    if os.path.exists("data/languages/" + language + "/PROFESSIONS.txt"):
-                        with open("data/languages/" + language + "/PROFESSIONS.txt", "r+") as professions_file:
-                            professions_list = professions_file.readlines()
-                            professions_file.close()
+                    if os.path.exists(f"data/languages/{language}/PROFESSIONS.txt"):
+                        with open(f"data/languages/{language}/PROFESSIONS.txt", "r+", encoding="UTF-8") as profs_file:
+                            professions_list = profs_file.readlines()
+                            profs_file.close()
                             self.profession = random.choice(professions_list).replace("\n", "")
                     else:
-                        self.profession = __translations_list__[90]
+                        self.profession = __translations_dict__.get("baker")
                 elif 17 < self.age < 22:
-                    self.profession = __translations_list__[92]
+                    self.profession = __translations_dict__.get("student")
                 elif 5 < self.age:
-                    self.profession = __translations_list__[93]
+                    self.profession = __translations_dict__.get("student2")
                 else:
                     if randint(0, 1) == 1 and 3 < self.age:
-                        self.profession = __translations_list__[93]
+                        self.profession = __translations_dict__.get("student2")
                     else:
                         self.profession = None
             else:
-                self.profession = __translations_list__[96]
+                self.profession = __translations_dict__.get("radishes_cutter")
         else:
             self.profession = profession
 
@@ -415,9 +394,9 @@ class Person:
         """ Renvoie le nom de famille de la personne """
         return self.last_name
 
-    def get_genre(self):
+    def get_gender(self):
         """ Renvoie le sexe de la personne """
-        return self.genre_in_class
+        return self.gender_in_class
 
     def get_hairs_color(self):
         """ Renvoie la couleur des cheveux de la personne """
@@ -441,28 +420,30 @@ class Person:
 
 
 def strint(number):
-    """ Renvoie le str() d'un int(). Sert en gros à convertir un float() en str() """
+    """ Renvoie str(int(number)). Sert en gros à convertir en str la partie entière d'un float """
     return str(int(number))
 
 
 def about():
-    messagebox.showinfo(__translations_list__[63], __translations_list__[64] + " {}.\n".format(__version__) +
-                        __translations_list__[65] + " {}.\n".format(__author__) + __translations_list__[66] + '\n' +
-                        __translations_list__[100])
+    messagebox.showinfo(__translations_dict__.get("about"), (
+            __translations_dict__.get("id_randomizer_version") + f" {__version__}.\n" +
+            __translations_dict__.get("dev_by") + f" {__author__}.\n" +
+            __translations_dict__.get("tkx") + '\n' + __translations_dict__.get("tkx2")
+    ))
 
 
 def add_new_created_identity(number):
     """ Ajoute 1 au nombre d'identités créées """
     global number_of_created_identities
 
-    file = open("data/number_of_created_identities.txt", "r+")
+    file = open("data/number_of_created_identities.txt", "r+", encoding="UTF-8")
     number_of_created_identities = file.readlines()
     file.close()
 
     number_of_created_identities = number_of_created_identities[0]
     number_of_created_identities = int(number_of_created_identities) + number
 
-    file = open("data/number_of_created_identities.txt", "w")
+    file = open("data/number_of_created_identities.txt", "w", encoding="UTF-8")
     file.write(str(number_of_created_identities))
     file.close()
 
@@ -471,12 +452,12 @@ def open_saved_document(name_of_element="Document"):
     """ Ouvre le document à rappeler """
     if os.path.exists(name_of_element):
         try:
-            with open(name_of_element, "r") as file:
-                person_saved = decode_text_document(file.read()).split("\n")
+            with open(name_of_element, "r", encoding="UTF-8") as file:
+                person_saved = file.read().split("\n")
                 file.close()
             person_name = person_saved[1].replace("\n", '') + " " + person_saved[2].replace("\n", '')
             age = person_saved[3].replace("\n", '')
-            genre_in_function_open_saved_document = person_saved[4].replace("\n", '')
+            gender_in_function_open_saved_document = person_saved[4].replace("\n", '')
             skin_color = person_saved[5].replace("\n", '')
             eyes_color = person_saved[6].replace("\n", '').replace('[', '').replace(']', '') + ','
             eyes_color = eyes_color.split(',')
@@ -488,77 +469,72 @@ def open_saved_document(name_of_element="Document"):
             bmi_interpretation = person_saved[11].replace("\n", '')
             profession = person_saved[12].replace("\n", '')
             character = person_saved[13].replace("\n", '')
-        except IndexError:
-            messagebox.showerror("Erreur / Error", __translations_list__[110] + "\nCode d'erreur : / Error code : "
-                                 "python.IndexError")
-            return "invalidFileError"
-        except UnicodeDecodeError:
-            messagebox.showerror("Erreur / Error", __translations_list__[110] + "\nCode d'erreur : / Error code : "
-                                 "python.UnicodeDecodeError")
-            return "invalidFileError"
-        except ValueError:
-            messagebox.showerror("Erreur / Error", __translations_list__[110] + "\nCode d'erreur : / Error code : "
-                                 "python.ValueError")
-            return "invalidFileError"
+        except Exception as e:
+            messagebox.showerror(__translations_dict__.get("error"), __translations_dict__.get("not_person_file") + '\n'
+                                 + __translations_dict__.get("error_code") + "python." + e.__class__.__name__)
+            return "invalidFileError : " + e.__class__.__name__
 
-        result_frame = Frame(tabs, bg='palegreen')
+        result_frame = Frame(tabs, bg=PG)
 
-        result_label1 = Label(result_frame, text=(person_name + " " + __translations_list__[19] + " " + age + " "
-                                                  + __translations_list__[20]) + ",",
-                              font=("Tahoma", 12), bg="palegreen")
-        result_label1_bis = Label(result_frame, text=(__translations_list__[21] + " " + skin_color + ","),
-                                  font=("Tahoma", 12), bg="palegreen")
-        result_label1_bis2 = Label(result_frame, text=character, font=("Tahoma", 12), bg="palegreen")
+        result_label1 = Label(result_frame, text=(
+                                                     person_name, __translations_dict__.get("age_is"), str(age),
+                                                     __translations_dict__.get("years_old") + ","
+                                                 ), font=("Tahoma", 12), bg=PG)
+        result_label1_bis = Label(result_frame, text=(__translations_dict__.get("have_color_skin") % skin_color + ","),
+                                  font=("Tahoma", 12), bg=PG)
+        result_label1_bis2 = Label(result_frame, text=character, font=("Tahoma", 12), bg=PG)
 
         if profession is not None:
-            result_label1_ter = Label(result_frame, text=(__translations_list__[91] + profession + ","),
-                                      font=("Tahoma", 12), bg="palegreen")
+            result_label1_ter = Label(result_frame, text=(__translations_dict__.get("is"), profession + ","),
+                                      font=("Tahoma", 12), bg=PG)
         else:
-            result_label1_ter = Label(result_frame, text='', font=("Tahoma", 12), bg="palegreen")
+            result_label1_ter = None
         
         if len(eyes_color) == 1:
-            result_label2 = Label(result_frame, text=(__translations_list__[22] + " "
-                                                      + eyes_color[0].replace("'", "") + ","), font=("Tahoma", 12),
-                                  bg="palegreen")
+            result_label2 = Label(result_frame, text=(
+                    __translations_dict__.get("have_color_eyes") % eyes_color[0].replace("'", "") + ","),
+                                  font=("Tahoma", 12), bg=PG)
         else:
-            result_label2 = Label(result_frame, text=(__translations_list__[19] + " " + __translations_list__[67] + " "
-                                                      + eyes_color[0].replace("'", "") + " " +
-                                                      __translations_list__[68] + " " + eyes_color[1].replace("'", "")
-                                                      + ","), font=("Tahoma", 12), bg="palegreen")
+            result_label2 = Label(result_frame, text=(
+                __translations_dict__.get("minnow1"), eyes_color[0].replace("'", ""),
+                __translations_dict__.get("minnow2") % eyes_color[1].replace("'", "") + ","),
+                                  font=("Tahoma", 12), bg=PG)
         
         if not hairs_color == "":
-            result_label3 = Label(result_frame, text=__translations_list__[23] + " " + hairs_color + ",",
-                                  font=("Tahoma", 12), bg="palegreen")
+            result_label3 = Label(result_frame,
+                                  text=(__translations_dict__.get("have_color_hairs") % hairs_color + ","),
+                                  font=("Tahoma", 12), bg=PG
+                                  )
         else:
-            result_label3 = Label(result_frame, text=__translations_list__[69], font=("Tahoma", 12),
-                                  bg="palegreen")
+            result_label3 = Label(result_frame, text=__translations_dict__.get("bald"), font=("Tahoma", 12), bg=PG)
         
-        result_label4 = Label(result_frame, text=(__translations_list__[24] + " " + str(size_in_meters) + " "
-                                                  + __translations_list__[25] + ","),
-                              font=("Tahoma", 12), bg="palegreen")
-        result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(weight) + " " +
-                                                  __translations_list__[27] + ","),
-                              font=("Tahoma", 12), bg="palegreen")
-        result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(bmi) + "."),
-                              font=("Tahoma", 12), bg="palegreen")
+        result_label4 = Label(result_frame, text=(__translations_dict__.get("have_(meters_tall)"), str(size_in_meters),
+                                                  __translations_dict__.get("(have_)meters_tall") + ","),
+                              font=("Tahoma", 12), bg=PG)
+        result_label5 = Label(result_frame, text=(__translations_dict__.get("weigh_(kilo)"), str(weight),
+                                                  __translations_dict__.get("kilo") + ","),
+                              font=("Tahoma", 12), bg=PG)
+        result_label6 = Label(result_frame, text=(__translations_dict__.get("have_a_BMI_around"), strint(bmi) + "."),
+                              font=("Tahoma", 12), bg=PG)
 
         if not bmi_interpretation == "":
-            if genre_in_function_open_saved_document == "male":
-                result_label7 = Label(result_frame, text=(__translations_list__[29] + " " + bmi_interpretation + "."),
-                                      font=("Tahoma", 12), bg="palegreen")
+            if gender_in_function_open_saved_document == "male":
+                result_label7 = Label(result_frame, text=(__translations_dict__.get("BMI_so_he_is"),
+                                                          bmi_interpretation + "."), font=("Tahoma", 12), bg=PG)
             else:
-                result_label7 = Label(result_frame, text=(__translations_list__[30] + " " + bmi_interpretation + "."),
-                                      font=("Tahoma", 12), bg="palegreen")
+                result_label7 = Label(result_frame, text=(__translations_dict__.get("BMI_so_she_is"),
+                                                          bmi_interpretation + "."), font=("Tahoma", 12), bg=PG)
         else:
-            result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg="palegreen")
+            result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg=PG)
         
-        close_button = Button(result_frame, text=__translations_list__[99], font=("Tahoma", 12), bg="lightgreen",
+        close_button = Button(result_frame, text=__translations_dict__.get("close"), font=("Tahoma", 12), bg=LG,
                               activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
 
         result_label1.pack()
         result_label1_bis.pack()
         result_label1_bis2.pack()
-        result_label1_ter.pack()
+        if result_label1_ter is not None:
+            result_label1_ter.pack()
         result_label2.pack()
         result_label3.pack()
         result_label4.pack()
@@ -568,23 +544,27 @@ def open_saved_document(name_of_element="Document"):
         close_button.pack()
         filename = name_of_element.split("/")
         filename = filename[len(filename) - 1].replace(".person", '')
-        tabs.add(result_frame, text=(__translations_list__[18] + person_saved[0].replace("\n", '') + " - " + filename))
+        tabs.add(result_frame, text=(
+                __translations_dict__.get("created_id_number") +
+                person_saved[0].replace("\n", '') +
+                " - " + filename)
+                 )
         tabs.select(result_frame)
-        return ""
+        return
     else:
-        messagebox.showerror(__translations_list__[39], __translations_list__[70])
-        return ""
+        messagebox.showerror(__translations_dict__.get("error"), __translations_dict__.get("save_does_not_exist"))
+        return
 
 
 def ask_for_document_saved(event=None):
     """ Demande le document à ouvrir. """
 
-    filename = filedialog.askopenfilename(initialdir="saves/", title=__translations_list__[101],
+    filename = filedialog.askopenfilename(initialdir="saves/", title=__translations_dict__.get("select_person"),
                                           filetypes=(
-                                              (__translations_list__[103], "*.person*"),
-                                              (__translations_list__[104], "*.*")
+                                              (__translations_dict__.get("person_files"), "*.person*"),
+                                              (__translations_dict__.get("all_files_open"), "*.*")
                                           ))
-    if not filename == "":
+    if filename != "":
         open_saved_document(filename)
 
 
@@ -597,17 +577,18 @@ def save(person, name="Document"):
             if "." not in name:
                 filename = name + ".person"
             else:
-                if messagebox.askyesno(__translations_list__[106], __translations_list__[107] + "\n" +
-                                       __translations_list__[108]):
+                if messagebox.askyesno(__translations_dict__.get("question"),
+                                       __translations_dict__.get("file_have_not_ext") + "\n" +
+                                       __translations_dict__.get("do_you_want_to_add_ext")):
                     filename = name + ".person"
                 else:
                     filename = name
-        file = open(filename, "w")
+        file = open(filename, "w", encoding="UTF-8")
         file.write(str(number_of_created_identities) + "\n")
         file.write(str(person.get_first_name()) + "\n")
         file.write(str(person.get_last_name()) + "\n")
         file.write(str(person.get_age()) + "\n")
-        file.write(str(person.get_genre()) + "\n")
+        file.write(str(person.get_gender()) + "\n")
         file.write(str(person.get_skin_color()) + "\n")
         file.write(str(person.get_eyes_color()) + "\n")
         file.write(str(person.get_hairs_color()) + "\n")
@@ -618,19 +599,25 @@ def save(person, name="Document"):
         file.write(str(person.get_profession()) + "\n")
         file.write(str(person.get_character()) + "\n")
         file.close()
-        messagebox.showinfo(__translations_list__[37], (__translations_list__[38] + "\n" +
-                                                        filename.split("/")[len(filename.split('/')) - 1])
+        # OBTW
+        # explication du filename.split("/")[len(filename.split('/')) - 1] :
+        #   filename.split("/") : on fait une liste du type ["C:", "Users", "User", "Desktop", "save.person"]
+        #   [len(filename.split('/')) - 1] : on prend le dernier élément de cette liste, ici save.person
+        # TLDR
+        messagebox.showinfo(__translations_dict__.get("info"), (__translations_dict__.get("saved") + "\n" +
+                                                                filename.split("/")[len(filename.split('/')) - 1]
+                                                                )
                             )
     except OSError:
-        messagebox.showerror("Erreur / Error", __translations_list__[94])
+        messagebox.showerror(__translations_dict__.get("error"), __translations_dict__.get("this_name_is_not_accepted"))
 
 
 def save_as(person):
     """ Demande le nom de la sauvegarde. """
-    filename = filedialog.asksaveasfilename(initialdir="saves/", title=__translations_list__[102],
+    filename = filedialog.asksaveasfilename(initialdir="saves/", title=__translations_dict__.get("save_person"),
                                             filetypes=(
-                                                (__translations_list__[103], "*.person"),
-                                                (__translations_list__[105], "*.*")
+                                                (__translations_dict__.get("person_files"), "*.person"),
+                                                (__translations_dict__.get("all_files_save"), "*.*")
                                             ))
     if filename != "":
         save(person, filename)
@@ -640,10 +627,11 @@ def reset_data(event=None):
     """ Réinitialise les données """
     global number_of_created_identities
     # demander à l'utilisateur s'il est sûr de réinitialiser les données
-    are_you_sure = messagebox.askquestion(__translations_list__[87], __translations_list__[88] + "\n" +
-                                          __translations_list__[89], default='yes')
+    are_you_sure = messagebox.askquestion(__translations_dict__.get("confirmation"),
+                                          __translations_dict__.get("are_you_sure") + "\n" +
+                                          __translations_dict__.get("are_you_sure2"), default='no')
     if are_you_sure == "yes":
-        file = open("data/number_of_created_identities.txt", "w")
+        file = open("data/number_of_created_identities.txt", "w", encoding="UTF-8")
         file.write("0")
         file.close()
         number_of_created_identities = 0
@@ -654,33 +642,36 @@ def reset_data(event=None):
         os.mkdir("saves")
 
         # refonte du .gitignore pour éviter les bugs de git
-        git_ignore = open("saves/.gitignore", "w")
+        git_ignore = open("saves/.gitignore", "w", encoding="UTF-8")
         git_ignore.write("*.person\n")
         git_ignore.close()
 
-        messagebox.showinfo(__translations_list__[37], __translations_list__[78])
-        with open('data/language.txt', 'w') as default___language:
-            default___language.write("NotSet")
+        messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_successfully_reinit"))
+        with open('data/language.txt', 'w', encoding="UTF-8") as default_language_file:
+            default_language_file.write("NotSet")
+            default_language_file.close()
     else:
-        messagebox.showinfo(__translations_list__[37], __translations_list__[83])
+        messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_not_reinit"))
 
 
 def result(event=None):
     """ Créé l'onglet où la personne est indiquée """
-    global genre, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities
+    global gender, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities
     try:
         add_new_created_identity(1)
     except FileNotFoundError:
         # Fichier manquant : terminer la fonction en affichant une erreur
-        messagebox.showerror(__translations_list__[84], __translations_list__[85] + "\n\n" + __translations_list__[86])
+        messagebox.showerror(__translations_dict__.get("FileNotFoundError"),
+                             __translations_dict__.get("crash_file_missing") + "\n\n" +
+                             __translations_dict__.get("please_reinit_data"))
         return "FileNotFoundError"
-    if genre == "randomize":
+    if gender == "randomize":
         randomized = True
         pseudo_random_number = randint(0, 1)
         if pseudo_random_number == 0:
-            genre = "female"
+            gender = "female"
         else:
-            genre = "male"
+            gender = "male"
     else:
         randomized = False
     age_range_entered = age_range_entry.get()
@@ -689,97 +680,86 @@ def result(event=None):
     size_range_in_function = size_range_entered.split('.')
     weight_range_entered = weight_range_entry.get()
     weight_range_in_function = weight_range_entered.split('.')
-    
-    person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, genre)
+
+    person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, gender)
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
     person_character = person.get_character()
     skin_color = person.get_skin_color()
 
-    result_frame = Frame(tabs, bg='palegreen')
+    result_frame = Frame(tabs, bg=PG)
 
-    result_label1 = Label(result_frame, text=(person_name + " " + __translations_list__[19] + " " +
-                                              str(person_age) + " " + __translations_list__[20] + ","),
-                          font=("Tahoma", 12), bg="palegreen")
-    
-    result_label1_bis = Label(result_frame, text=(__translations_list__[21] + " " + str(skin_color) +
-                                                  ","), font=("Tahoma", 12), bg="palegreen")
-    result_label1_bis2 = Label(result_frame, text=str(person_character), font=("Tahoma", 12), bg="palegreen")
-    
-    if not person.get_profession() is None:
-        result_label1_ter = Label(result_frame, text=(__translations_list__[91] + str(person.get_profession() + ",")),
-                                  font=("Tahoma", 12), bg="palegreen")
+    result_label1 = Label(result_frame, text=(person_name, __translations_dict__.get("age_is"),
+                                              str(person_age), __translations_dict__.get("years_old") + ","),
+                          font=("Tahoma", 12), bg=PG)
+
+    result_label1_bis = Label(result_frame, text=(__translations_dict__.get("have_color_skin") % str(skin_color) + ","),
+                              font=("Tahoma", 12), bg=PG)
+    result_label1_bis2 = Label(result_frame, text=str(person_character), font=("Tahoma", 12), bg=PG)
+
+    if person.get_profession() is not None:
+        result_label1_ter = Label(result_frame, text=(__translations_dict__.get("is"), str(person.get_profession())
+                                                      + ","),
+                                  font=("Tahoma", 12), bg=PG)
     else:
-        result_label1_ter = Label(result_frame, text='', font=("Tahoma", 12), bg="palegreen")
-    
+        result_label1_ter = None
+
     if len(person.get_eyes_color()) == 1:
         result_label2 = Label(result_frame,
-                              text=(__translations_list__[22] + " " +
-                                    person.get_eyes_color()[0] + ","), font=("Tahoma", 12), bg="palegreen")
+                              text=(__translations_dict__.get("have_color_eyes") % person.get_eyes_color()[0] + ","),
+                              font=("Tahoma", 12), bg=PG)
     else:
         result_label2 = Label(result_frame,
-                              text=(__translations_list__[67] + " " +
-                                    person.get_eyes_color()[0] + " " + __translations_list__[68] + " " +
-                                    person.get_eyes_color()[1] + ","), font=("Tahoma", 12), bg="palegreen")
-    
-    if person.get_hairs_color() != "":
-        result_label3 = Label(result_frame, text=(__translations_list__[23] + " " + person.get_hairs_color() + ","),
-                              font=("Tahoma", 12), bg="palegreen")
-    else:
-        result_label3 = Label(result_frame, text=__translations_list__[69], font=("Tahoma", 12), bg="palegreen")
-    
-    result_label4 = Label(result_frame, text=(__translations_list__[24] + " " + str(person.get_size_in_meters())
-                                              + " " + __translations_list__[25] + ","),
-                          font=("Tahoma", 12), bg="palegreen")
-    
-    result_label5 = Label(result_frame, text=(__translations_list__[26] + " " + str(person.get_weight()) + " " +
-                                              __translations_list__[27] + ","), font=("Tahoma", 12),
-                          bg="palegreen")
-    
-    result_label6 = Label(result_frame, text=(__translations_list__[28] + " " + strint(person.get_bmi()) + "."),
-                          font=("Tahoma", 12), bg="palegreen")
-    
-    if not person.get_bmi_interpretation() == "":
-        if genre == "male":
-            result_label7 = Label(result_frame, text=(__translations_list__[29] + " " + person.get_bmi_interpretation()
-                                                      + "."),
-                                  font=("Tahoma", 12), bg="palegreen")
-        else:
-            result_label7 = Label(result_frame, text=(__translations_list__[30] + " " + person.get_bmi_interpretation()
-                                                      + "."),
-                                  font=("Tahoma", 12), bg="palegreen")
-    else:
-        result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg="palegreen")
-    if randomized:
-        genre = "randomize"
+                              text=(__translations_dict__.get("minnow1"), person.get_eyes_color()[0],
+                                    __translations_dict__.get("minnow2") % person.get_eyes_color()[1] + ","),
+                              font=("Tahoma", 12), bg=PG)
 
-    save_button = Button(result_frame, text=__translations_list__[31], font=("Tahoma", 12), bg="lightgreen",
+    if person.get_hairs_color() != "":
+        result_label3 = Label(result_frame, text=(
+                __translations_dict__["have_color_hairs"] % person.get_hairs_color() + ","
+        ),
+                              font=("Tahoma", 12), bg=PG)
+    else:
+        result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
+
+    result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"],
+                                              str(person.get_size_in_meters()),
+                                              __translations_dict__["(have_)meters_tall"] + ","),
+                          font=("Tahoma", 12), bg=PG)
+
+    result_label5 = Label(result_frame, text=(__translations_dict__["weigh_(kilo)"], str(person.get_weight()),
+                                              __translations_dict__["kilo"] + ","), font=("Tahoma", 12),
+                          bg=PG)
+
+    result_label6 = Label(result_frame, text=(__translations_dict__["have_a_BMI_around"],
+                                              strint(person.get_bmi()) + "."),
+                          font=("Tahoma", 12), bg=PG)
+
+    if person.get_bmi_interpretation() != "":
+        if gender == "male":
+            result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_he_is"],
+                                                      person.get_bmi_interpretation() + "."),
+                                  font=("Tahoma", 12), bg=PG)
+        else:
+            result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_she_is"],
+                                                      person.get_bmi_interpretation() + "."),
+                                  font=("Tahoma", 12), bg=PG)
+    else:
+        result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg=PG)
+    if randomized:
+        gender = "randomize"
+
+    save_button = Button(result_frame, text=__translations_dict__["save"], font=("Tahoma", 12), bg=LG,
                          activebackground='#CCEEFF', command=lambda: save_as(person))
-    close_button = Button(result_frame, text=__translations_list__[99], font=("Tahoma", 12), bg="lightgreen",
+    close_button = Button(result_frame, text=__translations_dict__["close"], font=("Tahoma", 12), bg=LG,
                           activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
 
+    # empaquetage
     result_label1.pack()
     result_label1_bis.pack()
     result_label1_bis2.pack()
-    
-    try:
-        # Compliqué d'être à jour avec les noms d'erreurs dans les différentes versions de Python :P
-        try:
-            result_label1_ter.pack()
-        except UnboundLocalError:
-            pass
-        finally:
-            pass
-    except NameError:
-        try:
-            result_label1_ter.pack()
-        except NameError:
-            pass
-        finally:
-            pass
-    finally:
-        pass
-    
+    if result_label1_ter is not None:
+        result_label1_ter.pack()
     result_label2.pack()
     result_label3.pack()
     result_label4.pack()
@@ -788,30 +768,31 @@ def result(event=None):
     result_label7.pack()
     save_button.pack()
     close_button.pack()
-    tabs.add(result_frame, text=__translations_list__[18] + str(number_of_created_identities))
+
+    tabs.add(result_frame, text=__translations_dict__["created_id_number"] + str(number_of_created_identities))
     tabs.select(result_frame)
-    
     all_tabs = list(tabs.tabs())[1:]
-    if len(all_tabs) > 200:
+
+    if len(all_tabs) == 200:
         messagebox.showerror("Ban", "You was banned from PersonCraft for reason : autoclick")
 
 
 def change_to_male():
-    """ Mets genre à "male" """
-    global genre
-    genre = "male"
+    """ Mets gender à "male" """
+    global gender
+    gender = "male"
 
 
 def change_to_female():
-    """ Mets genre à "female" """
-    global genre
-    genre = "female"
+    """ Mets gender à "female" """
+    global gender
+    gender = "female"
 
 
-def randomize_genre():
-    """ Randomise le genre """
-    global genre
-    genre = "randomize"
+def randomize_gender():
+    """ Randomise le gender """
+    global gender
+    gender = "randomize"
 
 
 def close_all_tabs(event=None):
@@ -829,90 +810,92 @@ save_window.destroy()
 
 
 # Création de la fenêtre
-main_window = Tk()
-main_window.title(__translations_list__[2])
+root = Tk()
+root.title(__translations_dict__["win_title"])
 # ligne suivante : j'utilise cette trad pour vérifier que les caractères sont correctement décodés.
 # Dé-commenter en cas de besoin.
-# print(__translations_list__[2])
-main_window.geometry("900x500")
-main_window.minsize(900, 500)
+# print(__translations_dict__["win_title"])
+root.geometry("900x500")
+root.minsize(900, 500)
 try:
-    main_window.iconbitmap('icon.ico')
+    root.iconbitmap('icon.ico')
 except TclError:
     pass
-main_window.config(background='palegreen')
+root.config(background=PG)
 
-tabs = ttk.Notebook(main_window)
+tabs = ttk.Notebook(root)
 
 # Création d'une frame
-frame1 = Frame(tabs, bg='palegreen')
+frame1 = Frame(tabs, bg=PG)
 
-tabs.add(frame1, text=__translations_list__[98])
+tabs.add(frame1, text=__translations_dict__["home"])
 tabs.pack(expand=1, fill="both")
 
 # Création du titre et de texte
-title_label = Label(frame1, text=__translations_list__[2], font=('Tahoma', 40), bg='palegreen')
-label1 = Label(frame1, text=" ", font=('Tahoma', 15), bg='palegreen')
+title_label = Label(frame1, text=__translations_dict__["win_title"], font=('Tahoma', 40), bg=PG)
+label1 = Label(frame1, text=" ", font=('Tahoma', 15), bg=PG)
 
 # Sexe
-genre_label = Label(frame1, text=__translations_list__[3], font=('Tahoma', 15), bg='palegreen')
-genre = "randomize"
-genre_radiobuttons = IntVar()
-genre_randomize_radio = Radiobutton(frame1, text=__translations_list__[6], variable=genre_radiobuttons, bg='palegreen',
-                                    activebackground='palegreen', value=0, command=lambda: randomize_genre())
-genre_female_radio = Radiobutton(frame1, text=__translations_list__[5], variable=genre_radiobuttons, bg='palegreen',
-                                 activebackground='palegreen', value=1, command=lambda: change_to_female())
-genre_male_radio = Radiobutton(frame1, text=__translations_list__[4], variable=genre_radiobuttons, bg='palegreen',
-                               activebackground='palegreen', value=2, command=lambda: change_to_male())
+gender_label = Label(frame1, text=__translations_dict__["gender"], font=('Tahoma', 15), bg=PG)
+gender = "randomize"
+gender_radiobuttons = IntVar()
+gender_randomize_radio = Radiobutton(frame1, text=__translations_dict__["randomize"], variable=gender_radiobuttons,
+                                     bg=PG, activebackground=PG, value=0, command=lambda: randomize_gender())
+gender_female_radio = Radiobutton(frame1, text=__translations_dict__["female"], variable=gender_radiobuttons, bg=PG,
+                                  activebackground=PG, value=1, command=lambda: change_to_female())
+gender_male_radio = Radiobutton(frame1, text=__translations_dict__["male"], variable=gender_radiobuttons, bg=PG,
+                                activebackground=PG, value=2, command=lambda: change_to_male())
 
 # Tranche d'âge
-age_label = Label(frame1, text=__translations_list__[7] + __translations_list__[10],
-                  font=('Tahoma', 15), bg='palegreen')
-age_range_entry = Entry(frame1, bg='lightgreen')
+age_label = Label(frame1, text=__translations_dict__["age_range"] + __translations_dict__["separate_by_dot"],
+                  font=('Tahoma', 15), bg=PG)
+age_range_entry = Entry(frame1, bg=LG)
 
 # Tranche de taille
-size_label = Label(frame1, text=__translations_list__[8] + __translations_list__[10], font=('Tahoma', 15),
-                   bg='palegreen')
-size_range_entry = Entry(frame1, bg='lightgreen')
+size_label = Label(frame1, text=__translations_dict__["height_range"] + __translations_dict__["separate_by_dot"],
+                   font=('Tahoma', 15), bg=PG)
+size_range_entry = Entry(frame1, bg=LG)
 
 # Tranche de poids
-weight_label = Label(frame1, text=__translations_list__[9] + __translations_list__[10], font=('Tahoma', 15),
-                     bg='palegreen')
-weight_range_entry = Entry(frame1, bg='lightgreen')
+weight_label = Label(frame1, text=__translations_dict__["weight_range"] + __translations_dict__["separate_by_dot"],
+                     font=('Tahoma', 15), bg=PG)
+weight_range_entry = Entry(frame1, bg=LG)
 
 # Bouton OK
-label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg='palegreen')
-OK_button = Button(frame1, text=__translations_list__[11], font=("Tahoma", 10), bg='lightgreen',
+label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg=PG)
+OK_button = Button(frame1, text=__translations_dict__["submit"], font=("Tahoma", 10), bg=LG,
                    activebackground='#CCEEFF', command=lambda: result())
 
 # Ajout d'un menu
-menu_bar = Menu(main_window)
+menu_bar = Menu(root)
 file_menu = Menu(menu_bar, tearoff=0)
 # réinitialiser données
-file_menu.add_command(label=__translations_list__[13], command=lambda: reset_data(), accelerator="Ctrl+R")
+file_menu.add_command(label=__translations_dict__["reinit_data"], command=lambda: reset_data(), accelerator="Ctrl+R")
 # ouvrir...
-file_menu.add_command(label=__translations_list__[14], command=lambda: ask_for_document_saved(), accelerator="Ctrl+O")
+file_menu.add_command(label=__translations_dict__["open..."], command=lambda: ask_for_document_saved(),
+                      accelerator="Ctrl+O")
 # fermer tous les onglets
-file_menu.add_command(label=__translations_list__[109], command=lambda: close_all_tabs(), accelerator="Ctrl+F1")
-menu_bar.add_cascade(label=__translations_list__[12], menu=file_menu)
+file_menu.add_command(label=__translations_dict__["close_all_tabs"], command=lambda: close_all_tabs(),
+                      accelerator="Ctrl+F1")
+menu_bar.add_cascade(label=__translations_dict__["file"], menu=file_menu)
 options_menu = Menu(menu_bar, tearoff=0)
 # Bouton OK
-options_menu.add_command(label=__translations_list__[11], command=lambda: result(),
-                         accelerator=__translations_list__[111])
+options_menu.add_command(label=__translations_dict__["submit"], command=lambda: result(),
+                         accelerator=__translations_dict__["enter"])
 # à propos du programme
-options_menu.add_command(label=__translations_list__[16], command=lambda: about())
+options_menu.add_command(label=__translations_dict__["about..."], command=lambda: about())
 # quitter le programme
-options_menu.add_command(label=__translations_list__[17], command=lambda: quit(0), accelerator="Ctrl+Q")
-menu_bar.add_cascade(label=__translations_list__[15], menu=options_menu)
-main_window.config(menu=menu_bar)
+options_menu.add_command(label=__translations_dict__["quit"], command=lambda: quit(0), accelerator="Ctrl+Q")
+menu_bar.add_cascade(label=__translations_dict__["options"], menu=options_menu)
+root.config(menu=menu_bar)
 
 # Empaquetage
 title_label.pack()
 label1.pack()
-genre_label.pack()
-genre_randomize_radio.pack()
-genre_female_radio.pack()
-genre_male_radio.pack()
+gender_label.pack()
+gender_randomize_radio.pack()
+gender_female_radio.pack()
+gender_male_radio.pack()
 age_label.pack()
 age_range_entry.pack()
 size_label.pack()
@@ -922,12 +905,13 @@ weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
 
-main_window.bind('<Control-q>', exit)
-main_window.bind('<Control-r>', reset_data)
-main_window.bind('<Control-o>', ask_for_document_saved)
-main_window.bind('<Control-F1>', close_all_tabs)
-main_window.bind('<Return>', result)
-main_window.mainloop()
+# raccourcis clavier
+root.bind('<Control-q>', exit)
+root.bind('<Control-r>', reset_data)
+root.bind('<Control-o>', ask_for_document_saved)
+root.bind('<Control-F1>', close_all_tabs)
+root.bind('<Return>', result)
+root.mainloop()
 quit(0)
 
 # Merci d'utiliser mon programme :)
