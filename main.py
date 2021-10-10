@@ -37,7 +37,7 @@ def ask_language():
     language_window.config(background=PG)
 
     language_frame = Frame(language_window, bg=PG)
-    language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language :",
+    language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language:",
                            font=("Tahoma", 12), background=PG)
     
     language_options_list = ["Français", "English"]
@@ -49,7 +49,7 @@ def ask_language():
 
     language_ok_button = Button(language_frame, text="OK", font=("Tahoma", 12), bg=LG,
                                 activebackground=PG, command=lambda: language_window.destroy())
-    language_cancel_button = Button(language_frame, text="Annuler", font=("Tahoma", 12), bg=LG,
+    language_cancel_button = Button(language_frame, text="Annuler / Cancel", font=("Tahoma", 12), bg=LG,
                                     activebackground=PG, command=lambda: quit(0))
     language_default = IntVar()
     language_default_checkbutton = Checkbutton(language_frame, text="Définir par défaut / Set by default",
@@ -152,7 +152,7 @@ class Person:
         self.gender_in_class = gender_in_class
 
         # Couleur de cheveux
-        if 2 < self.age < random.randint(49, 55):
+        if 2 < self.age < randint(49, 55):
             if randint(1, 50) == 50:
                 self.hairs_color = __translations_dict__.get("blue")
             elif randint(1, 50) == 49:
@@ -379,7 +379,7 @@ class Person:
     def get_bmi_interpretation(self):
         """ Renvoie l'interprétation de l'IMC de la personne.
          À noter que puisque le calcul est différent et très compliqué pour les enfants, la fonction ne renvoie
-         rien si la personne est un enfant."""
+         rien si la personne est un enfant. """
         if self.age > 18:
             return self.bmi_interpretation
         else:
@@ -425,9 +425,9 @@ def strint(number):
 
 def about():
     messagebox.showinfo(__translations_dict__.get("about"), (
-            __translations_dict__.get("id_randomizer_version") + f" {__version__}.\n" +
-            __translations_dict__.get("dev_by") + f" {__author__}.\n" +
-            __translations_dict__.get("tkx") + '\n' + __translations_dict__.get("tkx2")
+            __translations_dict__["id_randomizer_version"] + f" {__version__}.\n" +
+            __translations_dict__["dev_by"] + f" {__author__}.\n" +
+            __translations_dict__["tkx"] + '\n' + __translations_dict__["tkx2"]
     ))
 
 
@@ -469,43 +469,43 @@ def open_saved_document(name_of_element="Document"):
             profession = person_saved[12].replace("\n", '')
             character = person_saved[13].replace("\n", '')
         except Exception as e:
-            messagebox.showerror(__translations_dict__.get("error"), __translations_dict__.get("not_person_file") + '\n'
-                                 + __translations_dict__.get("error_code") + "python." + e.__class__.__name__)
+            messagebox.showerror(__translations_dict__["error"], __translations_dict__.get("not_person_file") + '\n'
+                                 + __translations_dict__["error_code"] + "python." + e.__class__.__name__)
             return "invalidFileError : " + e.__class__.__name__
 
         result_frame = Frame(tabs, bg=PG)
 
         result_label1 = Label(result_frame, text=(
-                                                     person_name, __translations_dict__.get("age_is"), str(age),
-                                                     __translations_dict__.get("years_old") + ","
+                                                     person_name, __translations_dict__["age_is"], str(age),
+                                                     __translations_dict__["years_old"] + ","
                                                  ), font=("Tahoma", 12), bg=PG)
-        result_label1_bis = Label(result_frame, text=(__translations_dict__.get("have_color_skin") % skin_color + ","),
+        result_label1_bis = Label(result_frame, text=(__translations_dict__["have_color_skin"] % skin_color + ","),
                                   font=("Tahoma", 12), bg=PG)
         result_label1_bis2 = Label(result_frame, text=character, font=("Tahoma", 12), bg=PG)
 
         if profession is not None:
-            result_label1_ter = Label(result_frame, text=(__translations_dict__.get("is"), profession + ","),
+            result_label1_ter = Label(result_frame, text=(__translations_dict__["is"], profession + ","),
                                       font=("Tahoma", 12), bg=PG)
         else:
             result_label1_ter = None
         
         if len(eyes_color) == 1:
             result_label2 = Label(result_frame, text=(
-                    __translations_dict__.get("have_color_eyes") % eyes_color[0].replace("'", "") + ","),
+                    __translations_dict__["have_color_eyes"] % eyes_color[0].replace("'", "") + ","),
                                   font=("Tahoma", 12), bg=PG)
         else:
             result_label2 = Label(result_frame, text=(
-                __translations_dict__.get("minnow1"), eyes_color[0].replace("'", ""),
-                __translations_dict__.get("minnow2") % eyes_color[1].replace("'", "") + ","),
+                __translations_dict__["minnow1"], eyes_color[0].replace("'", ""),
+                __translations_dict__["minnow2"] % eyes_color[1].replace("'", "") + ","),
                                   font=("Tahoma", 12), bg=PG)
         
         if not hairs_color == "":
             result_label3 = Label(result_frame,
-                                  text=(__translations_dict__.get("have_color_hairs") % hairs_color + ","),
+                                  text=(__translations_dict__["have_color_hairs"] % hairs_color + ","),
                                   font=("Tahoma", 12), bg=PG
                                   )
         else:
-            result_label3 = Label(result_frame, text=__translations_dict__.get("bald"), font=("Tahoma", 12), bg=PG)
+            result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
         
         result_label4 = Label(result_frame, text=(__translations_dict__.get("have_(meters_tall)"), str(size_in_meters),
                                                   __translations_dict__.get("(have_)meters_tall") + ","),
