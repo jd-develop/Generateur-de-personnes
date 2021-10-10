@@ -37,9 +37,8 @@ def ask_language():
     language_window.config(background=PG)
 
     language_frame = Frame(language_window, bg=PG)
-    language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language :", font=("Tahoma",
-                                                                                                              12),
-                           background=PG)
+    language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language :",
+                           font=("Tahoma", 12), background=PG)
     
     language_options_list = ["Français", "English"]
     language_variable = StringVar(language_window)
