@@ -112,7 +112,8 @@ else:
 class Person:
     """ Définit ce qu'est une personne """
 
-    def __init__(self, age_range=None, size_range=None, weight_range=None, gender_in_class="male", profession=None):
+    def __init__(self, age_range=None, size_range=None, weight_range=None, gender_in_class="male", profession=None,
+                 created_identity=0):
         """ Initialisation de la personne"""
         if weight_range is None:
             weight_range = [60, 65]
@@ -120,6 +121,7 @@ class Person:
             size_range = [175, 175]
         if age_range is None:
             age_range = [20, 20]
+        self.created_identity = created_identity
         try:
             self.age = randint(int(age_range[0]), int(age_range[1]))  # âge en années
             if not -1 < self.age < 120:
@@ -417,6 +419,10 @@ class Person:
         """ Renvoie le caractère """
         return self.character
 
+    def get_created_identity_number(self):
+        """ Renvoie le numéro de l'id crée """
+        return self.created_identity
+
 
 def strint(number):
     """ Renvoie str(int(number)). Sert en gros à convertir en str la partie entière d'un float """
@@ -424,6 +430,9 @@ def strint(number):
 
 
 def about():
+    # pomme de terre frite belge
+    #
+    #           ~~ Lolie
     messagebox.showinfo(__translations_dict__.get("about"), (
             __translations_dict__["id_randomizer_version"] + f" {__version__}.\n" +
             __translations_dict__["dev_by"] + f" {__author__}.\n" +
@@ -583,7 +592,7 @@ def save(person, name="Document"):
                 else:
                     filename = name
         file = open(filename, "w", encoding="UTF-8")
-        file.write(str(number_of_created_identities) + "\n")
+        file.write(str(person.get_created_identity_number()) + "\n")
         file.write(str(person.get_first_name()) + "\n")
         file.write(str(person.get_last_name()) + "\n")
         file.write(str(person.get_age()) + "\n")
@@ -599,7 +608,7 @@ def save(person, name="Document"):
         file.write(str(person.get_character()) + "\n")
         file.close()
         # OBTW
-        # explication du filename.split("/")[len(filename.split('/')) - 1] :
+        #   explication du filename.split("/")[len(filename.split('/')) - 1] :
         #   filename.split("/") : on fait une liste du type ["C:", "Users", "User", "Desktop", "save.person"]
         #   [len(filename.split('/')) - 1] : on prend le dernier élément de cette liste, ici save.person
         # TLDR
@@ -680,7 +689,8 @@ def result(event=None):
     weight_range_entered = weight_range_entry.get()
     weight_range_in_function = weight_range_entered.split('.')
 
-    person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, gender)
+    person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, gender,
+                    created_identity=number_of_created_identities)
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
     person_character = person.get_character()
@@ -798,7 +808,7 @@ def close_all_tabs(event=None):
     """ Ferme tous les onglets """
     global tabs
     all_tabs = list(tabs.tabs())[1:]  # on enlève l'accueil
-    
+
     for tab in all_tabs:
         tabs.forget(tab)
 
