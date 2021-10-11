@@ -18,7 +18,7 @@ from random import randint  # Pour pas avoir à écrire à chaque fois 'random.r
 
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "3.0.1"
+__version__ = "21w41a"
 LG = "lightgreen"
 PG = "palegreen"
 CCEEFF = '#CCEEFF'
@@ -194,9 +194,9 @@ class Person:
             elif randint(1, 10000) == 1:
                 self.eyes_color = [__translations_dict__["burst"]]
             elif randint(1, 2) == 1:
-                self.eyes_color = [__translations_dict__.get("black")]
+                self.eyes_color = [__translations_dict__["black"]]
             else:
-                self.eyes_color = [__translations_dict__.get("chestnut_brown")]
+                self.eyes_color = [__translations_dict__["chestnut_brown"]]
         else:
             self.eyes_color = ["", ""]
             while self.eyes_color[0] == self.eyes_color[1]:
