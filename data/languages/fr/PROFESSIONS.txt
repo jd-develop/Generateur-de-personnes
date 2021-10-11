@@ -42,3 +42,6 @@ professeur.e d'allemand
 professeur.e d'espagnol
 professeur.e de dessin
 ébéniste
+streamer.euse
+vétérinaire
+peintre

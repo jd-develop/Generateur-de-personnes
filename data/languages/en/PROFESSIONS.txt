@@ -38,3 +38,6 @@ german teacher
 spanish teacher
 arts teacher
 cabinetmaker
+streamer
+veterinary
+painter
