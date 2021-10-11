@@ -41,3 +41,25 @@ cabinetmaker
 streamer
 veterinary
 painter
+sales advisor
+real estate diagnostician
+property administrator
+beautician
+osteopath
+warehouseman
+tourist guide
+graphic designer
+rental manager
+nurseryman
+masseur
+goldsmith
+delivery driver
+bodyguard
+instructor-educator
+traffic manager
+bookseller
+marketing director
+floor housekeeper
+insurance broker
+mason
+train driver

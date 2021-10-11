@@ -45,3 +45,25 @@ professeur.e de dessin
 streamer.euse
 vétérinaire
 peintre
+conseiller.e de vente
+diagnostiqueur immobilier
+administrateur de biens
+esthéticien.ne
+ostéopathe
+manutentionnaire
+guide touristique
+infographiste
+gestionnaire locatif
+pépiniériste
+masseur.euse
+orfèvre
+chauffeur.euse livreur.euse
+garde du corps
+moniteur.trice-éducateur.trice
+traffic manager
+libraire
+directeur.trice marketing
+gouvernant.e d'étage
+courtier d’assurances
+maçon
+conducteur.trice de trains
