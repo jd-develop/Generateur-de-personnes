@@ -21,6 +21,7 @@ __author__ = "Jean Dubois <jd-dev@laposte.net>"
 __version__ = "3.0.1"
 LG = "lightgreen"
 PG = "palegreen"
+CCEEFF = '#CCEEFF'
 
 
 def ask_language():
@@ -156,9 +157,9 @@ class Person:
         # Couleur de cheveux
         if 2 < self.age < randint(49, 55):
             if randint(1, 50) == 50:
-                self.hairs_color = __translations_dict__.get("blue")
+                self.hairs_color = __translations_dict__["blue"]
             elif randint(1, 50) == 49:
-                self.hairs_color = __translations_dict__.get("green")
+                self.hairs_color = __translations_dict__["green"]
             elif randint(1, 50) == 48:
                 self.hairs_color = ""
             else:
@@ -168,12 +169,12 @@ class Person:
                         self.hairs_color = random.choice(hairs_colors_list).replace("\n", "")
                         hairs_colors_f.close()
                 else:
-                    self.hairs_color = __translations_dict__.get("chestnut_brown")
+                    self.hairs_color = __translations_dict__["chestnut_brown"]
         elif 2 < self.age:
             if randint(1, 25) == 1:
-                self.hairs_color = __translations_dict__.get("grey")
+                self.hairs_color = __translations_dict__["grey"]
             else:
-                self.hairs_color = __translations_dict__.get("white")
+                self.hairs_color = __translations_dict__["white"]
         else:
             self.hairs_color = ""
 
@@ -185,13 +186,13 @@ class Person:
 
         if self.eyes == "normaux":
             if randint(1, 10) == 1:
-                self.eyes_color = [__translations_dict__.get("blue")]
+                self.eyes_color = [__translations_dict__["blue"]]
             elif randint(1, 50) == 2:
-                self.eyes_color = [__translations_dict__.get("green")]
+                self.eyes_color = [__translations_dict__["green"]]
             elif randint(1, 100) == 3:
-                self.eyes_color = [__translations_dict__.get("emerald_green")]
+                self.eyes_color = [__translations_dict__["emerald_green"]]
             elif randint(1, 10000) == 1:
-                self.eyes_color = [__translations_dict__.get("burst")]
+                self.eyes_color = [__translations_dict__["burst"]]
             elif randint(1, 2) == 1:
                 self.eyes_color = [__translations_dict__.get("black")]
             else:
@@ -485,8 +486,8 @@ def open_saved_document(name_of_element="Document"):
         result_frame = Frame(tabs, bg=PG)
 
         result_label1 = Label(result_frame, text=(
-                                                     person_name, __translations_dict__["age_is"], str(age),
-                                                     __translations_dict__["years_old"] + ","
+                                                     person_name + " " + __translations_dict__["age_is"] + " " +
+                                                     str(age) + " " + __translations_dict__["years_old"] + ","
                                                  ), font=("Tahoma", 12), bg=PG)
         result_label1_bis = Label(result_frame, text=(__translations_dict__["have_color_skin"] % skin_color + ","),
                                   font=("Tahoma", 12), bg=PG)
@@ -504,7 +505,7 @@ def open_saved_document(name_of_element="Document"):
                                   font=("Tahoma", 12), bg=PG)
         else:
             result_label2 = Label(result_frame, text=(
-                __translations_dict__["minnow1"], eyes_color[0].replace("'", ""),
+                __translations_dict__["minnow1"] + " " + eyes_color[0].replace("'", "") + " " +
                 __translations_dict__["minnow2"] % eyes_color[1].replace("'", "") + ","),
                                   font=("Tahoma", 12), bg=PG)
         
@@ -522,21 +523,22 @@ def open_saved_document(name_of_element="Document"):
         result_label5 = Label(result_frame, text=(__translations_dict__.get("weigh_(kilo)"), str(weight),
                                                   __translations_dict__.get("kilo") + ","),
                               font=("Tahoma", 12), bg=PG)
-        result_label6 = Label(result_frame, text=(__translations_dict__.get("have_a_BMI_around"), strint(bmi) + "."),
+        result_label6 = Label(result_frame, text=(__translations_dict__.get("have_a_BMI_around") + " " +
+                                                  strint(bmi) + "."),
                               font=("Tahoma", 12), bg=PG)
 
         if not bmi_interpretation == "":
             if gender_in_function_open_saved_document == "male":
-                result_label7 = Label(result_frame, text=(__translations_dict__.get("BMI_so_he_is"),
+                result_label7 = Label(result_frame, text=(__translations_dict__.get("BMI_so_he_is") + " " +
                                                           bmi_interpretation + "."), font=("Tahoma", 12), bg=PG)
             else:
-                result_label7 = Label(result_frame, text=(__translations_dict__.get("BMI_so_she_is"),
+                result_label7 = Label(result_frame, text=(__translations_dict__.get("BMI_so_she_is") + " " +
                                                           bmi_interpretation + "."), font=("Tahoma", 12), bg=PG)
         else:
             result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg=PG)
         
         close_button = Button(result_frame, text=__translations_dict__.get("close"), font=("Tahoma", 12), bg=LG,
-                              activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
+                              activebackground=CCEEFF, command=lambda: tabs.forget(result_frame))
 
         result_label1.pack()
         result_label1_bis.pack()
@@ -695,19 +697,21 @@ def result(event=None):
     person_age = person.get_age()
     person_character = person.get_character()
     skin_color = person.get_skin_color()
+    hairs_color = person.get_hairs_color()
 
     result_frame = Frame(tabs, bg=PG)
 
-    result_label1 = Label(result_frame, text=(person_name, __translations_dict__.get("age_is"),
-                                              str(person_age), __translations_dict__.get("years_old") + ","),
+    print(person_name)
+    result_label1 = Label(result_frame, text=(person_name + " " + __translations_dict__["age_is"] + " " +
+                                              str(person_age) + " " + __translations_dict__["years_old"] + ","),
                           font=("Tahoma", 12), bg=PG)
 
-    result_label1_bis = Label(result_frame, text=(__translations_dict__.get("have_color_skin") % str(skin_color) + ","),
+    result_label1_bis = Label(result_frame, text=(__translations_dict__["have_color_skin"] % str(skin_color) + ","),
                               font=("Tahoma", 12), bg=PG)
     result_label1_bis2 = Label(result_frame, text=str(person_character), font=("Tahoma", 12), bg=PG)
 
     if person.get_profession() is not None:
-        result_label1_ter = Label(result_frame, text=(__translations_dict__.get("is"), str(person.get_profession())
+        result_label1_ter = Label(result_frame, text=(__translations_dict__["is"], str(person.get_profession())
                                                       + ","),
                                   font=("Tahoma", 12), bg=PG)
     else:
@@ -715,18 +719,16 @@ def result(event=None):
 
     if len(person.get_eyes_color()) == 1:
         result_label2 = Label(result_frame,
-                              text=(__translations_dict__.get("have_color_eyes") % person.get_eyes_color()[0] + ","),
+                              text=(__translations_dict__["have_color_eyes"] % person.get_eyes_color()[0] + ","),
                               font=("Tahoma", 12), bg=PG)
     else:
         result_label2 = Label(result_frame,
-                              text=(__translations_dict__.get("minnow1"), person.get_eyes_color()[0],
-                                    __translations_dict__.get("minnow2") % person.get_eyes_color()[1] + ","),
+                              text=(__translations_dict__["minnow1"], person.get_eyes_color()[0] + " " +
+                                    __translations_dict__["minnow2"] % person.get_eyes_color()[1] + ","),
                               font=("Tahoma", 12), bg=PG)
 
     if person.get_hairs_color() != "":
-        result_label3 = Label(result_frame, text=(
-                __translations_dict__["have_color_hairs"] % person.get_hairs_color() + ","
-        ),
+        result_label3 = Label(result_frame, text=(__translations_dict__["have_color_hairs"] % hairs_color + ","),
                               font=("Tahoma", 12), bg=PG)
     else:
         result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
@@ -740,17 +742,17 @@ def result(event=None):
                                               __translations_dict__["kilo"] + ","), font=("Tahoma", 12),
                           bg=PG)
 
-    result_label6 = Label(result_frame, text=(__translations_dict__["have_a_BMI_around"],
+    result_label6 = Label(result_frame, text=(__translations_dict__["have_a_BMI_around"] + " " +
                                               strint(person.get_bmi()) + "."),
                           font=("Tahoma", 12), bg=PG)
 
     if person.get_bmi_interpretation() != "":
         if gender == "male":
-            result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_he_is"],
+            result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_he_is"] + " " +
                                                       person.get_bmi_interpretation() + "."),
                                   font=("Tahoma", 12), bg=PG)
         else:
-            result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_she_is"],
+            result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_she_is"] + " " +
                                                       person.get_bmi_interpretation() + "."),
                                   font=("Tahoma", 12), bg=PG)
     else:
@@ -759,9 +761,9 @@ def result(event=None):
         gender = "randomize"
 
     save_button = Button(result_frame, text=__translations_dict__["save"], font=("Tahoma", 12), bg=LG,
-                         activebackground='#CCEEFF', command=lambda: save_as(person))
+                         activebackground=CCEEFF, command=lambda: save_as(person))
     close_button = Button(result_frame, text=__translations_dict__["close"], font=("Tahoma", 12), bg=LG,
-                          activebackground='#CCEEFF', command=lambda: tabs.forget(result_frame))
+                          activebackground=CCEEFF, command=lambda: tabs.forget(result_frame))
 
     # empaquetage
     result_label1.pack()
@@ -873,7 +875,7 @@ weight_range_entry = Entry(frame1, bg=LG)
 # Bouton OK
 label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg=PG)
 OK_button = Button(frame1, text=__translations_dict__["submit"], font=("Tahoma", 10), bg=LG,
-                   activebackground='#CCEEFF', command=lambda: result())
+                   activebackground=CCEEFF, command=lambda: result())
 
 # Ajout d'un menu
 menu_bar = Menu(root)
