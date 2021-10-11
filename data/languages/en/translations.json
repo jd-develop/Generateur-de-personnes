@@ -109,5 +109,6 @@
   "close_all_tabs": "Close all tabs",
   "not_person_file": "Impossible to open this file, because he's not a person file or he's corrupt.",
   "enter": "Enter",
+  "shift": "Shift",
   "error_code": "Error code: "
 }

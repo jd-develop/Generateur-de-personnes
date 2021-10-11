@@ -824,8 +824,10 @@ root.title(__translations_dict__["win_title"])
 # ligne suivante : j'utilise cette trad pour vérifier que les caractères sont correctement décodés.
 # Dé-commenter en cas de besoin.
 # print(__translations_dict__["win_title"])
-root.geometry("900x500")
+root.geometry("990x600")
 root.minsize(900, 500)
+
+# Sous Linux, tkinter plante avec TclError lorsqu'on charge l'icône.
 try:
     root.iconbitmap('icon.ico')
 except TclError:
@@ -887,9 +889,6 @@ file_menu.add_command(label=__translations_dict__["reinit_data"], command=lambda
 # ouvrir...
 file_menu.add_command(label=__translations_dict__["open..."], command=lambda: ask_for_document_saved(),
                       accelerator="Ctrl+O")
-# fermer tous les onglets
-file_menu.add_command(label=__translations_dict__["close_all_tabs"], command=lambda: close_all_tabs(),
-                      accelerator="Ctrl+F1")
 menu_bar.add_cascade(label=__translations_dict__["file"], menu=file_menu)
 options_menu = Menu(menu_bar, tearoff=0)
 # Bouton OK
@@ -898,8 +897,13 @@ options_menu.add_command(label=__translations_dict__["submit"], command=lambda: 
     _age_range_entry=age_range_entry,
     _height_range_entry=height_range_entry,
     _weight_range_entry=weight_range_entry), accelerator=__translations_dict__["enter"])
+# fermer tous les onglets
+options_menu.add_command(label=__translations_dict__["close_all_tabs"], command=lambda: close_all_tabs(),
+                         accelerator="Ctrl+F1")
+options_menu.add_separator()
 # à propos du programme
-options_menu.add_command(label=__translations_dict__["about..."], command=lambda: about())
+options_menu.add_command(label=__translations_dict__["about..."], command=lambda: about(),
+                         accelerator=f"Ctrl+{__translations_dict__['shift']}+A")
 # quitter le programme
 options_menu.add_command(label=__translations_dict__["quit"], command=lambda: quit(0), accelerator="Ctrl+Q")
 menu_bar.add_cascade(label=__translations_dict__["options"], menu=options_menu)
@@ -926,6 +930,7 @@ root.bind('<Control-q>', lambda event: exit())
 root.bind('<Control-r>', lambda event: reset_data())
 root.bind('<Control-o>', lambda event: ask_for_document_saved())
 root.bind('<Control-F1>', lambda event: close_all_tabs())
+root.bind('<Control-Shift-A>', lambda event: about())
 root.bind('<Return>',
           lambda event, g=gender, a=age_range_entry, h=height_range_entry, w=weight_range_entry: result(g, a, h, w))
 root.mainloop()
