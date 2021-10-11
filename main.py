@@ -494,7 +494,7 @@ def open_saved_document(name_of_element="Document"):
         result_label1_bis2 = Label(result_frame, text=character, font=("Tahoma", 12), bg=PG)
 
         if profession is not None:
-            result_label1_ter = Label(result_frame, text=(__translations_dict__["is"], profession + ","),
+            result_label1_ter = Label(result_frame, text=(__translations_dict__["is"] + " " + profession + ","),
                                       font=("Tahoma", 12), bg=PG)
         else:
             result_label1_ter = None
@@ -517,13 +517,14 @@ def open_saved_document(name_of_element="Document"):
         else:
             result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
         
-        result_label4 = Label(result_frame, text=(__translations_dict__.get("have_(meters_tall)"), str(size_in_meters),
-                                                  __translations_dict__.get("(have_)meters_tall") + ","),
+        result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"] + " " +
+                                                  str(size_in_meters) + " " +
+                                                  __translations_dict__["(have_)meters_tall"] + ","),
                               font=("Tahoma", 12), bg=PG)
-        result_label5 = Label(result_frame, text=(__translations_dict__.get("weigh_(kilo)"), str(weight),
-                                                  __translations_dict__.get("kilo") + ","),
+        result_label5 = Label(result_frame, text=(__translations_dict__["weigh_(kilo)"] + " " + str(weight) + " " +
+                                                  __translations_dict__["kilo"] + ","),
                               font=("Tahoma", 12), bg=PG)
-        result_label6 = Label(result_frame, text=(__translations_dict__.get("have_a_BMI_around") + " " +
+        result_label6 = Label(result_frame, text=(__translations_dict__["have_a_BMI_around"] + " " +
                                                   strint(bmi) + "."),
                               font=("Tahoma", 12), bg=PG)
 
@@ -710,7 +711,7 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
     result_label1_bis2 = Label(result_frame, text=str(person_character), font=("Tahoma", 12), bg=PG)
 
     if person.get_profession() is not None:
-        result_label1_ter = Label(result_frame, text=(__translations_dict__["is"], str(person.get_profession())
+        result_label1_ter = Label(result_frame, text=(__translations_dict__["is"] + " " + str(person.get_profession())
                                                       + ","),
                                   font=("Tahoma", 12), bg=PG)
     else:
@@ -722,7 +723,7 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
                               font=("Tahoma", 12), bg=PG)
     else:
         result_label2 = Label(result_frame,
-                              text=(__translations_dict__["minnow1"], person.get_eyes_color()[0] + " " +
+                              text=(__translations_dict__["minnow1"] + " " + person.get_eyes_color()[0] + " " +
                                     __translations_dict__["minnow2"] % person.get_eyes_color()[1] + ","),
                               font=("Tahoma", 12), bg=PG)
 
@@ -732,13 +733,13 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
     else:
         result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
 
-    result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"],
-                                              str(person.get_size_in_meters()),
+    result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"] + " " +
+                                              str(person.get_size_in_meters()) + " " +
                                               __translations_dict__["(have_)meters_tall"] + ","),
                           font=("Tahoma", 12), bg=PG)
 
-    result_label5 = Label(result_frame, text=(__translations_dict__["weigh_(kilo)"], str(person.get_weight()),
-                                              __translations_dict__["kilo"] + ","), font=("Tahoma", 12),
+    result_label5 = Label(result_frame, text=(__translations_dict__["weigh_(kilo)"] + " " + str(person.get_weight())
+                                              + " " + __translations_dict__["kilo"] + ","), font=("Tahoma", 12),
                           bg=PG)
 
     result_label6 = Label(result_frame, text=(__translations_dict__["have_a_BMI_around"] + " " +
