@@ -113,13 +113,13 @@ else:
 class Person:
     """ Définit ce qu'est une personne """
 
-    def __init__(self, age_range=None, size_range=None, weight_range=None, gender_in_class="male", profession=None,
+    def __init__(self, age_range=None, height_range=None, weight_range=None, gender_in_class="male", profession=None,
                  created_identity=0):
         """ Initialisation de la personne"""
         if weight_range is None:
             weight_range = [60, 65]
-        if size_range is None:
-            size_range = [175, 175]
+        if height_range is None:
+            height_range = [175, 175]
         if age_range is None:
             age_range = [20, 20]
         self.created_identity = created_identity
@@ -133,7 +133,7 @@ class Person:
             self.age = 20
 
         try:
-            self.size = randint(int(size_range[0]), int(size_range[1]))  # taille en centimètres
+            self.size = randint(int(height_range[0]), int(height_range[1]))  # taille en centimètres
             if not 0 < self.size < 250:
                 self.size = 175
         except ValueError:
@@ -566,7 +566,7 @@ def open_saved_document(name_of_element="Document"):
         return
 
 
-def ask_for_document_saved(event=None):
+def ask_for_document_saved():
     """ Demande le document à ouvrir. """
 
     filename = filedialog.askopenfilename(initialdir="saves/", title=__translations_dict__.get("select_person"),
@@ -633,7 +633,7 @@ def save_as(person):
         save(person, filename)
 
 
-def reset_data(event=None):
+def reset_data():
     """ Réinitialise les données """
     global number_of_created_identities
     # demander à l'utilisateur s'il est sûr de réinitialiser les données
@@ -664,34 +664,34 @@ def reset_data(event=None):
         messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_not_reinit"))
 
 
-def result(event=None):
+def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
     """ Créé l'onglet où la personne est indiquée """
-    global gender, age_range_entry, size_range_entry, weight_range_entry, number_of_created_identities
+    global number_of_created_identities
     try:
         add_new_created_identity(1)
     except FileNotFoundError:
         # Fichier manquant : terminer la fonction en affichant une erreur
-        messagebox.showerror(__translations_dict__.get("FileNotFoundError"),
-                             __translations_dict__.get("crash_file_missing") + "\n\n" +
-                             __translations_dict__.get("please_reinit_data"))
+        messagebox.showerror(__translations_dict__["FileNotFoundError"],
+                             __translations_dict__["crash_file_missing"] + "\n\n" +
+                             __translations_dict__["please_reinit_data"])
         return "FileNotFoundError"
-    if gender == "randomize":
+    if _gender == "randomize":
         randomized = True
         pseudo_random_number = randint(0, 1)
         if pseudo_random_number == 0:
-            gender = "female"
+            _gender = "female"
         else:
-            gender = "male"
+            _gender = "male"
     else:
         randomized = False
-    age_range_entered = age_range_entry.get()
+    age_range_entered = _age_range_entry.get()
     age_range_in_function = age_range_entered.split('.')
-    size_range_entered = size_range_entry.get()
-    size_range_in_function = size_range_entered.split('.')
-    weight_range_entered = weight_range_entry.get()
+    height_range_entered = _height_range_entry.get()
+    height_range_in_function = height_range_entered.split('.')
+    weight_range_entered = _weight_range_entry.get()
     weight_range_in_function = weight_range_entered.split('.')
 
-    person = Person(age_range_in_function, size_range_in_function, weight_range_in_function, gender,
+    person = Person(age_range_in_function, height_range_in_function, weight_range_in_function, _gender,
                     created_identity=number_of_created_identities)
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
@@ -701,7 +701,6 @@ def result(event=None):
 
     result_frame = Frame(tabs, bg=PG)
 
-    print(person_name)
     result_label1 = Label(result_frame, text=(person_name + " " + __translations_dict__["age_is"] + " " +
                                               str(person_age) + " " + __translations_dict__["years_old"] + ","),
                           font=("Tahoma", 12), bg=PG)
@@ -747,7 +746,7 @@ def result(event=None):
                           font=("Tahoma", 12), bg=PG)
 
     if person.get_bmi_interpretation() != "":
-        if gender == "male":
+        if _gender == "male":
             result_label7 = Label(result_frame, text=(__translations_dict__["BMI_so_he_is"] + " " +
                                                       person.get_bmi_interpretation() + "."),
                                   font=("Tahoma", 12), bg=PG)
@@ -758,7 +757,7 @@ def result(event=None):
     else:
         result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg=PG)
     if randomized:
-        gender = "randomize"
+        _gender = "randomize"
 
     save_button = Button(result_frame, text=__translations_dict__["save"], font=("Tahoma", 12), bg=LG,
                          activebackground=CCEEFF, command=lambda: save_as(person))
@@ -806,7 +805,7 @@ def randomize_gender():
     gender = "randomize"
 
 
-def close_all_tabs(event=None):
+def close_all_tabs():
     """ Ferme tous les onglets """
     global tabs
     all_tabs = list(tabs.tabs())[1:]  # on enlève l'accueil
@@ -865,7 +864,7 @@ age_range_entry = Entry(frame1, bg=LG)
 # Tranche de taille
 size_label = Label(frame1, text=__translations_dict__["height_range"] + __translations_dict__["separate_by_dot"],
                    font=('Tahoma', 15), bg=PG)
-size_range_entry = Entry(frame1, bg=LG)
+height_range_entry = Entry(frame1, bg=LG)
 
 # Tranche de poids
 weight_label = Label(frame1, text=__translations_dict__["weight_range"] + __translations_dict__["separate_by_dot"],
@@ -875,7 +874,11 @@ weight_range_entry = Entry(frame1, bg=LG)
 # Bouton OK
 label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg=PG)
 OK_button = Button(frame1, text=__translations_dict__["submit"], font=("Tahoma", 10), bg=LG,
-                   activebackground=CCEEFF, command=lambda: result())
+                   activebackground=CCEEFF, command=lambda: result(_gender=gender,
+                                                                   _age_range_entry=age_range_entry,
+                                                                   _height_range_entry=height_range_entry,
+                                                                   _weight_range_entry=weight_range_entry)
+                   )
 
 # Ajout d'un menu
 menu_bar = Menu(root)
@@ -891,8 +894,11 @@ file_menu.add_command(label=__translations_dict__["close_all_tabs"], command=lam
 menu_bar.add_cascade(label=__translations_dict__["file"], menu=file_menu)
 options_menu = Menu(menu_bar, tearoff=0)
 # Bouton OK
-options_menu.add_command(label=__translations_dict__["submit"], command=lambda: result(),
-                         accelerator=__translations_dict__["enter"])
+options_menu.add_command(label=__translations_dict__["submit"], command=lambda: result(
+    _gender=gender,
+    _age_range_entry=age_range_entry,
+    _height_range_entry=height_range_entry,
+    _weight_range_entry=weight_range_entry), accelerator=__translations_dict__["enter"])
 # à propos du programme
 options_menu.add_command(label=__translations_dict__["about..."], command=lambda: about())
 # quitter le programme
@@ -910,18 +916,19 @@ gender_male_radio.pack()
 age_label.pack()
 age_range_entry.pack()
 size_label.pack()
-size_range_entry.pack()
+height_range_entry.pack()
 weight_label.pack()
 weight_range_entry.pack()
 label2.pack()
 OK_button.pack()
 
 # raccourcis clavier
-root.bind('<Control-q>', exit)
-root.bind('<Control-r>', reset_data)
-root.bind('<Control-o>', ask_for_document_saved)
-root.bind('<Control-F1>', close_all_tabs)
-root.bind('<Return>', result)
+root.bind('<Control-q>', lambda event: exit())
+root.bind('<Control-r>', lambda event: reset_data())
+root.bind('<Control-o>', lambda event: ask_for_document_saved())
+root.bind('<Control-F1>', lambda event: close_all_tabs())
+root.bind('<Return>',
+          lambda event, g=gender, a=age_range_entry, h=height_range_entry, w=weight_range_entry: result(g, a, h, w))
 root.mainloop()
 quit(0)
 
