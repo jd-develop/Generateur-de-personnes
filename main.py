@@ -815,9 +815,7 @@ def close_all_tabs():
         tabs.forget(tab)
 
 
-save_window = Tk()
 number_of_created_identities = 0
-save_window.destroy()
 
 
 # Création de la fenêtre
