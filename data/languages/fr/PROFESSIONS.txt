@@ -45,22 +45,15 @@ poète
 poissonnier.e
 president.e directeur.trice general.e
 primeur.euse
-professeur.e
 professeur.e d'allemand
 professeur.e d'anglais
 professeur.e d'espagnol
-professeur.e de clarinette
 professeur.e de dessin
-professeur.e de flute traversière
-professeur.e de Francais
-professeur.e de latin et de grec
+professeur.e de lettres
 professeur.e de mathématiques
 professeur.e de musique
-professeur.e de piano
 professeur.e de SES
-professeur.e de solfege
 professeur.e de SVT
-professeur.e de violon
 professeur.e des écoles
 streamer.euse
 technicien.ne de surface

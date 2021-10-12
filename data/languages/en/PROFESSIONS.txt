@@ -11,7 +11,6 @@ bookseller
 cabinetmaker
 cashier
 CEO
-clarinet teacher
 cook
 deli owner
 delivery driver
@@ -22,7 +21,6 @@ engineer
 English teacher
 fishmonger
 floor housekeeper
-flute teacher
 French teacher
 garage mechanic
 garbage collector
@@ -32,7 +30,6 @@ graphic designer
 instructor-educator
 insurance broker
 joiner
-latin and green teacher
 mangaka
 manual worker
 marketing director
@@ -44,7 +41,6 @@ network admin
 nurseryman
 osteopath
 painter
-piano teacher
 poet
 property administrator
 publisher
@@ -54,12 +50,10 @@ repairman
 sales advisor
 spanish teacher
 streamer
-teacher
 tourist guide
 traffic manager
 train driver
 veterinary
-violin teacher
 warehouseman
 webmaster
 writer

@@ -10,7 +10,6 @@ from tkinter import filedialog  # dialogue "enregistrer" et "ouvrir"
 
 import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
-import shutil  # Pour traficoter les fichiers
 import json  # pour lire les trads
 
 import random  # Pour pouvoir faire du pseudo-aléatoire
@@ -646,16 +645,6 @@ def reset_data():
         file.write("0")
         file.close()
         number_of_created_identities = 0
-        try:
-            shutil.rmtree("saves")
-        except FileNotFoundError:
-            pass
-        os.mkdir("saves")
-
-        # refonte du .gitignore pour éviter les bugs de git
-        git_ignore = open("saves/.gitignore", "w", encoding="UTF-8")
-        git_ignore.write("*.person\n")
-        git_ignore.close()
 
         messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_successfully_reinit"))
         with open('data/language.txt', 'w', encoding="UTF-8") as default_language_file:
