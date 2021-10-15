@@ -16,7 +16,7 @@ import random  # Pour pouvoir faire du pseudo-aléatoire
 from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "21w41a"
+__version__ = "21w41b"
 LG = "lightgreen"
 PG = "palegreen"
 CCEEFF = '#CCEEFF'
