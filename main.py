@@ -121,14 +121,22 @@ class Person:
         if age_range is None:
             age_range = [20, 20]
         self.created_identity = created_identity
+
         try:
             self.age = randint(int(age_range[0]), int(age_range[1]))  # âge en années
-            if not -1 < self.age < 120:
+            if not -1 < self.age <= 122:
                 self.age = 20
         except ValueError:
             self.age = 20
         except IndexError:
             self.age = 20
+        if len(age_range) == 1:
+            try:
+                self.age = int(age_range[0])
+                if not -1 < self.age <= 122:
+                    self.age = 20
+            except ValueError:
+                self.age = 20
 
         try:
             self.height = randint(int(height_range[0]), int(height_range[1]))  # taille en centimètres
@@ -138,6 +146,13 @@ class Person:
             self.height = 175
         except IndexError:
             self.height = 175
+        if len(height_range) == 1:
+            try:
+                self.height = int(height_range[0])
+                if not 0 < self.height < 250:
+                    self.height = 175
+            except ValueError:
+                self.height = 175
         self.height_in_meters = self.height / 100  # taille en mètres
 
         try:
@@ -148,6 +163,13 @@ class Person:
             self.weight = 60
         except IndexError:
             self.weight = 60
+        if len(weight_range) == 1:
+            try:
+                self.weight = int(weight_range[0])
+                if not 0 < self.weight < 300:
+                    self.weight = 60
+            except ValueError:
+                self.weight = 60
 
         self.bmi = self.weight / (self.height_in_meters * self.height_in_meters)  # IMC (BMI = Body Mass Index)
         self.gender_in_class = gender_in_class
