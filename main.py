@@ -112,7 +112,7 @@ class Person:
     """ Définit ce qu'est une personne """
 
     def __init__(self, age_range=None, height_range=None, weight_range=None, gender_in_class="male", profession=None,
-                 created_identity=0):
+                 character=None, created_identity=0):
         """ Initialisation de la personne"""
         if weight_range is None:
             weight_range = [60, 65]
@@ -268,13 +268,16 @@ class Person:
             self.last_name = __translations_dict__.get("SMITH")
 
         # caractère
-        # Vérification de l'existence du fichier "CHARACTERS_LIST.txt" et choix du caractère
-        if os.path.exists(f"data/languages/{language}/CHARACTERS_LIST.txt"):
-            characters_list = open(f"data/languages/{language}/CHARACTERS_LIST.txt", "r+", encoding="UTF-8").read() \
-                .split("\n")
-            self.character = random.choice(characters_list)
+        if character is None:
+            # Vérification de l'existence du fichier "CHARACTERS_LIST.txt" et choix du caractère
+            if os.path.exists(f"data/languages/{language}/CHARACTERS_LIST.txt"):
+                characters_list = open(f"data/languages/{language}/CHARACTERS_LIST.txt", "r+", encoding="UTF-8").read()\
+                    .split("\n")
+                self.character = random.choice(characters_list)
+            else:
+                self.character = __translations_dict__.get("is_not_found")
         else:
-            self.character = __translations_dict__.get("is_not_found")
+            self.character = character
 
         # Prénom
         match gender_in_class:
@@ -675,7 +678,8 @@ def reset_data():
         messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_not_reinit"))
 
 
-def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, _profession_str_var):
+def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, _profession_str_var,
+           _character_str_var):
     """ Créé l'onglet où la personne est indiquée """
     global number_of_created_identities
     try:
@@ -699,6 +703,10 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
         prof_randomize = True
     else:
         prof_randomize = False
+    if _character_str_var.get() == __translations_dict__["randomize"]:
+        char_randomize = True
+    else:
+        char_randomize = False
     age_range_entered = _age_range_entry.get()
     age_range_in_function = age_range_entered.split('.')
     height_range_entered = _height_range_entry.get()
@@ -708,7 +716,8 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
 
     person = Person(age_range_in_function, height_range_in_function, weight_range_in_function, _gender,
                     created_identity=number_of_created_identities,
-                    profession=(_profession_str_var.get() if not prof_randomize else None)
+                    profession=(_profession_str_var.get() if not prof_randomize else None),
+                    character=(_character_str_var.get() if not char_randomize else None)
                     )
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
@@ -883,6 +892,17 @@ profession_str_var.set(professions[0])
 profession_opt = OptionMenu(frame1, profession_str_var, *professions)
 profession_opt.config(width=30, font=("Tahoma", 12), bg=LG, activebackground=PG)
 
+# Caractères
+character_label = Label(frame1, text=__translations_dict__["character"], font=('Tahoma', 15), bg=PG)
+characters = [__translations_dict__["randomize"]] + [
+    prof.replace("\n", '') for prof in open(f"data/languages/{language}/CHARACTERS_LIST.txt", 'r+', encoding='UTF-8')
+        .readlines()
+]
+character_str_var = StringVar(frame1)
+character_str_var.set(characters[0])
+character_opt = OptionMenu(frame1, character_str_var, *characters)
+character_opt.config(width=30, font=("Tahoma", 12), bg=LG, activebackground=PG)
+
 # Tranche d'âge
 age_label = Label(frame1, text=__translations_dict__["age_range"] + __translations_dict__["separate_by_dot"],
                   font=('Tahoma', 15), bg=PG)
@@ -905,7 +925,8 @@ OK_button = Button(frame1, text=__translations_dict__["submit"], font=("Tahoma",
                                                                    _age_range_entry=age_range_entry,
                                                                    _height_range_entry=height_range_entry,
                                                                    _weight_range_entry=weight_range_entry,
-                                                                   _profession_str_var=profession_str_var)
+                                                                   _profession_str_var=profession_str_var,
+                                                                   _character_str_var=character_str_var)
                    )
 
 # Ajout d'un menu
@@ -924,7 +945,8 @@ options_menu.add_command(label=__translations_dict__["submit"], command=lambda: 
     _age_range_entry=age_range_entry,
     _height_range_entry=height_range_entry,
     _weight_range_entry=weight_range_entry,
-    _profession_str_var=profession_str_var), accelerator=__translations_dict__["enter"])
+    _profession_str_var=profession_str_var,
+    _character_str_var=character_str_var), accelerator=__translations_dict__["enter"])
 # fermer tous les onglets
 options_menu.add_command(label=__translations_dict__["close_all_tabs"], command=lambda: close_all_tabs(),
                          accelerator="Ctrl+F1")
@@ -946,6 +968,8 @@ gender_female_radio.pack()
 gender_male_radio.pack()
 profession_label.pack()
 profession_opt.pack()
+character_label.pack()
+character_opt.pack()
 age_label.pack()
 age_range_entry.pack()
 height_label.pack()
@@ -963,7 +987,7 @@ root.bind('<Control-F1>', lambda event: close_all_tabs())
 root.bind('<Control-Shift-A>', lambda event: about())
 root.bind('<Return>',
           lambda event, g=gender, a=age_range_entry, h=height_range_entry,
-          w=weight_range_entry, p=profession_str_var: result(g, a, h, w, p)
+          w=weight_range_entry, p=profession_str_var, c=character_str_var: result(g, a, h, w, p, c)
           )
 root.mainloop()
 quit(0)
