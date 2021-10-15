@@ -673,7 +673,7 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
             _gender = "male"
     else:
         randomized = False
-    if _profession_str_var.get() == "Rendre aléatoire":  # à changer
+    if _profession_str_var.get() == __translations_dict__["randomize"]:
         prof_randomize = True
     else:
         prof_randomize = False
@@ -851,8 +851,8 @@ gender_male_radio = Radiobutton(frame1, text=__translations_dict__["male"], vari
                                 activebackground=PG, value=2, command=lambda: change_to_male())
 
 # Profession
-profession_label = Label(frame1, text="GENRE LE METIER", font=('Tahoma', 15), bg=PG)
-professions = ["Rendre aléatoire"] + [
+profession_label = Label(frame1, text=__translations_dict__["profession"], font=('Tahoma', 15), bg=PG)
+professions = [__translations_dict__["randomize"]] + [
     prof.replace("\n", '') for prof in open(f"data/languages/{language}/PROFESSIONS.txt", 'r+', encoding='UTF-8')
         .readlines()
 ]

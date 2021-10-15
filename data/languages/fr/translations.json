@@ -5,6 +5,7 @@
   "male": "Masculin",
   "female": "Féminin",
   "randomize": "Rendre aléatoire",
+  "profession": "Choix du métier",
   "age_range": "Tranche d'âge",
   "height_range": "Tranche de taille en centimètres",
   "weight_range": "Tranche de poids en kilogrammes",
