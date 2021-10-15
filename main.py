@@ -15,7 +15,6 @@ import json  # pour lire les trads
 import random  # Pour pouvoir faire du pseudo-aléatoire
 from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
 
-
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
 __version__ = "21w41a"
 LG = "lightgreen"
@@ -39,7 +38,7 @@ def ask_language():
     language_frame = Frame(language_window, bg=PG)
     language_label = Label(language_frame, text="Sélectionnez votre langue : / Choose your language:",
                            font=("Tahoma", 12), background=PG)
-    
+
     language_options_list = ["Français", "English"]
     language_variable = StringVar(language_window)
     language_variable.set(language_options_list[0])
@@ -54,7 +53,7 @@ def ask_language():
     language_default = IntVar()
     language_default_checkbutton = Checkbutton(language_frame, text="Définir par défaut / Set by default",
                                                activebackground=PG, variable=language_default, bg=PG)
-    
+
     language_label.pack()
     language_opt.pack()
     language_default_checkbutton.pack()
@@ -132,14 +131,14 @@ class Person:
             self.age = 20
 
         try:
-            self.size = randint(int(height_range[0]), int(height_range[1]))  # taille en centimètres
-            if not 0 < self.size < 250:
-                self.size = 175
+            self.height = randint(int(height_range[0]), int(height_range[1]))  # taille en centimètres
+            if not 0 < self.height < 250:
+                self.height = 175
         except ValueError:
-            self.size = 175
+            self.height = 175
         except IndexError:
-            self.size = 175
-        self.size_in_meters = self.size / 100  # taille en mètres
+            self.height = 175
+        self.height_in_meters = self.height / 100  # taille en mètres
 
         try:
             self.weight = randint(int(weight_range[0]), int(weight_range[1]))  # taille en centimètres
@@ -150,7 +149,7 @@ class Person:
         except IndexError:
             self.weight = 60
 
-        self.bmi = self.weight / (self.size_in_meters * self.size_in_meters)  # IMC (BMI = Body Mass Index)
+        self.bmi = self.weight / (self.height_in_meters * self.height_in_meters)  # IMC (BMI = Body Mass Index)
         self.gender_in_class = gender_in_class
 
         # Couleur de cheveux
@@ -232,7 +231,7 @@ class Person:
         # Nom de famille
         # Vérification de l'existence du fichier "LAST_NAMES.txt" et choix du nom
         if os.path.exists(f"data/languages/{language}/LAST_NAMES.txt"):
-            last_names_list = open(f"data/languages/{language}/LAST_NAMES.txt", "r+", encoding="UTF-8").read()\
+            last_names_list = open(f"data/languages/{language}/LAST_NAMES.txt", "r+", encoding="UTF-8").read() \
                 .split("\n")
             if randint(1, 10) == 1:
                 first_last_name = random.choice(last_names_list).replace("\n", "")
@@ -249,7 +248,7 @@ class Person:
         # caractère
         # Vérification de l'existence du fichier "CHARACTERS_LIST.txt" et choix du caractère
         if os.path.exists(f"data/languages/{language}/CHARACTERS_LIST.txt"):
-            characters_list = open(f"data/languages/{language}/CHARACTERS_LIST.txt", "r+", encoding="UTF-8").read()\
+            characters_list = open(f"data/languages/{language}/CHARACTERS_LIST.txt", "r+", encoding="UTF-8").read() \
                 .split("\n")
             self.character = random.choice(characters_list)
         else:
@@ -362,13 +361,13 @@ class Person:
         """ Renvoie l'âge de la personne """
         return self.age
 
-    def get_size(self):
+    def get_height(self):
         """ Renvoie la taille de la personne en centimètres """
-        return self.size
+        return self.height
 
-    def get_size_in_meters(self):
+    def get_height_in_meters(self):
         """ Renvoie la taille de la personne en mètres """
-        return self.size_in_meters
+        return self.height_in_meters
 
     def get_weight(self):
         """ Renvoie le poids de la personne """
@@ -471,7 +470,7 @@ def open_saved_document(name_of_element="Document"):
             eyes_color = eyes_color.split(',')
             del eyes_color[-1]
             hairs_color = person_saved[7].replace("\n", '')
-            size_in_meters = person_saved[8].replace("\n", '')
+            height_in_meters = person_saved[8].replace("\n", '')
             weight = person_saved[9].replace("\n", '')
             bmi = float(person_saved[10].replace("\n", ''))
             bmi_interpretation = person_saved[11].replace("\n", '')
@@ -485,9 +484,9 @@ def open_saved_document(name_of_element="Document"):
         result_frame = Frame(tabs, bg=PG)
 
         result_label1 = Label(result_frame, text=(
-                                                     person_name + " " + __translations_dict__["age_is"] + " " +
-                                                     str(age) + " " + __translations_dict__["years_old"] + ","
-                                                 ), font=("Tahoma", 12), bg=PG)
+                person_name + " " + __translations_dict__["age_is"] + " " +
+                str(age) + " " + __translations_dict__["years_old"] + ","
+        ), font=("Tahoma", 12), bg=PG)
         result_label1_bis = Label(result_frame, text=(__translations_dict__["have_color_skin"] % skin_color + ","),
                                   font=("Tahoma", 12), bg=PG)
         result_label1_bis2 = Label(result_frame, text=character, font=("Tahoma", 12), bg=PG)
@@ -497,17 +496,17 @@ def open_saved_document(name_of_element="Document"):
                                       font=("Tahoma", 12), bg=PG)
         else:
             result_label1_ter = None
-        
+
         if len(eyes_color) == 1:
             result_label2 = Label(result_frame, text=(
                     __translations_dict__["have_color_eyes"] % eyes_color[0].replace("'", "") + ","),
                                   font=("Tahoma", 12), bg=PG)
         else:
             result_label2 = Label(result_frame, text=(
-                __translations_dict__["minnow1"] + " " + eyes_color[0].replace("'", "") + " " +
-                __translations_dict__["minnow2"] % eyes_color[1].replace("'", "") + ","),
+                    __translations_dict__["minnow1"] + " " + eyes_color[0].replace("'", "") + " " +
+                    __translations_dict__["minnow2"] % eyes_color[1].replace("'", "") + ","),
                                   font=("Tahoma", 12), bg=PG)
-        
+
         if not hairs_color == "":
             result_label3 = Label(result_frame,
                                   text=(__translations_dict__["have_color_hairs"] % hairs_color + ","),
@@ -515,9 +514,9 @@ def open_saved_document(name_of_element="Document"):
                                   )
         else:
             result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
-        
+
         result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"] + " " +
-                                                  str(size_in_meters) + " " +
+                                                  str(height_in_meters) + " " +
                                                   __translations_dict__["(have_)meters_tall"] + ","),
                               font=("Tahoma", 12), bg=PG)
         result_label5 = Label(result_frame, text=(__translations_dict__["weigh_(kilo)"] + " " + str(weight) + " " +
@@ -536,7 +535,7 @@ def open_saved_document(name_of_element="Document"):
                                                           bmi_interpretation + "."), font=("Tahoma", 12), bg=PG)
         else:
             result_label7 = Label(result_frame, text="", font=("Tahoma", 12), bg=PG)
-        
+
         close_button = Button(result_frame, text=__translations_dict__.get("close"), font=("Tahoma", 12), bg=LG,
                               activebackground=CCEEFF, command=lambda: tabs.forget(result_frame))
 
@@ -602,7 +601,7 @@ def save(person, name="Document"):
         file.write(str(person.get_skin_color()) + "\n")
         file.write(str(person.get_eyes_color()) + "\n")
         file.write(str(person.get_hairs_color()) + "\n")
-        file.write(str(person.get_size_in_meters()) + "\n")
+        file.write(str(person.get_height_in_meters()) + "\n")
         file.write(str(person.get_weight()) + "\n")
         file.write(str(person.get_bmi()) + "\n")
         file.write(str(person.get_bmi_interpretation()) + "\n")
@@ -654,7 +653,7 @@ def reset_data():
         messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_not_reinit"))
 
 
-def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
+def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, _profession_str_var):
     """ Créé l'onglet où la personne est indiquée """
     global number_of_created_identities
     try:
@@ -674,6 +673,10 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
             _gender = "male"
     else:
         randomized = False
+    if _profession_str_var.get() == "Rendre aléatoire":  # à changer
+        prof_randomize = True
+    else:
+        prof_randomize = False
     age_range_entered = _age_range_entry.get()
     age_range_in_function = age_range_entered.split('.')
     height_range_entered = _height_range_entry.get()
@@ -682,7 +685,9 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
     weight_range_in_function = weight_range_entered.split('.')
 
     person = Person(age_range_in_function, height_range_in_function, weight_range_in_function, _gender,
-                    created_identity=number_of_created_identities)
+                    created_identity=number_of_created_identities,
+                    profession=(_profession_str_var.get() if not prof_randomize else None)
+                    )
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
     person_character = person.get_character()
@@ -723,7 +728,7 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry):
         result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
 
     result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"] + " " +
-                                              str(person.get_size_in_meters()) + " " +
+                                              str(person.get_height_in_meters()) + " " +
                                               __translations_dict__["(have_)meters_tall"] + ","),
                           font=("Tahoma", 12), bg=PG)
 
@@ -806,7 +811,6 @@ def close_all_tabs():
 
 number_of_created_identities = 0
 
-
 # Création de la fenêtre
 root = Tk()
 root.title(__translations_dict__["win_title"])
@@ -846,14 +850,25 @@ gender_female_radio = Radiobutton(frame1, text=__translations_dict__["female"], 
 gender_male_radio = Radiobutton(frame1, text=__translations_dict__["male"], variable=gender_radiobuttons, bg=PG,
                                 activebackground=PG, value=2, command=lambda: change_to_male())
 
+# Profession
+profession_label = Label(frame1, text="GENRE LE METIER", font=('Tahoma', 15), bg=PG)
+professions = ["Rendre aléatoire"] + [
+    prof.replace("\n", '') for prof in open(f"data/languages/{language}/PROFESSIONS.txt", 'r+', encoding='UTF-8')
+        .readlines()
+]
+profession_str_var = StringVar(frame1)
+profession_str_var.set(professions[0])
+profession_opt = OptionMenu(frame1, profession_str_var, *professions)
+profession_opt.config(width=30, font=("Tahoma", 12), bg=LG, activebackground=PG)
+
 # Tranche d'âge
 age_label = Label(frame1, text=__translations_dict__["age_range"] + __translations_dict__["separate_by_dot"],
                   font=('Tahoma', 15), bg=PG)
 age_range_entry = Entry(frame1, bg=LG)
 
 # Tranche de taille
-size_label = Label(frame1, text=__translations_dict__["height_range"] + __translations_dict__["separate_by_dot"],
-                   font=('Tahoma', 15), bg=PG)
+height_label = Label(frame1, text=__translations_dict__["height_range"] + __translations_dict__["separate_by_dot"],
+                     font=('Tahoma', 15), bg=PG)
 height_range_entry = Entry(frame1, bg=LG)
 
 # Tranche de poids
@@ -867,7 +882,8 @@ OK_button = Button(frame1, text=__translations_dict__["submit"], font=("Tahoma",
                    activebackground=CCEEFF, command=lambda: result(_gender=gender,
                                                                    _age_range_entry=age_range_entry,
                                                                    _height_range_entry=height_range_entry,
-                                                                   _weight_range_entry=weight_range_entry)
+                                                                   _weight_range_entry=weight_range_entry,
+                                                                   _profession_str_var=profession_str_var)
                    )
 
 # Ajout d'un menu
@@ -885,7 +901,8 @@ options_menu.add_command(label=__translations_dict__["submit"], command=lambda: 
     _gender=gender,
     _age_range_entry=age_range_entry,
     _height_range_entry=height_range_entry,
-    _weight_range_entry=weight_range_entry), accelerator=__translations_dict__["enter"])
+    _weight_range_entry=weight_range_entry,
+    _profession_str_var=profession_str_var), accelerator=__translations_dict__["enter"])
 # fermer tous les onglets
 options_menu.add_command(label=__translations_dict__["close_all_tabs"], command=lambda: close_all_tabs(),
                          accelerator="Ctrl+F1")
@@ -905,9 +922,11 @@ gender_label.pack()
 gender_randomize_radio.pack()
 gender_female_radio.pack()
 gender_male_radio.pack()
+profession_label.pack()
+profession_opt.pack()
 age_label.pack()
 age_range_entry.pack()
-size_label.pack()
+height_label.pack()
 height_range_entry.pack()
 weight_label.pack()
 weight_range_entry.pack()
@@ -921,7 +940,9 @@ root.bind('<Control-o>', lambda event: ask_for_document_saved())
 root.bind('<Control-F1>', lambda event: close_all_tabs())
 root.bind('<Control-Shift-A>', lambda event: about())
 root.bind('<Return>',
-          lambda event, g=gender, a=age_range_entry, h=height_range_entry, w=weight_range_entry: result(g, a, h, w))
+          lambda event, g=gender, a=age_range_entry, h=height_range_entry,
+          w=weight_range_entry, p=profession_str_var: result(g, a, h, w, p)
+          )
 root.mainloop()
 quit(0)
 
