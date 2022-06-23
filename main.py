@@ -8,7 +8,7 @@ from tkinter import ttk  # Pour faire les onglets
 from tkinter import messagebox  # Pour faire des boîtes de dialogues
 from tkinter import filedialog  # dialogue "enregistrer" et "ouvrir"
 
-import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS car ce n'est pas le même fonctionnement d'un
+import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS, car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
 import json  # pour lire les trads
 
@@ -16,7 +16,7 @@ import random  # Pour pouvoir faire du pseudo-aléatoire
 from random import randint  # Pour pas avoir à écrire à chaque fois 'random.randint()'
 
 __author__ = "Jean Dubois <jd-dev@laposte.net>"
-__version__ = "4.0"
+__version__ = "22w25a"
 LG = "lightgreen"
 PG = "palegreen"
 CCEEFF = '#CCEEFF'
@@ -122,6 +122,9 @@ class Person:
             age_range = [20, 20]
         self.created_identity = created_identity
 
+        assert gender_in_class in ["male", "female"]
+
+        # ÂGE
         try:
             self.age = randint(int(age_range[0]), int(age_range[1]))  # âge en années
             if not -1 < self.age <= 122:
@@ -138,6 +141,7 @@ class Person:
             except ValueError:
                 self.age = 20
 
+        # TAILLE
         try:
             self.height = randint(int(height_range[0]), int(height_range[1]))  # taille en centimètres
             if not 0 < self.height < 250:
@@ -171,6 +175,7 @@ class Person:
             except ValueError:
                 self.weight = 60
 
+        # IMC
         self.bmi = self.weight / (self.height_in_meters * self.height_in_meters)  # IMC (BMI = Body Mass Index)
         self.gender_in_class = gender_in_class
 
@@ -197,6 +202,22 @@ class Person:
                 self.hairs_color = __translations_dict__["white"]
         else:
             self.hairs_color = ""
+
+        # Longueur de cheveux
+        self.hair_length = None
+        match gender_in_class:
+            case "male":
+                if random.randint(1, 50) == 1:
+                    self.hair_length = "long"
+                else:
+                    self.hair_length = random.choice(["short", "short", "medium_length"])
+            case "female":
+                if random.randint(1, 50) == 1:
+                    self.hair_length = "short"
+                else:
+                    self.hair_length = random.choice(["long", "long", "medium_length"])
+
+        assert self.hair_length is not None
 
         # Couleurs des yeux
         if randint(1, 100) == 1:
@@ -427,6 +448,10 @@ class Person:
         """ Renvoie la couleur des cheveux de la personne """
         return self.hairs_color
 
+    def get_hair_length(self):
+        """ Renvoie la longueur des cheveux de la personne """
+        return self.hair_length
+
     def get_eyes_color(self):
         """ Renvoie la couleur des yeux de la personne sous forme de liste"""
         return self.eyes_color
@@ -501,6 +526,10 @@ def open_saved_document(name_of_element="Document"):
             bmi_interpretation = person_saved[11].replace("\n", '')
             profession = person_saved[12].replace("\n", '')
             character = person_saved[13].replace("\n", '')
+            try:
+                hair_length = person_saved[14].replace("\n", '')
+            except IndexError:
+                hair_length = None
         except Exception as e:
             messagebox.showerror(__translations_dict__["error"], __translations_dict__.get("not_person_file") + '\n'
                                  + __translations_dict__["error_code"] + "python." + e.__class__.__name__)
@@ -540,6 +569,12 @@ def open_saved_document(name_of_element="Document"):
         else:
             result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
 
+        if hair_length:
+            result_label3_bis = Label(result_frame, text=__translations_dict__[f"{hair_length}_hair"],
+                                      font=("Tahoma", 12), bg=PG)
+        else:
+            result_label3_bis = None
+
         result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"] + " " +
                                                   str(height_in_meters) + " " +
                                                   __translations_dict__["(have_)meters_tall"] + ","),
@@ -567,10 +602,12 @@ def open_saved_document(name_of_element="Document"):
         result_label1.pack()
         result_label1_bis.pack()
         result_label1_bis2.pack()
-        if result_label1_ter is not None:
+        if result_label1_ter:
             result_label1_ter.pack()
         result_label2.pack()
         result_label3.pack()
+        if result_label3_bis:
+            result_label3_bis.pack()
         result_label4.pack()
         result_label5.pack()
         result_label6.pack()
@@ -602,7 +639,7 @@ def ask_for_document_saved():
         open_saved_document(filename)
 
 
-def save(person, name="Document"):
+def save(person: Person, name="Document"):
     """ Sauvegarde """
     try:
         if name.endswith(".person"):
@@ -632,6 +669,7 @@ def save(person, name="Document"):
         file.write(str(person.get_bmi_interpretation()) + "\n")
         file.write(str(person.get_profession()) + "\n")
         file.write(str(person.get_character()) + "\n")
+        file.write(str(person.get_hair_length()) + "\n")
         file.close()
         # OBTW
         #   explication du filename.split("/")[len(filename.split('/')) - 1] :
@@ -646,7 +684,7 @@ def save(person, name="Document"):
         messagebox.showerror(__translations_dict__.get("error"), __translations_dict__.get("this_name_is_not_accepted"))
 
 
-def save_as(person):
+def save_as(person: Person):
     """ Demande le nom de la sauvegarde. """
     filename = filedialog.asksaveasfilename(initialdir="saves/", title=__translations_dict__.get("save_person"),
                                             filetypes=(
@@ -724,6 +762,7 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
     person_character = person.get_character()
     skin_color = person.get_skin_color()
     hairs_color = person.get_hairs_color()
+    hair_length = person.get_hair_length()
 
     result_frame = Frame(tabs, bg=PG)
 
@@ -757,6 +796,9 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
                               font=("Tahoma", 12), bg=PG)
     else:
         result_label3 = Label(result_frame, text=__translations_dict__["bald"], font=("Tahoma", 12), bg=PG)
+
+    result_label3_bis = Label(result_frame, text=__translations_dict__[f"{hair_length}_hair"], font=("Tahoma", 12),
+                              bg=PG)
 
     result_label4 = Label(result_frame, text=(__translations_dict__["have_(meters_tall)"] + " " +
                                               str(person.get_height_in_meters()) + " " +
@@ -798,6 +840,7 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
         result_label1_ter.pack()
     result_label2.pack()
     result_label3.pack()
+    result_label3_bis.pack()
     result_label4.pack()
     result_label5.pack()
     result_label6.pack()

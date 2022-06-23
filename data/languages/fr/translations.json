@@ -69,7 +69,7 @@
   "tkx2": "Merci au site Pixabay pour l'icône (image de raphaelsilva)",
   "minnow1": "a les yeux vairons",
   "minnow2": "et%s",
-  "bald": "et aucun cheveu sur la tête,",
+  "bald": "et est chauve,",
   "save_does_not_exist": "Cette sauvegarde n'existe pas, veuillez réessayer.",
   "open": "Ouvrir",
   "enter_name_of_the_save_to_open": "Nom de la sauvegarde à ouvrir :",
@@ -112,5 +112,8 @@
   "not_person_file": "Impossible d'ouvrir ce fichier, car il n'est pas un fichier de personne ou il est corrompu.",
   "enter": "Entrée",
   "shift": "Maj",
-  "error_code": "Code d'erreur : "
+  "error_code": "Code d'erreur : ",
+  "long_hair": "a les cheveux longs,",
+  "short_hair": "a les cheveux courts,",
+  "medium_length_hair": "a les cheveux mi-longs,"
 }

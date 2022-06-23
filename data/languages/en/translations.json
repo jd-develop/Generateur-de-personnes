@@ -112,5 +112,8 @@
   "not_person_file": "Impossible to open this file, because he's not a person file or he's corrupt.",
   "enter": "Enter",
   "shift": "Shift",
-  "error_code": "Error code: "
+  "error_code": "Error code: ",
+  "long_hair": "have long hair,",
+  "short_hair": "have short hair,",
+  "medium_length_hair": "have medium-length hair,"
 }
