@@ -12,6 +12,7 @@
   "weight_range": "Weight range (kilograms)",
   "separate_by_dot": " (separate by a dot):",
   "submit": "Submit this form",
+  "OK": "OK",
   "file": "File",
   "reinit_data": "Reinitialize data...",
   "open...": "Open...",

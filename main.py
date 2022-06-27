@@ -977,7 +977,7 @@ weight_range_entry = Entry(frame1, bg=LG)
 
 # Bouton OK
 label2 = Label(frame1, text=" ", font=('Tahoma', 10), bg=PG)
-OK_button = Button(frame1, text=__translations_dict__["submit"], font=("Tahoma", 10), bg=LG,
+OK_button = Button(frame1, text=__translations_dict__["OK"], font=("Tahoma", 10), bg=LG,
                    activebackground=CCEEFF, command=lambda: result(_gender=gender,
                                                                    _age_range_entry=age_range_entry,
                                                                    _height_range_entry=height_range_entry,
