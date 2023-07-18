@@ -24,6 +24,7 @@ from tkinter import filedialog  # dialogue "enregistrer" et "ouvrir"
 
 import os  # Pour pouvoir vérifier l'existence de fichiers et le type d'OS, car ce n'est pas le même fonctionnement d'un
 #            OS à l'autre.
+import sys
 import json  # pour lire les trads
 
 import random  # Pour pouvoir faire du pseudo-aléatoire
@@ -34,6 +35,8 @@ __version__ = "4.1"
 LG = "lightgreen"
 PG = "palegreen"
 CCEEFF = '#CCEEFF'
+
+NO_UI = len(sys.argv) > 1 and sys.argv[1] == "no-ui"
 
 
 def ask_language():
@@ -93,7 +96,10 @@ def ask_language():
 try:
     match open("data/language.txt", encoding="UTF-8").read().replace("\n", ""):
         case "NotSet":
-            language = ask_language()
+            if NO_UI:
+                language = "en"
+            else:
+                language = ask_language()
         case "Français":
             language = "fr"
         case "English":
@@ -103,7 +109,10 @@ try:
 except FileNotFoundError:
     with open('data/language.txt', 'w', encoding="UTF-8") as defaultLanguage:
         defaultLanguage.write("NotSet")
-    language = ask_language()
+    if NO_UI:
+        language = "en"
+    else:
+        language = ask_language()
 
 if os.path.exists(f"data/languages/{language}/translations.json"):
     # Si la langue existe
@@ -730,6 +739,38 @@ def reset_data():
         messagebox.showinfo(__translations_dict__.get("info"), __translations_dict__.get("data_not_reinit"))
 
 
+def result_with_py_types(_gender, _age_range, _height_range, _weight_range, _profession, _character)\
+        -> tuple[Person, bool]:
+    if _gender == "randomize":
+        randomized = True
+        pseudo_random_number = randint(0, 1)
+        if pseudo_random_number == 0:
+            _gender = "female"
+        else:
+            _gender = "male"
+    else:
+        randomized = False
+
+    prof_randomize = _profession == __translations_dict__["randomize"]
+    if prof_randomize:
+        _profession = None
+    char_randomize = _character == __translations_dict__["randomize"]
+    if char_randomize:
+        _character = None
+
+    age_range_in_function = _age_range.split('.')
+    height_range_in_function = _height_range.split('.')
+    weight_range_in_function = _weight_range.split('.')
+
+    person = Person(age_range_in_function, height_range_in_function, weight_range_in_function, _gender,
+                    created_identity=number_of_created_identities,
+                    profession=_profession,
+                    character=_character
+                    )
+
+    return person, randomized
+
+
 def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, _profession_str_var,
            _character_str_var):
     """ Créé l'onglet où la personne est indiquée """
@@ -742,35 +783,15 @@ def result(_gender, _age_range_entry, _height_range_entry, _weight_range_entry, 
                              __translations_dict__["crash_file_missing"] + "\n\n" +
                              __translations_dict__["please_reinit_data"])
         return "FileNotFoundError"
-    if _gender == "randomize":
-        randomized = True
-        pseudo_random_number = randint(0, 1)
-        if pseudo_random_number == 0:
-            _gender = "female"
-        else:
-            _gender = "male"
-    else:
-        randomized = False
-    if _profession_str_var.get() == __translations_dict__["randomize"]:
-        prof_randomize = True
-    else:
-        prof_randomize = False
-    if _character_str_var.get() == __translations_dict__["randomize"]:
-        char_randomize = True
-    else:
-        char_randomize = False
     age_range_entered = _age_range_entry.get()
-    age_range_in_function = age_range_entered.split('.')
     height_range_entered = _height_range_entry.get()
-    height_range_in_function = height_range_entered.split('.')
     weight_range_entered = _weight_range_entry.get()
-    weight_range_in_function = weight_range_entered.split('.')
+    person, randomized = result_with_py_types(
+        _gender, age_range_entered, height_range_entered, weight_range_entered,
+        _profession_str_var.get(),
+        _character_str_var.get()
+    )
 
-    person = Person(age_range_in_function, height_range_in_function, weight_range_in_function, _gender,
-                    created_identity=number_of_created_identities,
-                    profession=(_profession_str_var.get() if not prof_randomize else None),
-                    character=(_character_str_var.get() if not char_randomize else None)
-                    )
     person_name = person.get_first_name() + " " + person.get_last_name()
     person_age = person.get_age()
     person_character = person.get_character()
@@ -898,6 +919,55 @@ def close_all_tabs():
 
 
 number_of_created_identities = 0
+
+if NO_UI:
+    # Générer une personne et l’afficher
+    gender_i = input("Gender (m/f/R) ")
+    match gender_i:
+        case "m":
+            gender = "male"
+        case "f":
+            gender = "female"
+        case _:
+            gender = "randomize"
+
+    age_range_entered_ = input("Age range (separate by `.`) ")
+    height_range_entered_ = input("Height range (separate by `.`) ")
+    weight_range_entered_ = input("Weight range (separate by `.`) ")
+    _profession_ = input("Profession: ")
+    _character_ = input("Character: ")
+
+    how_many = "a"
+    while not how_many.isdigit():
+        how_many = input("How many persons should be generated? (enter a number) ")
+    how_many = int(how_many)
+
+    for i in range(how_many):
+        _person, _randomized = result_with_py_types(
+            gender, age_range_entered_, height_range_entered_, weight_range_entered_,
+            _profession_,
+            _character_
+        )
+
+        _person_name = _person.get_first_name() + " " + _person.get_last_name()
+        _person_age = _person.get_age()
+        _person_character = _person.get_character()
+        _skin_color = _person.get_skin_color()
+        _hairs_color = _person.get_hairs_color()
+        _hair_length = _person.get_hair_length()
+
+        if len(sys.argv) > 2 and sys.argv[2] == "only-names":
+            print(str(i+1) + ": " + _person_name)
+        else:
+            print(f"========= PERSON NUMBER {i+1} =========")
+            print(f"Name       : {_person_name}")
+            print(f"Age        : {_person_age}")
+            print(f"Character  : {_person_character}")
+            print(f"Skin color : {_skin_color}")
+            print(f"Hairs color: {_hairs_color}")
+            print(f"Hair length: {_hair_length}")
+            print()
+    sys.exit()
 
 # Création de la fenêtre
 root = Tk()

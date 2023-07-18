@@ -1,62 +1,63 @@
-administrateur de biens
-administrateur.trice réseau
+administrateur·trice de biens
+administrateur·trice réseau
 architecte
-boulanger.e
-charcutier.e
-chauffeur.euse livreur.euse
+boulanger·e
+charcutier·e
+chauffeur·euse livreur·euse
 comptable
-conducteur.trice de trains
-conseiller.e de vente
-courtier d’assurances
-cuisinier.e
-dépanneur.euse
-dessinateur.trice
+conducteur·trice de trains
+conseiller·e de vente
+courtier·e d’assurances
+cuisinier·e
+dépanneur·euse
+dessinateur·trice
 développeur.euse
-diagnostiqueur immobilier
-directeur.trice marketing
+diagnostiqueur·euse immobilier
+directeur·trice marketing
 ébéniste
-éboueur.euse
+éboueur·euse
 économiste
-écrivain
-éditeur.trice
-esthéticien.ne
+écrivain·e
+éditeur·trice
+esthéticien·ne
 garagiste
 garde du corps
 gestionnaire locatif
-gouvernant.e d'étage
+gouvernant·e d'étage
 guide touristique
-hôte.sse de caisse
-hôtesse de l'air/steward
+hôte(sse) de caisse
+hôtesse de l’air/steward
 infographiste
-ingénieur.e
+ingénieur·e
 libraire
 maçon
 mangaka
 manutentionnaire
-masseur.euse
-menuisier.e
-moniteur.trice-éducateur.trice
+masseur·euse
+menuisier·e
+moniteur·trice-éducateur·trice
 orfèvre
 ostéopathe
-ouvrier.e
+ouvrier·e
 peintre
 pépiniériste
 poète
-poissonnier.e
-president.e directeur.trice general.e
-primeur.euse
-professeur.e d'allemand
-professeur.e d'anglais
-professeur.e d'espagnol
-professeur.e de dessin
-professeur.e de lettres
-professeur.e de mathématiques
-professeur.e de musique
-professeur.e de SES
-professeur.e de SVT
-professeur.e des écoles
-streamer.euse
-technicien.ne de surface
+poissonnier·e
+président·e directeur·trice général·e
+primeur·euse
+professeur·e d’allemand
+professeur·e d’anglais
+professeur·e d’espagnol
+professeur·e de dessin
+professeur·e de lettres
+professeur·e de mathématiques
+professeur·e de musique
+professeur·e de SES
+professeur·e de SVT
+professeur·e des écoles
+streamer·euse
+sportif·ve
+technicien·ne de surface
 traffic manager
 vétérinaire
 webmaster
