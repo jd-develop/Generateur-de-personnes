@@ -134,3 +134,7 @@ dmypy.json
 
 # VScode folder
 .vscode/
+
+data/language.txt
+data/number_of_created_identities.txt
+
