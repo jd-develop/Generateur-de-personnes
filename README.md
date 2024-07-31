@@ -1,9 +1,9 @@
 # Identity randomizer
 [French README](README_french.md)
 
-Program who randomly generate persons.
+Program that randomly generate people.
 
-Work with **Python 3.10**. (available on https://python.org/downloads) (not necessary if you have a compiled copy of the program)
+Works with **Python 3.10**. (available on https://python.org/downloads) (not necessary if you have a compiled copy of the program)
 
 # Instructions
 ## First start
